@@ -137,7 +137,7 @@ function createIsomorphLink() {
   return new HttpLink({
     uri:
       process.env.NODE_ENV === 'production'
-        ? 'http://blog.ignatif.now.sh:3000/api'
+        ? 'https://blog.ignatif.now.sh/api'
         : 'http://localhost:3000/api',
     credentials: 'same-origin',
   })
