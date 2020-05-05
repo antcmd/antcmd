@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 import { useMutation } from '@apollo/react-hooks'
 
 import Layout from 'components/Layout'
-import { withApollo } from 'apollo/client'
+import { withApollo } from 'lib/apollo'
 import { useEscapeToClose } from 'hooks'
 
 const SignupMutation = gql`

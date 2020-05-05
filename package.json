@@ -16,6 +16,7 @@
   "dependencies": {
     "@apollo/react-hooks": "3.1.5",
     "@apollo/react-ssr": "3.1.5",
+    "@hapi/iron": "^6.0.0",
     "@prisma/client": "2.0.0-beta.2",
     "@svgr/webpack": "^5.4.0",
     "apollo-boost": "0.4.7",
@@ -30,12 +31,16 @@
     "next": "9.3.6",
     "nexus": "0.12.0",
     "nexus-prisma": "0.11.1",
+    "passport-local": "^1.0.0",
     "prettier": "^2.0.5",
     "react": "16.13.1",
     "react-apollo": "3.1.5",
     "react-dom": "16.13.1",
     "react-markdown": "4.3.1",
     "react-textarea-autosize": "^7.1.2",
+    "slate": "^0.57.3",
+    "slate-history": "^0.57.3",
+    "slate-react": "^0.57.3",
     "webpack": "^4.43.0"
   },
   "devDependencies": {

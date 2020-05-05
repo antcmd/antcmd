@@ -8,7 +8,7 @@ import TextareaAutosize from 'react-textarea-autosize'
 import SendIcon from 'public/icons/send.svg'
 // import Replay from 'components/Replay'
 import Layout from 'components/Layout'
-import { withApollo } from 'apollo/client'
+import { withApollo } from 'lib/apollo'
 import { useEscapeToClose, useKeyboardShortcut } from 'hooks'
 import { FeedQuery } from './index'
 
@@ -143,18 +143,15 @@ function Post() {
             position: fixed;
             bottom: 2rem;
             right: 2rem;
-            padding: 1rem;
-            width: 60px;
-            height: 60px;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #8bb3ce;
+            letter-spacing: 0.2px;
+            color: #5d707d;
           }
           .submit-button:hover {
-            color: #3ac3d2;
+            color: #098896;
             cursor: pointer;
-            background: rgba(0, 0, 0, 0.01);
           }
 
           .icon {

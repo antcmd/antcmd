@@ -1,6 +1,6 @@
 import Layout from 'components/Layout'
 import Router, { useRouter } from 'next/router'
-import { withApollo } from 'apollo/client'
+import { withApollo } from 'lib/apollo'
 import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
 import { useEscapeToClose, useKeyboardShortcut } from 'hooks'

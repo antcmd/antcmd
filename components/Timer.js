@@ -21,16 +21,15 @@ export default () => {
             position: fixed;
             top: 2rem;
             right: 2rem;
-            width: 50px;
-            height: 36px;
+            width: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 58px;
-            color: #8bb3ce;
+            color: #5d707d;
+            font-size: 15px;
           }
           .timer:hover {
-            color: #5d707d;
             cursor: default;
           }
         `}

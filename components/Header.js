@@ -16,6 +16,11 @@ const Header = () => {
       <div className="right">
         {/* route !== '/signup' && <Link href="/signup">Signup</Link> */}
         {route !== '/create' && route !== '/p/[id]' && (
+          <Link href="/bob">
+            <a>My posts</a>
+          </Link>
+        )}
+        {route !== '/create' && route !== '/p/[id]' && (
           <Link href="/create">
             <a>New post</a>
           </Link>

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/react-hooks'
 
 import Layout from 'components/Layout'
-import { withApollo } from 'apollo/client'
+import { withApollo } from 'lib/apollo'
 import { useKeyboardShortcut } from 'hooks'
 
 export const FeedQuery = gql`

@@ -74,7 +74,7 @@ export default ({ setContent }) => {
   return (
     <>
       <div
-        className="timer"
+        className="replay"
         onClick={() => {
           if (isPlaying) {
             setSpeed((prevSpeed) => (prevSpeed === 3 ? 1 : prevSpeed + 1))
@@ -95,9 +95,7 @@ export default ({ setContent }) => {
       </div>
       <style jsx>
         {`
-          .timer {
-            width: 60px;
-            height: 60px;
+          .replay {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -105,9 +103,8 @@ export default ({ setContent }) => {
             bottom: 2rem;
             left: 2rem;
           }
-          .timer:hover {
+          .replay:hover {
             cursor: pointer;
-            background: rgba(0, 0, 0, 0.05);
           }
           .play:hover {
             cursor: pointer;
