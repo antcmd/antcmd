@@ -7,7 +7,7 @@ import Layout from 'components/Layout'
 import { withApollo } from 'apollo/client'
 import { useKeyboardShortcut } from 'hooks'
 
-const FeedQuery = gql`
+export const FeedQuery = gql`
   query FeedQuery {
     feed {
       id

@@ -3,7 +3,7 @@ import { useInterval } from 'hooks'
 import moment from 'moment'
 
 export default () => {
-  const [end] = useState(moment().add(25, 'm'))
+  const [end] = useState(moment().add(15, 'm'))
   const [timeLeft, setTimeLeft] = useState(moment(end.diff(moment())))
   const [displayTime, setDisplayTime] = useState(timeLeft.format('mm:ss'))
 

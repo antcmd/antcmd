@@ -10,6 +10,7 @@ import SendIcon from 'public/icons/send.svg'
 import Layout from 'components/Layout'
 import { withApollo } from 'apollo/client'
 import { useEscapeToClose, useKeyboardShortcut } from 'hooks'
+import { FeedQuery } from './index'
 
 // eslint-disable-next-line
 const Timer = dynamic(() => import('components/Timer'), {
@@ -70,7 +71,19 @@ const Textarea = ({ content, setContent }) => (
 function Post() {
   const [content, setContent] = useState('')
 
-  const [createPost, { loading, error, data }] = useMutation(CreatePost)
+  const [createPost, { loading, error, data }] = useMutation(CreatePost, {
+    update(cache, { data: { createPost: newPost } }) {
+      console.log('data')
+      console.log(data)
+      const { feed: prevFeed } = cache.readQuery({ query: FeedQuery })
+      console.log('prevFeed')
+      console.log(prevFeed)
+      cache.writeQuery({
+        query: FeedQuery,
+        data: { feed: [newPost, ...prevFeed] },
+      })
+    },
+  })
 
   const onSubmit = async () => {
     await createPost({
@@ -92,6 +105,8 @@ function Post() {
     },
   )
 
+  console.log(loading)
+
   return (
     <Layout>
       <div className="page">
@@ -103,8 +118,15 @@ function Post() {
         >
           <Textarea content={content} setContent={setContent} />
           <div className={`overlay-actions ${content !== '' ? 'show' : ''}`}>
-            <div className="submit-button" onClick={onSubmit}>
+            <div
+              className="submit-button"
+              onClick={onSubmit}
+              style={{ cursor: loading ? 'spinner' : 'pointer' }}
+            >
+              Send
+              {/*
               <SendIcon fill="black" className="icon" />
+              */}
             </div>
             <Timer />
             <Replay setContent={setContent} />
@@ -127,11 +149,12 @@ function Post() {
             display: flex;
             justify-content: center;
             align-items: center;
-            letter-spacing: 0.3px;
+            color: #8bb3ce;
           }
           .submit-button:hover {
-            background: hsl(167, 100%, 92%);
+            color: #3ac3d2;
             cursor: pointer;
+            background: rgba(0, 0, 0, 0.01);
           }
 
           .icon {
