@@ -41,25 +41,6 @@ const SHORTCUTS = {
   '###': 'heading-three',
 }
 
-const initialValue = [
-  {
-    type: 'title',
-    children: [
-      {
-        text: '',
-      },
-    ],
-  },
-  {
-    type: 'paragraph',
-    children: [
-      {
-        text: '',
-      },
-    ],
-  },
-]
-
 const withShortcuts = (editor) => {
   const { deleteBackward, insertText } = editor
 
@@ -136,51 +117,51 @@ const withShortcuts = (editor) => {
   return editor
 }
 
-const MarkdownShortcutsExample = () => {
-  const [value, setValue] = useState(initialValue)
+const Placeholder = () => (
+  <div
+    style={{
+      position: 'fixed',
+      zIndex: -1,
+    }}
+  >
+    <div
+      className="div-block-861"
+      style={{ justifyContent: 'flex-start', paddingTop: 0, paddingBottom: 48 }}
+    >
+      <div>
+        <div className="text-block-13-copy-copy edit2">
+          Dear diary, share your feelings, secrets and doubts for today.
+          <br />
+        </div>
+      </div>
+    </div>
+    <div className="div-blorgck-436-copy ren" style={{ marginLeft: 0 }}>
+      <div>
+        <div
+          className="text-block-118 edia"
+          style={{ color: 'rgba(51, 51, 51, 0.25)' }}
+        >
+          This post will auto-publish in 6 minutes even if you leave. You can't
+          delete or edit this post later.{' '}
+        </div>
+      </div>
+    </div>
+  </div>
+)
+
+const SlateEditor = ({ content: value, setContent: setValue }) => {
   const renderElement = useCallback((props) => <Element {...props} />, [])
   const editor = useMemo(
     () => withShortcuts(withLayout(withReact(withHistory(createEditor())))),
     [],
   )
 
-  const isEmpty = value[0].children[0].text === ''
+  const isEmpty =
+    value[0].children[0].text === '' && value[1].children[0].text === ''
 
   return (
-    <Slate
-      editor={editor}
-      value={value}
-      onChange={(value) => setValue(value)}
-      placeholder={() => <div>placeholder</div>}
-    >
-      {isEmpty && (
-        <div
-          style={{
-            position: 'fixed',
-            zIndex: -1,
-          }}
-        >
-          <div
-            className="div-block-861"
-            style={{ justifyContent: 'flex-start', paddingTop: 0 }}
-          >
-            <div>
-              <div className="text-block-13-copy-copy edit2">
-                Dear diary, share your feelings, secrets and doubts for today.
-                <br />
-              </div>
-            </div>
-          </div>
-          <div className="div-blorgck-436-copy ren" style={{ marginLeft: 0 }}>
-            <div>
-              <div className="text-block-118 edia">
-                This post will auto-publish in 6 minutes even if you leave. You
-                can't delete or edit this post later.{' '}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+    <Slate editor={editor} value={value} onChange={(value) => setValue(value)}>
+      {isEmpty && <Placeholder />}
       <Editable
         renderElement={renderElement}
         placeholder={() => <div>placeholder</div>}
@@ -201,7 +182,7 @@ const Element = ({ attributes, children, element }) => {
       return (
         <h1
           className="jsx-1887653563 text-block-13-copy-copy edit2"
-          style={{ marginBottom: 48, color: 'rgba(0, 0, 0, 0.6)' }}
+          style={{ marginBottom: 48, color: '#32393b' }}
           {...attributes}
         >
           {children}
@@ -217,8 +198,8 @@ const Element = ({ attributes, children, element }) => {
       return (
         <p
           style={{
-            color: 'rgba(51, 51, 51, 0.7)',
-            marginBottom: 12,
+            color: 'rgba(51, 51, 51, 0.8)',
+            marginBottom: 24,
           }}
           className="jsx-1887653563 text-block-118 edia"
           {...attributes}
@@ -231,4 +212,4 @@ const Element = ({ attributes, children, element }) => {
   }
 }
 
-export default MarkdownShortcutsExample
+export default SlateEditor

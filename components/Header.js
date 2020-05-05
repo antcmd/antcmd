@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 const Header = () => {
-  const { route } = useRouter()
+  const { route, query: { user } = {} } = useRouter()
   // {route !== '/create' && route !== '/p/[id]' && (
   //   <Link href="/bob">
   //     <a>My posts</a>
@@ -13,17 +13,15 @@ const Header = () => {
   return (
     <div className="div-block-780 ewgew-copy">
       <div className="div-block-871">
-        <Link
-          href="/"
-          aria-current="page"
-          className="w-inline-block w--current"
-        >
-          <div
-            className="text-block-207"
-            style={{ cursor: route === '/' ? 'default' : 'pointer' }}
-          >
-            twrite
-          </div>
+        <Link href="/">
+          <a className="w-inline-block w--current">
+            <div
+              className="text-block-207"
+              style={{ cursor: route === '/' ? 'default' : 'pointer' }}
+            >
+              twrite
+            </div>
+          </a>
         </Link>
         {route === '/p/[id]' && (
           <>
@@ -36,16 +34,13 @@ const Header = () => {
             </a>
           </>
         )}
-        {route === '/create' && (
-          <a href="#" className="text-block-196 kim-copy-copy">
-            6:00
-          </a>
-        )}
       </div>
       <div className="div-block-871">
-        <Link href="/bob">
-          <a className="text-block-196 kim-copy-copy">Bob</a>
-        </Link>
+        {route !== '/create' && route !== '/p/[id]' && user !== 'bob' && (
+          <Link href="/bob">
+            <a className="text-block-196 kim-copy-copy">Bob</a>
+          </Link>
+        )}
       </div>
       {/* route !== '/create' && route !== '/p/[id]' && (
         <div className="div-block-871">

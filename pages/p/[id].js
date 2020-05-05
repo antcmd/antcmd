@@ -28,7 +28,7 @@ function Post() {
   useEscapeToClose(() => Router.push('/'))
 
   if (loading) {
-    return <div />
+    return <div>loading</div>
   }
   if (error) {
     return <div>{`Error: ${error.message}`}</div>
@@ -74,4 +74,4 @@ function Post() {
   )
 }
 
-export default withApollo(Post)
+export default withApollo(Post, { ssr: true })

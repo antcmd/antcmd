@@ -100,7 +100,8 @@ export default ({ setContent }) => {
             align-items: center;
             position: fixed;
             bottom: 2rem;
-            left: 2rem;
+            left: 60px;
+            width: 66px;
           }
           .replay:hover {
             cursor: pointer;

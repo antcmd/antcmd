@@ -3,7 +3,7 @@ import { useInterval } from 'hooks'
 import moment from 'moment'
 
 export default () => {
-  const [end] = useState(moment().add(15, 'm'))
+  const [end] = useState(moment().add(6, 'm'))
   const [timeLeft, setTimeLeft] = useState(moment(end.diff(moment())))
   const [displayTime, setDisplayTime] = useState(timeLeft.format('mm:ss'))
 
@@ -19,15 +19,18 @@ export default () => {
         {`
           .timer {
             position: fixed;
-            top: 2rem;
-            right: 2rem;
+            left: calc(60px + 66px + 20px);
             width: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 58px;
-            color: #5d707d;
             font-size: 15px;
+            color: rgba(0, 0, 0, 0.68);
+            font-size: 16px;
+            line-height: 16px;
+            top: 36px;
+            text-align: start;
           }
           .timer:hover {
             cursor: default;

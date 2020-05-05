@@ -5,14 +5,11 @@ import gql from 'graphql-tag'
 import { useMutation } from '@apollo/react-hooks'
 import TextareaAutosize from 'react-textarea-autosize'
 
-import SendIcon from 'public/icons/send.svg'
-// import Replay from 'components/Replay'
 import { withApollo } from 'lib/apollo'
 import { useEscapeToClose, useKeyboardShortcut } from 'hooks'
 import Editor from 'components/Editor'
 import { FeedQuery } from './index'
 
-// eslint-disable-next-line
 const Timer = dynamic(() => import('components/Timer'), {
   ssr: false,
 })
@@ -42,6 +39,25 @@ const CreatePost = gql`
 const getFirstTwoWords = (string) =>
   `${string.split(' ')[0]} ${string.split(' ')[1]}`
 
+const initialValue = [
+  {
+    type: 'title',
+    children: [
+      {
+        text: '',
+      },
+    ],
+  },
+  {
+    type: 'paragraph',
+    children: [
+      {
+        text: '',
+      },
+    ],
+  },
+]
+
 const Textarea = ({ content, setContent }) => (
   <>
     <TextareaAutosize
@@ -69,7 +85,7 @@ const Textarea = ({ content, setContent }) => (
 )
 
 function Post() {
-  const [content, setContent] = useState('')
+  const [content, setContent] = useState(initialValue)
 
   const [createPost, { loading, error, data }] = useMutation(CreatePost, {
     update(cache, { data: { createPost: newPost } }) {
@@ -117,44 +133,27 @@ function Post() {
           }}
           style={{ paddingTop: 128 }}
         >
-          {/*
-          <div>
-            <div className="div-block-861">
-              <div>
-                <div className="text-block-13-copy-copy edit2">
-                  Dear diary, share your feelings, secrets and doubts for today.
-                  <br />
-                </div>
-              </div>
-            </div>
-            <div className="div-blorgck-436-copy ren" style={{ marginLeft: 0 }}>
-              <div>
-                <div className="text-block-118 edia">
-                  This post will auto-publish in 6 minutes even if you leave.
-                  You can't delete or edit this post later.{' '}
-                </div>
-              </div>
-            </div>
-          </div>
-          */}
-
-          <Editor />
+          <Editor content={content} setContent={setContent} />
           {/*
           <Textarea content={content} setContent={setContent} />
           */}
+          <a
+            style={{
+              position: 'fixed',
+              top: 20,
+              right: 60,
+              height: 36,
+            }}
+            href="/old-home"
+            className="text-block-196 kim-copy-copy blue"
+          >
+            Publish
+          </a>
           <div className={`overlay-actions ${content !== '' ? 'show' : ''}`}>
-            <div
-              className="submit-button"
-              onClick={onSubmit}
-              style={{ cursor: loading ? 'spinner' : 'pointer' }}
-            >
-              Send
-              {/*
-              <SendIcon fill="black" className="icon" />
-              */}
-            </div>
             <Timer />
+            {/*
             <Replay setContent={setContent} />
+            */}
           </div>
         </form>
       </div>
