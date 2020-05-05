@@ -1,66 +1,48 @@
+import { useRouter } from 'next/router'
+import Head from 'next/head'
 import Header from './Header'
 
-const Layout = (props) => (
-  <div>
-    <Header />
-    <div className="layout">{props.children}</div>
-    <style jsx>
-      {`
-        .layout {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          padding: 0 2rem;
-        }
-      `}
-    </style>
-    <style jsx global>
-      {`
-        html {
-          box-sizing: border-box;
-        }
+const Layout = ({ children }) => {
+  const { route } = useRouter()
 
-        *,
-        *:before,
-        *:after {
-          box-sizing: inherit;
-        }
-
-        body {
-          margin: 0;
-          padding: 0;
-          font-size: 16px;
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-            Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-            'Segoe UI Symbol';
-          background: rgba(0, 0, 0, 0.02);
-        }
-
-        input,
-        textarea {
-          font-size: 16px;
-        }
-
-        button {
-          cursor: pointer;
-        }
-
-        .area {
-          width: 100%;
-          height: 100%;
-          min-height: 300px;
-
-          padding: 0.5rem;
-          margin: 0.5rem 0;
-          background: transparent;
-          outline: none;
-          border: none;
-          font-size: 22px;
-          line-height: 32px;
-        }
-      `}
-    </style>
-  </div>
-)
+  return (
+    <div
+      className={
+        route === '/p/[id]' || route === '/create' ? 'wida alk' : 'body-5 g'
+      }
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+      }}
+    >
+      <Head>
+        <title>twrite</title>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+      <Header />
+      <div className="layout">{children}</div>
+      <style jsx>
+        {`
+          .layout {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+          }
+        `}
+      </style>
+      <style jsx global>
+        {`
+          * {
+            font-family: 'Proxima Nova', sans-serif;
+          }
+        `}
+      </style>
+    </div>
+  )
+}
 
 export default Layout

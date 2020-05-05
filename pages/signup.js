@@ -3,7 +3,6 @@ import Router from 'next/router'
 import gql from 'graphql-tag'
 import { useMutation } from '@apollo/react-hooks'
 
-import Layout from 'components/Layout'
 import { withApollo } from 'lib/apollo'
 import { useEscapeToClose } from 'hooks'
 
@@ -33,7 +32,7 @@ const Signup = () => {
   }
 
   return (
-    <Layout>
+    <>
       <div
         style={{
           width: 600,
@@ -94,7 +93,7 @@ const Signup = () => {
           }
         `}
       </style>
-    </Layout>
+    </>
   )
 }
 

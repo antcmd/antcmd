@@ -1,54 +1,60 @@
 import React, { useState, useCallback, useMemo } from 'react'
 import { Slate, Editable, withReact } from 'slate-react'
-import { Editor, Transforms, Range, Point, createEditor } from 'slate'
+import { Editor, Transforms, Range, Point, Node, createEditor } from 'slate'
 import { withHistory } from 'slate-history'
 
+const withLayout = (editor) => {
+  const { normalizeNode } = editor
+
+  editor.normalizeNode = ([node, path]) => {
+    if (path.length === 0) {
+      if (editor.children.length < 1) {
+        const title = { type: 'title', children: [{ text: 'Untitled' }] }
+        Transforms.insertNodes(editor, title, { at: path.concat(0) })
+      }
+
+      if (editor.children.length < 2) {
+        const paragraph = { type: 'paragraph', children: [{ text: '' }] }
+        Transforms.insertNodes(editor, paragraph, { at: path.concat(1) })
+      }
+
+      for (const [child, childPath] of Node.children(editor, path)) {
+        const type = childPath[0] === 0 ? 'title' : 'paragraph'
+
+        if (child.type !== type) {
+          Transforms.setNodes(editor, { type }, { at: childPath })
+        }
+      }
+    }
+
+    return normalizeNode([node, path])
+  }
+
+  return editor
+}
+
 const SHORTCUTS = {
-  '*': 'list-item',
   '-': 'list-item',
-  '+': 'list-item',
   '>': 'block-quote',
-  '#': 'heading-one',
+  '#': 'title',
   '##': 'heading-two',
   '###': 'heading-three',
-  '####': 'heading-four',
-  '#####': 'heading-five',
-  '######': 'heading-six',
 }
 
 const initialValue = [
   {
-    type: 'paragraph',
+    type: 'title',
     children: [
       {
-        text:
-          'The editor gives you full control over the logic you can add. For example, it\'s fairly common to want to add markdown-like shortcuts to editors. So that, when you start a line with "> " you get a blockquote that looks like this:',
+        text: '',
       },
     ],
   },
   {
-    type: 'block-quote',
-    children: [{ text: 'A wise quote.' }],
-  },
-  {
     type: 'paragraph',
     children: [
       {
-        text:
-          'Order when you start a line with "## " you get a level-two heading, like this:',
-      },
-    ],
-  },
-  {
-    type: 'heading-two',
-    children: [{ text: 'Try it out!' }],
-  },
-  {
-    type: 'paragraph',
-    children: [
-      {
-        text:
-          'Try it out for yourself! Try starting a new line with ">", "-", or "#"s.',
+        text: '',
       },
     ],
   },
@@ -134,14 +140,50 @@ const MarkdownShortcutsExample = () => {
   const [value, setValue] = useState(initialValue)
   const renderElement = useCallback((props) => <Element {...props} />, [])
   const editor = useMemo(
-    () => withShortcuts(withReact(withHistory(createEditor()))),
+    () => withShortcuts(withLayout(withReact(withHistory(createEditor())))),
     [],
   )
+
+  const isEmpty = value[0].children[0].text === ''
+
   return (
-    <Slate editor={editor} value={value} onChange={(value) => setValue(value)}>
+    <Slate
+      editor={editor}
+      value={value}
+      onChange={(value) => setValue(value)}
+      placeholder={() => <div>placeholder</div>}
+    >
+      {isEmpty && (
+        <div
+          style={{
+            position: 'fixed',
+            zIndex: -1,
+          }}
+        >
+          <div
+            className="div-block-861"
+            style={{ justifyContent: 'flex-start', paddingTop: 0 }}
+          >
+            <div>
+              <div className="text-block-13-copy-copy edit2">
+                Dear diary, share your feelings, secrets and doubts for today.
+                <br />
+              </div>
+            </div>
+          </div>
+          <div className="div-blorgck-436-copy ren" style={{ marginLeft: 0 }}>
+            <div>
+              <div className="text-block-118 edia">
+                This post will auto-publish in 6 minutes even if you leave. You
+                can't delete or edit this post later.{' '}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <Editable
         renderElement={renderElement}
-        placeholder="Write some markdown..."
+        placeholder={() => <div>placeholder</div>}
         spellCheck
         autoFocus
       />
@@ -155,20 +197,35 @@ const Element = ({ attributes, children, element }) => {
       return <blockquote {...attributes}>{children}</blockquote>
     case 'bulleted-list':
       return <ul {...attributes}>{children}</ul>
-    case 'heading-one':
-      return <h1 {...attributes}>{children}</h1>
+    case 'title':
+      return (
+        <h1
+          className="jsx-1887653563 text-block-13-copy-copy edit2"
+          style={{ marginBottom: 48, color: 'rgba(0, 0, 0, 0.6)' }}
+          {...attributes}
+        >
+          {children}
+        </h1>
+      )
     case 'heading-two':
       return <h2 {...attributes}>{children}</h2>
     case 'heading-three':
       return <h3 {...attributes}>{children}</h3>
-    case 'heading-four':
-      return <h4 {...attributes}>{children}</h4>
-    case 'heading-five':
-      return <h5 {...attributes}>{children}</h5>
-    case 'heading-six':
-      return <h6 {...attributes}>{children}</h6>
     case 'list-item':
       return <li {...attributes}>{children}</li>
+    case 'paragraph':
+      return (
+        <p
+          style={{
+            color: 'rgba(51, 51, 51, 0.7)',
+            marginBottom: 12,
+          }}
+          className="jsx-1887653563 text-block-118 edia"
+          {...attributes}
+        >
+          {children}
+        </p>
+      )
     default:
       return <p {...attributes}>{children}</p>
   }

@@ -54,13 +54,12 @@ export default ({ setContent }) => {
   }, [isPlaying])
 
   const recordTyping = (time) => {
-    console.log('record')
-    const action = {
-      value: document.getElementsByClassName('area')[0].value,
-      time,
-    }
-
-    setActions((prevActions) => [...prevActions, action])
+    // console.log('record')
+    // const action = {
+    //   value: document.getElementsByClassName('area')[0].value,
+    //   time,
+    // }
+    // setActions((prevActions) => [...prevActions, action])
   }
 
   const onKeyDown = useCallback((e) => isRecording && recordTyping(moment()), [

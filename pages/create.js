@@ -7,9 +7,9 @@ import TextareaAutosize from 'react-textarea-autosize'
 
 import SendIcon from 'public/icons/send.svg'
 // import Replay from 'components/Replay'
-import Layout from 'components/Layout'
 import { withApollo } from 'lib/apollo'
 import { useEscapeToClose, useKeyboardShortcut } from 'hooks'
+import Editor from 'components/Editor'
 import { FeedQuery } from './index'
 
 // eslint-disable-next-line
@@ -108,15 +108,40 @@ function Post() {
   console.log(loading)
 
   return (
-    <Layout>
+    <>
       <div className="page">
         <form
           onSubmit={(e) => {
             e.preventDefault()
             onSubmit()
           }}
+          style={{ paddingTop: 128 }}
         >
+          {/*
+          <div>
+            <div className="div-block-861">
+              <div>
+                <div className="text-block-13-copy-copy edit2">
+                  Dear diary, share your feelings, secrets and doubts for today.
+                  <br />
+                </div>
+              </div>
+            </div>
+            <div className="div-blorgck-436-copy ren" style={{ marginLeft: 0 }}>
+              <div>
+                <div className="text-block-118 edia">
+                  This post will auto-publish in 6 minutes even if you leave.
+                  You can't delete or edit this post later.{' '}
+                </div>
+              </div>
+            </div>
+          </div>
+          */}
+
+          <Editor />
+          {/*
           <Textarea content={content} setContent={setContent} />
+          */}
           <div className={`overlay-actions ${content !== '' ? 'show' : ''}`}>
             <div
               className="submit-button"
@@ -136,7 +161,7 @@ function Post() {
       <style jsx>
         {`
           .page {
-            width: 700px;
+            width: 655px;
           }
 
           .submit-button {
@@ -173,7 +198,7 @@ function Post() {
           }
         `}
       </style>
-    </Layout>
+    </>
   )
 }
 
