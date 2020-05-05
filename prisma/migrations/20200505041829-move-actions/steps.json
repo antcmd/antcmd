@@ -1,0 +1,17 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "DeleteField",
+      "model": "User",
+      "field": "actions"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Post",
+      "field": "actions",
+      "type": "Action",
+      "arity": "List"
+    }
+  ]
+}

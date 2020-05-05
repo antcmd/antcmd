@@ -1,10 +1,25 @@
 import React, { useState } from 'react'
 import Router from 'next/router'
+import dynamic from 'next/dynamic'
 import gql from 'graphql-tag'
 import { useMutation } from '@apollo/react-hooks'
+import TextareaAutosize from 'react-textarea-autosize'
 
+import SendIcon from 'public/icons/send.svg'
+// import Replay from 'components/Replay'
 import Layout from 'components/Layout'
 import { withApollo } from 'apollo/client'
+import { useEscapeToClose, useKeyboardShortcut } from 'hooks'
+
+// eslint-disable-next-line
+const Timer = dynamic(() => import('components/Timer'), {
+  ssr: false,
+})
+
+// eslint-disable-next-line
+const Replay = dynamic(() => import('components/Replay'), {
+  ssr: false,
+})
 
 const CreatePost = gql`
   mutation CreatePost(
@@ -23,52 +38,29 @@ const CreatePost = gql`
     }
   }
 `
-
 const getFirstTwoWords = (string) =>
   `${string.split(' ')[0]} ${string.split(' ')[1]}`
 
-const Header = ({ content }) => (
-  <>
-    <div className="header">
-      <div className="header__play" />
-      <div className="header__text">
-        {content.split(' ').length >= 3
-          ? getFirstTwoWords(content)
-          : 'New note'}
-      </div>
-    </div>
-    <style jsx>
-      {`
-        .header {
-        }
-        .header__play {
-        }
-        .header__text {
-        }
-      `}
-    </style>
-  </>
-)
-
 const Textarea = ({ content, setContent }) => (
   <>
-    <textarea
+    <TextareaAutosize
+      className="area"
       autoFocus
-      cols={50}
       onChange={(e) => setContent(e.target.value)}
-      placeholder="Content"
-      rows={8}
+      placeholder="Your story"
       value={content}
+      cols={50}
     />
     <style jsx>
       {`
-        input[type='text'],
-        textarea {
+        .area {
           width: 100%;
           padding: 0.5rem;
           margin: 0.5rem 0;
-          border-radius: 0.25rem;
-          border: 0.125rem solid rgba(0, 0, 0, 0.2);
+          background: transparent;
+          outline: none;
+          border: none;
+          font-size: 24px;
         }
       `}
     </style>
@@ -80,13 +72,7 @@ function Post() {
 
   const [createPost, { loading, error, data }] = useMutation(CreatePost)
 
-  console.log(loading)
-  console.log(data)
-  console.log(error)
-
-  const onSubmit = async (e) => {
-    e.preventDefault()
-
+  const onSubmit = async () => {
     await createPost({
       variables: {
         title: getFirstTwoWords(content),
@@ -94,33 +80,76 @@ function Post() {
         authorName: 'Bob',
       },
     })
-    Router.push('/drafts')
+    Router.push('/')
   }
+
+  useEscapeToClose(() => Router.push('/'))
+  useKeyboardShortcut(
+    { Enter: onSubmit },
+    {
+      withMetaKey: true,
+      event: 'keydown',
+    },
+  )
 
   return (
     <Layout>
-      <div>
-        <form onSubmit={onSubmit}>
-          <Header content={content} />
+      <div className="page">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            onSubmit()
+          }}
+        >
           <Textarea content={content} setContent={setContent} />
-          <input disabled={!content} type="submit" value="Create" />
+          <div className={`overlay-actions ${content !== '' ? 'show' : ''}`}>
+            <div className="submit-button" onClick={onSubmit}>
+              <SendIcon fill="black" className="icon" />
+            </div>
+            <Timer />
+            <Replay setContent={setContent} />
+          </div>
         </form>
       </div>
       <style jsx>
         {`
           .page {
-            background: white;
-            padding: 3rem;
-            width: 600px;
+            width: 700px;
+          }
+
+          .submit-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem;
+            width: 60px;
+            height: 60px;
             display: flex;
             justify-content: center;
             align-items: center;
+            letter-spacing: 0.3px;
+          }
+          .submit-button:hover {
+            background: hsl(167, 100%, 92%);
+            cursor: pointer;
           }
 
-          input[type='submit'] {
-            background: #ececec;
-            border: 0;
-            padding: 1rem 2rem;
+          .icon {
+            fill: #b2b2b2;
+          }
+          .icon:hover {
+            fill: #754f75;
+          }
+
+          .overlay-actions {
+            opacity: 0;
+            transition: 0.5s;
+          }
+          .overlay-actions.show {
+            opacity: 0.4;
+          }
+          .overlay-actions.show:hover {
+            opacity: 1;
           }
         `}
       </style>

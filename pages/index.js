@@ -1,9 +1,11 @@
 import Link from 'next/link'
 import gql from 'graphql-tag'
+import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/react-hooks'
 
 import Layout from 'components/Layout'
 import { withApollo } from 'apollo/client'
+import { useKeyboardShortcut } from 'hooks'
 
 const FeedQuery = gql`
   query FeedQuery {
@@ -20,45 +22,38 @@ const FeedQuery = gql`
 `
 
 const Post = ({ post }) => (
-  <Link href="/p/[id]" as={`/p/${post.id}`}>
-    <a>
-      <h2>{post.title}</h2>
-      <small>{`By ${post.author.name}`}</small>
+  <div className="post">
+    <Link href="/p/[id]" as={`/p/${post.id}`}>
       <p>{post.content}</p>
-      <style jsx>
-        {`
-          a {
-            text-decoration: none;
-            color: inherit;
-            padding: 2rem;
-            display: block;
-          }
-        `}
-      </style>
-    </a>
-  </Link>
+    </Link>
+    <style jsx>
+      {`
+        p {
+          font-size: 36px;
+          overflow: hidden;
+          max-height: 43px;
+        }
+        p:hover {
+          color: #681077;
+          cursor: pointer;
+        }
+      `}
+    </style>
+  </div>
 )
 
 const Feed = ({ feed }) => (
   <main>
     {feed.map((post) => (
-      <div className="post">
-        <Post key={post.id} post={post} />
-      </div>
+      <Post key={post.id} post={post} />
     ))}
     <style jsx>
       {`
-        .post {
-          background: white;
-          transition: box-shadow 0.1s ease-in;
-        }
-
-        .post:hover {
-          box-shadow: 1px 1px 3px #aaa;
-        }
-
-        .post + .post {
-          margin-top: 2rem;
+        main {
+          margin-top: 100px;
+          width: 700px;
+          display: flex;
+          flex-direction: column;
         }
       `}
     </style>
@@ -67,9 +62,12 @@ const Feed = ({ feed }) => (
 
 const Blog = () => {
   const { loading, error, data } = useQuery(FeedQuery)
+  const { push } = useRouter()
+
+  useKeyboardShortcut({ Enter: () => push('/create') })
 
   if (loading) {
-    return <div>Loading ...</div>
+    return <div />
   }
   if (error) {
     return <div>{`Error: ${error.message}`}</div>

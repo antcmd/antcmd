@@ -26,5 +26,9 @@ module.exports = {
     'react/prop-types': 0, // Not using PropTypes
     'jsx-a11y/no-autofocus': 0, // We need autofocus on signup and and post editor pages
     'import/no-unresolved': 0, // Todo: need to configure absolute import to ignore lint
+    'jsx-a11y/anchor-is-valid': 0, // To style next/Link
+    'import/prefer-default-export': 0,
+    'jsx-a11y/no-static-element-interactions': 0,
+    'jsx-a11y/click-events-have-key-events': 0,
   },
 }

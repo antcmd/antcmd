@@ -4,13 +4,14 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgres://rimhyfwhshaoij:a8c12a9d34d2222b8a09de6ec07ba6338f7c7620e3632449655088bc794f1a30@ec2-18-206-84-251.compute-1.amazonaws.com:5432/d45kjhmrotg8tr"
+  url = "***"
 }
 
 model User {
   id      Int     @default(autoincrement()) @id
   name    String  @unique
   posts   Post[]
+  actions Action[]
 }
 
 model Post {
@@ -19,7 +20,6 @@ model Post {
   title     String
   author    User?   @relation(fields: [authorId], references: [id])
   authorId  Int?
-  actions Action[]
 }
 
 model Action {
