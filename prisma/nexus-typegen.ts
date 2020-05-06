@@ -3,7 +3,7 @@
  * Do not make changes to this file directly
  */
 
-import * as Context from "./pages/api/context"
+import * as Context from "./pages/api/prisma/context"
 import * as prisma from "@prisma/client"
 import { core } from "nexus"
 declare global {

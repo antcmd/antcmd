@@ -89,11 +89,7 @@ function Post() {
 
   const [createPost, { loading, error, data }] = useMutation(CreatePost, {
     update(cache, { data: { createPost: newPost } }) {
-      console.log('data')
-      console.log(data)
       const { feed: prevFeed } = cache.readQuery({ query: FeedQuery })
-      console.log('prevFeed')
-      console.log(prevFeed)
       cache.writeQuery({
         query: FeedQuery,
         data: { feed: [newPost, ...prevFeed] },
@@ -120,8 +116,6 @@ function Post() {
       event: 'keydown',
     },
   )
-
-  console.log(loading)
 
   return (
     <>

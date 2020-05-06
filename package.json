@@ -22,6 +22,7 @@
     "apollo-boost": "0.4.7",
     "apollo-link-http": "1.5.17",
     "apollo-link-schema": "1.2.5",
+    "cookie": "^0.4.1",
     "express": "4.17.1",
     "graphql": "14.6.0",
     "graphql-iso-date": "3.6.1",
@@ -29,8 +30,10 @@
     "isomorphic-unfetch": "3.0.0",
     "moment": "^2.25.3",
     "next": "9.3.6",
+    "next-connect": "^0.6.5",
     "nexus": "0.12.0",
     "nexus-prisma": "0.11.1",
+    "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "prettier": "^2.0.5",
     "react": "16.13.1",
@@ -41,6 +44,7 @@
     "slate": "^0.57.3",
     "slate-history": "^0.57.3",
     "slate-react": "^0.57.3",
+    "swr": "^0.2.0",
     "webpack": "^4.43.0"
   },
   "devDependencies": {
@@ -63,7 +67,8 @@
     "extends": [
       "react-app",
       "airbnb",
-      "plugin:prettier/recommended"
+      "plugin:prettier/recommended",
+      "prettier/react"
     ]
   },
   "prettier": {

@@ -26,12 +26,9 @@ export default ({ setContent }) => {
 
       if (actions[index + 1]) {
         // Calculate time delta
-        console.log('speed')
-        console.log(speed)
         timeDelta = getTimeDelta(actions[index + 1].time.diff(action.time))
       } else {
         timeDelta = 0
-        console.log('last')
         setPlaying(false)
         setSpeed(1)
         setRecording(true)
@@ -42,11 +39,6 @@ export default ({ setContent }) => {
   }
 
   useEffect(() => {
-    console.log('change speed')
-    console.log(speed)
-  }, [speed])
-
-  useEffect(() => {
     if (isPlaying) {
       replay(actions)
       setRecording(false)
@@ -54,7 +46,6 @@ export default ({ setContent }) => {
   }, [isPlaying])
 
   const recordTyping = (time) => {
-    // console.log('record')
     // const action = {
     //   value: document.getElementsByClassName('area')[0].value,
     //   time,

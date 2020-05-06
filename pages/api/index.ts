@@ -8,6 +8,14 @@ export const GQLDate = asNexusMethod(GraphQLDate, 'date')
 
 const prisma = new PrismaClient()
 
+interface Context {
+  prisma: PrismaClient
+}
+
+function createContext(): Context {
+  return { prisma }
+}
+
 const User = objectType({
   name: 'User',
   definition(t) {
@@ -15,7 +23,7 @@ const User = objectType({
     t.string('name')
     t.list.field('posts', {
       type: 'Post',
-      resolve: parent =>
+      resolve: (parent) =>
         prisma.user
           .findOne({
             where: { id: Number(parent.id) },
@@ -38,7 +46,7 @@ const Post = objectType({
     t.field('author', {
       type: 'User',
       nullable: true,
-      resolve: parent =>
+      resolve: (parent) =>
         prisma.post
           .findOne({
             where: { id: Number(parent.id) },
@@ -95,7 +103,7 @@ const Mutation = objectType({
     t.field('signupUser', {
       type: 'User',
       args: {
-        name: stringArg({ nullable: false })
+        name: stringArg({ nullable: false }),
       },
       resolve: (_, { name }, ctx) => {
         return prisma.user.create({
@@ -144,8 +152,8 @@ const Mutation = objectType({
 export const schema = makeSchema({
   types: [Query, Mutation, Post, User, GQLDate],
   outputs: {
-    typegen: path.join(process.cwd(), 'nexus-typegen.ts'),
-    schema: path.join(process.cwd(), 'schema.graphql')
+    typegen: path.join(process.cwd(), 'prisma/nexus-typegen.ts'),
+    schema: path.join(process.cwd(), 'prisma/schema.graphql'),
   },
   typegenAutoConfig: {
     contextType: 'Context.Context',
@@ -155,7 +163,7 @@ export const schema = makeSchema({
         alias: 'prisma',
       },
       {
-        source: require.resolve('./context'),
+        source: require.resolve('./prisma/context'),
         alias: 'Context',
       },
     ],

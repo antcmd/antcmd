@@ -76,20 +76,28 @@ const Signup = () => {
             font-size: 48px;
             outline: none;
             margin: 1rem 0;
+
+            font-weight: 600;
           }
 
           input[type='submit'] {
             background: #ececec;
             border: 0;
             padding: 1rem 2rem;
+            letter-spacing: -0.3px;
+            font-weight: 600;
+            outline: none;
           }
           input[type='submit']:not([disabled]) {
-            color: #489886;
-            letter-spacing: -0.3px;
+            color: #0c77f8;
           }
-
-          .back {
-            margin-left: 1rem;
+          input[type='submit']:not([disabled]):hover {
+            background: #0c77f8;
+            color: white;
+            cursor: pointer;
+          }
+          input[type='submit']:not([disabled]):active {
+            background: #4a9bfd;
           }
         `}
       </style>

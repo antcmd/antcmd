@@ -1,14 +1,10 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useUser } from 'hooks'
 
 const Header = () => {
-  const { route, query: { user } = {} } = useRouter()
-  // {route !== '/create' && route !== '/p/[id]' && (
-  //   <Link href="/bob">
-  //     <a>My posts</a>
-  //   </Link>
-  // )}
-  // {/* route !== '/signup' && <Link href="/signup">Signup</Link> */}
+  const { route, query } = useRouter()
+  const user = useUser()
 
   return (
     <div className="div-block-780 ewgew-copy">
@@ -36,9 +32,24 @@ const Header = () => {
         )}
       </div>
       <div className="div-block-871">
-        {route !== '/create' && route !== '/p/[id]' && user !== 'bob' && (
-          <Link href="/bob">
-            <a className="text-block-196 kim-copy-copy">Bob</a>
+        {user
+          ? route !== '/create' &&
+            route !== '/p/[id]' &&
+            query.user !== 'bob' && (
+              <Link href="/bob">
+                <a className="text-block-196 kim-copy-copy">Bob</a>
+              </Link>
+            )
+          : route !== '/signup' &&
+            route !== '/create' &&
+            route !== '/p/[id]' && (
+              <Link href="/signup">
+                <a className="text-block-196 kim-copy-copy">Join</a>
+              </Link>
+            )}
+        {user && (
+          <Link href="/api/logout">
+            <a className="text-block-196 kim-copy-copy">Logout</a>
           </Link>
         )}
       </div>
