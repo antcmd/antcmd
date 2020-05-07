@@ -24,7 +24,10 @@ const SlateEditor = () => {
     [],
   )
 
-  const isEmpty = value[0] && value[0].children[0].text === ''
+  const isEmpty =
+    value.length === 1 &&
+    value[0].children[0] &&
+    value[0].children[0].text === ''
 
   return (
     <Slate editor={editor} value={value} onChange={(value) => setValue(value)}>
