@@ -3,8 +3,7 @@
  * Do not make changes to this file directly
  */
 
-import * as Context from "./pages/api/prisma/context"
-import * as prisma from "@prisma/client"
+import * as Context from "../pages/api/prisma/context"
 import { core } from "nexus"
 declare global {
   interface NexusGenCustomInputMethods<TypeName extends string> {
@@ -29,10 +28,27 @@ export interface NexusGenEnums {
 }
 
 export interface NexusGenRootTypes {
+  Action: { // root type
+    id: string; // String!
+    time: any; // Date!
+  }
+  Like: { // root type
+    id: string; // String!
+  }
   Mutation: {};
-  Post: prisma.Post;
+  Post: { // root type
+    content?: string | null; // String
+    createdAt: any; // Date!
+    id: string; // String!
+    numberPlayed: number; // Int!
+    title: string; // String!
+    updatedAt: any; // Date!
+  }
   Query: {};
-  User: prisma.User;
+  User: { // root type
+    id: string; // String!
+    name: string; // String!
+  }
   String: string;
   Int: number;
   Float: number;
@@ -45,6 +61,13 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
 }
 
 export interface NexusGenFieldTypes {
+  Action: { // field return type
+    id: string; // String!
+    time: any; // Date!
+  }
+  Like: { // field return type
+    id: string; // String!
+  }
   Mutation: { // field return type
     createPost: NexusGenRootTypes['Post']; // Post!
     deletePost: NexusGenRootTypes['Post'] | null; // Post
@@ -55,6 +78,7 @@ export interface NexusGenFieldTypes {
     content: string | null; // String
     createdAt: any; // Date!
     id: string; // String!
+    numberPlayed: number; // Int!
     title: string; // String!
     updatedAt: any; // Date!
   }
@@ -99,7 +123,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Mutation" | "Post" | "Query" | "User";
+export type NexusGenObjectNames = "Action" | "Like" | "Mutation" | "Post" | "Query" | "User";
 
 export type NexusGenInputNames = never;
 

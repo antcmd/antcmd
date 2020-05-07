@@ -1,5 +1,4 @@
 const path = require('path')
-const webpack = require('webpack')
 
 module.exports = {
   webpack(config) {
@@ -11,6 +10,22 @@ module.exports = {
         test: /\.(js|ts)x?$/,
       },
       use: ['@svgr/webpack'],
+    })
+
+    config.module.rules.push({
+      test: /\.(ogg|mp3|wav|mpe?g)$/i,
+      loader: 'file-loader',
+      options: {
+        name: '[path][name].[ext]',
+      },
+    })
+
+    config.module.rules.push({
+      test: /\.(ogg|mp3|wav|mpe?g)$/i,
+      loader: 'url-loader',
+      options: {
+        limit: false,
+      },
     })
 
     return config
