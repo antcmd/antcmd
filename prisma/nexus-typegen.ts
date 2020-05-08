@@ -3,7 +3,8 @@
  * Do not make changes to this file directly
  */
 
-import * as Context from "../pages/api/prisma/context"
+import * as Context from "./pages/api/prisma/context"
+import * as prisma from "@prisma/client"
 import { core } from "nexus"
 declare global {
   interface NexusGenCustomInputMethods<TypeName extends string> {
@@ -28,27 +29,12 @@ export interface NexusGenEnums {
 }
 
 export interface NexusGenRootTypes {
-  Action: { // root type
-    id: string; // String!
-    time: any; // Date!
-  }
-  Like: { // root type
-    id: string; // String!
-  }
+  Action: prisma.Action;
+  Like: prisma.Like;
   Mutation: {};
-  Post: { // root type
-    content?: string | null; // String
-    createdAt: any; // Date!
-    id: string; // String!
-    numberPlayed: number; // Int!
-    title: string; // String!
-    updatedAt: any; // Date!
-  }
+  Post: prisma.Post;
   Query: {};
-  User: { // root type
-    id: string; // String!
-    name: string; // String!
-  }
+  User: prisma.User;
   String: string;
   Int: number;
   Float: number;

@@ -1,11 +1,12 @@
-import Link from 'next/link'
+import React, { useState } from 'react'
+import Router from 'next/router'
 import gql from 'graphql-tag'
-import { useRouter } from 'next/router'
-import { useQuery } from '@apollo/react-hooks'
+import { useMutation } from '@apollo/react-hooks'
+import TextareaAutosize from 'react-textarea-autosize'
 
-import Post from 'components/Feed/Post'
 import { withApollo } from 'lib/apollo'
-import { useKeyboardShortcut } from 'hooks'
+import { useEscapeToClose, useKeyboardShortcut } from 'hooks'
+import Editor from 'components/Editor'
 
 export const FeedQuery = gql`
   query FeedQuery {
@@ -21,44 +22,174 @@ export const FeedQuery = gql`
   }
 `
 
-const Feed = () => {
-  const { loading, error, data: { feed = [] } = {} } = useQuery(FeedQuery)
-  const { push } = useRouter()
-
-  useKeyboardShortcut({ Enter: () => push('/create') })
-
-  if (loading) {
-    return <div>loading</div>
+const CreatePost = gql`
+  mutation CreatePost(
+    $title: String!
+    $content: String!
+    $authorName: String!
+  ) {
+    createPost(title: $title, content: $content, authorName: $authorName) {
+      id
+      title
+      content
+      author {
+        id
+        name
+      }
+    }
   }
-  if (error) {
-    return <div>{`Error: ${error.message}`}</div>
+`
+const getFirstTwoWords = (string) =>
+  `${string.split(' ')[0]} ${string.split(' ')[1]}`
+
+const initialValue = [
+  {
+    type: 'title',
+    children: [
+      {
+        text: '',
+      },
+    ],
+  },
+  {
+    type: 'paragraph',
+    children: [
+      {
+        text: '',
+      },
+    ],
+  },
+]
+
+const Textarea = ({ content, setContent }) => (
+  <>
+    <TextareaAutosize
+      className="area"
+      autoFocus
+      onChange={(e) => setContent(e.target.value)}
+      placeholder="Your story"
+      value={content}
+      cols={50}
+    />
+    <style jsx>
+      {`
+        .area {
+          width: 100%;
+          padding: 0.5rem;
+          margin: 0.5rem 0;
+          background: transparent;
+          outline: none;
+          border: none;
+          font-size: 24px;
+        }
+      `}
+    </style>
+  </>
+)
+
+function Post() {
+  const [content, setContent] = useState(initialValue)
+
+  const [createPost, { loading, error, data }] = useMutation(CreatePost, {
+    update(cache, { data: { createPost: newPost } }) {
+      const { feed: prevFeed } = cache.readQuery({ query: FeedQuery })
+      cache.writeQuery({
+        query: FeedQuery,
+        data: { feed: [newPost, ...prevFeed] },
+      })
+    },
+  })
+
+  const onSubmit = async () => {
+    await createPost({
+      variables: {
+        title: getFirstTwoWords(content),
+        content,
+        authorName: 'Bob',
+      },
+    })
+    Router.push('/')
   }
+
+  useEscapeToClose(() => Router.push('/'))
+  useKeyboardShortcut(
+    { Enter: onSubmit },
+    {
+      withMetaKey: true,
+      event: 'keydown',
+    },
+  )
 
   return (
-    <div className="div-block-847-copy">
-      <div className="div-block-843">
-        <div className="text-block-194">
-          Watch live<strong className="bold-text-17">writing</strong>
-        </div>
-        <Link href="/create">
-          <a className="button-6 _24-copy blkd bl-copy-copy tyb whc w-inline-block">
-            <div>Write</div>
-            <img
-              src="https://uploads-ssl.webflow.com/5eaf5cd658f15e7f0410a7cd/5eaf5cd658f15e6ef710a953_arrow-right%20(1).svg"
-              width={20}
-              alt=""
-              className="image-148 blue"
-            />
+    <>
+      <div className="page">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            onSubmit()
+          }}
+          style={{ paddingTop: 128 }}
+        >
+          <Editor content={content} setContent={setContent} />
+          {/*
+          <Textarea content={content} setContent={setContent} />
+          */}
+          <a
+            style={{
+              position: 'fixed',
+              top: 20,
+              right: 60,
+              height: 36,
+            }}
+            href="/old-home"
+            className="text-block-196 kim-copy-copy blue"
+          >
+            Publish
           </a>
-        </Link>
+        </form>
       </div>
-      <div className="div-block-852">
-        {feed.map((post) => (
-          <Post key={post.id} post={post} />
-        ))}
-      </div>
-    </div>
+      <style jsx>
+        {`
+          .page {
+            width: 655px;
+          }
+
+          .submit-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            letter-spacing: 0.2px;
+            color: #5d707d;
+          }
+          .submit-button:hover {
+            color: #098896;
+            cursor: pointer;
+          }
+
+          .icon {
+            fill: #b2b2b2;
+          }
+          .icon:hover {
+            fill: #754f75;
+          }
+
+          .overlay-actions {
+            opacity: 0;
+            transition: 0.5s;
+          }
+          .overlay-actions.show {
+            opacity: 0.4;
+          }
+          .overlay-actions.show:hover {
+            opacity: 1;
+          }
+        `}
+      </style>
+    </>
   )
 }
 
-export default withApollo(Feed)
+export default withApollo(Post)
