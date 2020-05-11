@@ -39,13 +39,12 @@ export const authors = [jake, BMO, finn]
 export const quotes = [
   {
     id: '1',
-    content: 'Sometimes life is scary and dark',
+    content: 'Development',
     author: BMO,
   },
   {
     id: '2',
-    content:
-      'Sucking at something is the first step towards being sorta good at something.',
+    content: 'Design',
     author: jake,
   },
   {
@@ -55,7 +54,7 @@ export const quotes = [
   },
   {
     id: '4',
-    content: 'Is that where creativity comes from? From sad biz?',
+    content: 'Marketing',
     author: finn,
   },
   {

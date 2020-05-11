@@ -6,7 +6,7 @@ import {
 } from 'react-beautiful-dnd'
 
 import Column from 'components/Pages/Column'
-import MenuButton from 'components/Layout/MenuButton'
+import MenuButton from './MenuButton'
 
 import reorder, { reorderQuoteMap } from './help/reorder'
 import { authorQuoteMap } from './help/data'

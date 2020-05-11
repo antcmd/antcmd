@@ -5,6 +5,7 @@ import { useMutation } from '@apollo/react-hooks'
 import { useEscapeToClose, useKeyboardShortcut } from 'hooks'
 
 import Editor from 'components/Editor'
+import Bot from 'components/Bot'
 
 import { SAVE_NOTE } from 'api'
 
@@ -93,36 +94,9 @@ const App = () => {
               get my story-fix in while still being able to do other things,
               like drive or pour over spread sheets.
             </div>
+            <Bot />
             {/*
             BOT
-            <div
-              className="app"
-              data-ix="new-interaction-25"
-              style={{ display: 'flex' }}
-            >
-              <div className="div-block-878 up _2 sha">
-                <div>WE</div>
-              </div>
-              <div className="div-block-886">
-                <div className="div-block-887">
-                  <input
-                    type="text"
-                    className="text-field-2 ncod w-input"
-                    maxLength={256}
-                    name="email-2"
-                    data-name="Email 2"
-                    placeholder="What's your City"
-                    id="email-2"
-                  />
-                  <img
-                    src="https://uploads-ssl.webflow.com/5eaf5cd658f15e7f0410a7cd/5eb549145c02e69cf4e511a6_eye.svg"
-                    width={15}
-                    alt=""
-                    className="image-286"
-                  />
-                </div>
-              </div>
-            </div>
             <div
               className="app1"
               data-ix="new-interaction-26"
