@@ -1,4 +1,4 @@
-import { Draggable } from 'react-beautiful-dnd'
+import { Draggable, Droppable } from 'react-beautiful-dnd'
 import Item from 'components/Pages/Item'
 
 export default ({ title, quotes, index }) => {
@@ -20,11 +20,10 @@ export default ({ title, quotes, index }) => {
               {`${title} me`}
             </div>
           </div>
-          <Item />
-          <Item />
-          <Item />
-          <Item />
-          <Item />
+
+          <Item quote={quotes[0]} />
+          <Item quote={quotes[0]} />
+          <Item quote={quotes[0]} />
         </div>
       )}
     </Draggable>
