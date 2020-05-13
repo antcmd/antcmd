@@ -2,8 +2,27 @@ import { useState, createContext } from 'react'
 
 const EditorContext = createContext()
 
+const initialValue = [
+  {
+    type: 'title',
+    children: [
+      {
+        text: '',
+      },
+    ],
+  },
+  {
+    type: 'paragraph',
+    children: [
+      {
+        text: '',
+      },
+    ],
+  },
+]
+
 const EditorProvider = ({ children }) => {
-  const [content, setContent] = useState(true)
+  const [content, setContent] = useState(initialValue)
 
   return (
     <EditorContext.Provider

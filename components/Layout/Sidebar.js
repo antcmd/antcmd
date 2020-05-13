@@ -1,5 +1,6 @@
 import { useContext } from 'react'
 import { AppContext } from 'context'
+import Link from 'next/link'
 
 export default () => {
   const { showSidebar: show, setShowSidebar } = useContext(AppContext)
@@ -12,7 +13,7 @@ export default () => {
       style={{ display: show ? 'block' : 'none' }}
     >
       <div className="div-block-889">
-        <div className="kerou">
+        <div className="kerou" style={{ visibility: 'hidden' }}>
           <img
             src="https://uploads-ssl.webflow.com/5eaf5cd658f15e7f0410a7cd/5eb5bc6eecd059d6c6003fc0_clock%20(1).svg"
             width={26}
@@ -21,15 +22,18 @@ export default () => {
           />
           <div className="text-block-212">Replay</div>
         </div>
-        <div className="kerou">
-          <img
-            src="https://uploads-ssl.webflow.com/5eaf5cd658f15e7f0410a7cd/5eb5d1f6bf5a492496092539_file-plus-2.svg"
-            width={26}
-            alt=""
-            className="image-288"
-          />
-          <div className="text-block-212 eg">New Page</div>
-        </div>
+        <Link href="/">
+          <div className="kerou" onClick={close}>
+            <img
+              src="https://uploads-ssl.webflow.com/5eaf5cd658f15e7f0410a7cd/5eb5d1f6bf5a492496092539_file-plus-2.svg"
+              width={26}
+              alt=""
+              className="image-288"
+            />
+
+            <div className="text-block-212 eg">New Page</div>
+          </div>
+        </Link>
         <div className="kerou" data-ix="new-interaction-19" onClick={close}>
           <img
             src="https://uploads-ssl.webflow.com/5eaf5cd658f15e7f0410a7cd/5eb5bc74170d89f6c0ac1141_more-horizontal%20(1).svg"
@@ -40,6 +44,7 @@ export default () => {
           <div className="text-block-212">More</div>
         </div>
       </div>
+      {/*
       <div className="open2-copy">
         <div className="div-block-827 nou">
           <div className="text-block-199 allcaps">Bots</div>
@@ -145,6 +150,7 @@ export default () => {
           </div>
         </div>
       </div>
+      */}
       <div
         className="open2"
         data-ix="new-interaction-20"

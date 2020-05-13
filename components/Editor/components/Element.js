@@ -1,6 +1,3 @@
-import { CheckListItemElement } from 'components/UI/Checkbox'
-// import { CheckListItemElement } from './CheckListItem'
-//
 import {
   Title,
   SubTitle,
@@ -10,6 +7,7 @@ import {
   Quote,
   Divider,
 } from 'styles/UI'
+import Checkbox from './Checkbox'
 
 const Element = ({ attributes, children, element }) => {
   switch (element.type) {
@@ -31,9 +29,9 @@ const Element = ({ attributes, children, element }) => {
     //   return <ul {...attributes}>{children}</ul>
     case 'check-list-item':
       return (
-        <CheckListItemElement attributes={attributes} element={element}>
+        <Checkbox attributes={attributes} element={element}>
           {children}
-        </CheckListItemElement>
+        </Checkbox>
       )
     default:
       return <Paragraph {...attributes}>{children}</Paragraph>
