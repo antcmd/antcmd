@@ -19,6 +19,10 @@ const Element = ({ attributes, children, element }) => {
       return <SectionTitle {...attributes}>{children}</SectionTitle>
     case 'paragraph':
       return <Paragraph {...attributes}>{children}</Paragraph>
+    case 'bold':
+      return <b {...attributes}>{children}</b>
+    case 'italic':
+      return <i {...attributes}>{children}</i>
     case 'list-item':
       return <ListItem {...attributes}>{children}</ListItem>
     case 'quote':
