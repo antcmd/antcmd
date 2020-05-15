@@ -4,3 +4,4 @@ src/generated/
 
 .now
 .vercel
+.DS_STORE
