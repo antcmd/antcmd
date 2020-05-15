@@ -8,7 +8,7 @@ export const withChecklists = (editor) => {
 
     if (selection && Range.isCollapsed(selection)) {
       const [match] = Editor.nodes(editor, {
-        match: (n) => n.type === 'check-list-item',
+        match: (n) => n.type === 'checkbox',
       })
 
       if (match) {
@@ -19,7 +19,7 @@ export const withChecklists = (editor) => {
           Transforms.setNodes(
             editor,
             { type: 'paragraph' },
-            { match: (n) => n.type === 'check-list-item' },
+            { match: (n) => n.type === 'checkbox' },
           )
           return
         }

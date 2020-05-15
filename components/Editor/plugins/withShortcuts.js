@@ -1,8 +1,7 @@
 import { Editor, Transforms, Range, Point } from 'slate'
 
 export const SHORTCUTS = {
-  ';': 'checkbox',
-  '-': 'check-list-item',
+  '-': 'checkbox',
   '--': 'list-item',
   '---': 'divider',
   '>': 'quote',
@@ -15,7 +14,6 @@ export const withShortcuts = (editor) => {
   const { deleteBackward, insertText } = editor
 
   editor.insertText = (text) => {
-    console.log('insert text')
     const { selection } = editor
 
     if (text === ' ' && selection && Range.isCollapsed(selection)) {
@@ -45,10 +43,7 @@ export const withShortcuts = (editor) => {
           })
         }
 
-        console.log(anchor)
-        console.log(anchor)
-
-        if (type === 'check-list-item') {
+        if (type === 'checkbox') {
           Transforms.setPoint(
             editor,
             {
