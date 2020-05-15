@@ -20,7 +20,7 @@ const Providers = ({ children }) => (
 
 const App = ({ Component, pageProps }) => {
   const { route } = useRouter()
-  const hideLayout = route === '/nav'
+  const hideLayout = route === '/json' || route === '/json1'
 
   useEffect(() => {
     console.log('check auth')

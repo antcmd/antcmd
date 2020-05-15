@@ -47,13 +47,11 @@ export default ({ attributes, children, selectedIndex }) => {
           color: 'rgba(51,51,51,0.8)',
           marginBottom: 24,
           fontSize: '16px',
+          height: 38,
         }}
       >
-        <div
-          className="div-block-878 up _2 sha"
-          style={{ background: '#ffaa84' }}
-        >
-          <div>IN</div>
+        <div className="div-block-878-copy" style={{ marginRight: 10 }}>
+          <div>Stock</div>
         </div>
         {!selectedCompany ? (
           children
@@ -65,7 +63,9 @@ export default ({ attributes, children, selectedIndex }) => {
             className="text-field-2 ncod w-input"
             style={{
               color: '#dddddd',
-              display: 'inline-block',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
               // color: 'grey',
             }}
           >
@@ -82,15 +82,15 @@ export default ({ attributes, children, selectedIndex }) => {
             zIndex: 1,
             width: 'fit-content',
             marginTop: 48,
+            maxHeight: '350px',
+            overflow: 'scroll',
           }}
         >
           {matches ? (
             matches.map((char, i) => (
               <div
                 key={char.name}
-                className={`div-block-827-copy-copy ${
-                  i === selectedIndex ? 'ok' : ''
-                }`}
+                className={`avablock fla ${i === selectedIndex ? 'sck' : ''}`}
                 onClick={() => setSelectedCompany(char.symbol)}
               >
                 <div className="text-block-199">{char.symbol}</div>

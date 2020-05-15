@@ -29,12 +29,14 @@ export default forwardRef(({ options, selectedIndex }, ref) => (
             data-ix="new-interaction-21"
             className={`avablock fla ${isSelected ? 'sck' : ''}`}
           >
+            {/*
             <div
               className="div-block-878 up _2"
               style={{ background: ant.color }}
             >
               <div>{ant.id}</div>
             </div>
+            */}
             <div className="div-block-886">
               <div className="text-block-209">{ant.name}</div>
               <div className="div-block-887">
