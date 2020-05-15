@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { Slate, Editable, ReactEditor, withReact } from 'slate-react'
 import { Editor, Transforms, Range, createEditor } from 'slate'
 import { withHistory } from 'slate-history'
-import Tone from 'tone'
 
 import { withShortcuts } from './plugins/withShortcuts'
 import { withChecklists } from './plugins/withCheckbox'
@@ -45,14 +44,8 @@ const SlateEditor = () => {
     [],
   )
 
-  useEffect(() => {
-    if (Tone.context.state !== 'running') {
-      Tone.context.resume()
-    }
-  }, [])
-
   const antsFiltered = ants
-    .filter((c, i) =>
+    .filter((c) =>
       search === ''
         ? true
         : c.name.toLowerCase().startsWith(search.toLowerCase()),

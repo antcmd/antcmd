@@ -8,10 +8,7 @@ import {
   Divider,
 } from './typography'
 
-import Piano from './ants/PianoAnt'
 import Insight from './ants/InsightAnt'
-import Weather from './ants/WeatherAnt'
-import Airtable from './ants/AirtableAnt'
 
 import Mention from './components/Mention'
 import Checkbox from './components/Checkbox'
@@ -41,14 +38,8 @@ const Element = (props) => {
       return <Divider {...attributes}>{children}</Divider>
 
     // Ants
-    case 'piano':
-      return <Piano {...props} />
     case 'insight':
       return <Insight {...props} />
-    case 'weather':
-      return <Weather {...props} />
-    case 'airtable':
-      return <Airtable {...props} />
 
     // Components
     case 'mention':
