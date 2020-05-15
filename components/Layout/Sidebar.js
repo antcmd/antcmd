@@ -13,14 +13,14 @@ export default () => {
       style={{ display: show ? 'block' : 'none' }}
     >
       <div className="div-block-889">
-        <div className="kerou" style={{ visibility: 'hidden' }}>
+        <div className="kerou">
           <img
             src="https://uploads-ssl.webflow.com/5eaf5cd658f15e7f0410a7cd/5eb5bc6eecd059d6c6003fc0_clock%20(1).svg"
             width={26}
             alt=""
             className="image-288"
           />
-          <div className="text-block-212">Replay</div>
+          <div className="text-block-212">Ants</div>
         </div>
         <Link href="/">
           <div className="kerou" onClick={close}>

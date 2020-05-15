@@ -7,8 +7,7 @@ import ThemeProvider from 'context/ThemeContext'
 import AppProvider from 'context/AppContext'
 import EditorProvider from 'context/EditorContext'
 
-// import 'public/css/webflow.css'
-import 'public/css/webflow_2.css'
+import 'public/css/webflow.css'
 import 'public/css/custom.css'
 
 const Providers = ({ children }) => (
