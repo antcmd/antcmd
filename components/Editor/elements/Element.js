@@ -6,11 +6,21 @@ import {
   ListItem,
   Quote,
   Divider,
-} from 'styles/UI'
-import Checkbox from './Checkbox'
+} from './typography'
 
-const Element = ({ attributes, children, element }) => {
+import Piano from './ants/PianoAnt'
+import Insight from './ants/InsightAnt'
+import Weather from './ants/WeatherAnt'
+import Airtable from './ants/AirtableAnt'
+
+import Mention from './components/Mention'
+import Checkbox from './components/Checkbox'
+import Tree from './components/Tree'
+
+const Element = (props) => {
+  const { attributes, children, element } = props
   switch (element.type) {
+    // Default elements
     case 'title':
       return <Title {...attributes}>{children}</Title>
     case 'subtitle':
@@ -29,14 +39,24 @@ const Element = ({ attributes, children, element }) => {
       return <Quote {...attributes}>{children}</Quote>
     case 'divider':
       return <Divider {...attributes}>{children}</Divider>
-    // case 'bulleted-list':
-    //   return <ul {...attributes}>{children}</ul>
-    case 'check-list-item':
-      return (
-        <Checkbox attributes={attributes} element={element}>
-          {children}
-        </Checkbox>
-      )
+
+    // Ants
+    case 'piano':
+      return <Piano {...props} />
+    case 'insight':
+      return <Insight {...props} />
+    case 'weather':
+      return <Weather {...props} />
+    case 'airtable':
+      return <Airtable {...props} />
+
+    // Components
+    case 'mention':
+      return <Mention {...props} />
+    case 'checkbox':
+      return <Checkbox {...props} />
+    case 'tree':
+      return <Tree {...props} />
     default:
       return <Paragraph {...attributes}>{children}</Paragraph>
   }

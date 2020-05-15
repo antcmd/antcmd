@@ -1,4 +1,4 @@
-import { useState } from 'react'
+// import { useState } from 'react'
 import { useSelected, useFocused } from 'slate-react'
 
 export default ({ attributes, children, element }) => {
