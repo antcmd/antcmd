@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { animated } from 'react-spring'
 
 const Frame = styled('div')`
   position: relative;
@@ -16,20 +15,25 @@ const Title = styled('span')`
   vertical-align: middle;
 `
 
-const Content = styled(animated.div)`
+const Content = styled('div')`
   will-change: transform, opacity, height;
   margin-left: 6px;
   padding: 0px 0px 0px 14px;
   border-left: 1px dashed rgba(255, 255, 255, 0.4);
-  overflow: hidden;
 `
+// overflow: hidden;
 
 const toggle = {
-  width: '1em',
-  height: '1em',
-  marginRight: 10,
+  width: '20px',
+  height: '20px',
+  minWidth: '20px',
+  minHeight: '20px',
+  // marginRight: 10,
   cursor: 'pointer',
-  verticalAlign: 'middle',
+  display: 'inline-flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginRight: 4,
 }
 
 const TextNode = styled('div')`

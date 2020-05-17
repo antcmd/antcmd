@@ -2,6 +2,29 @@ import { useState } from 'react'
 import useSWR from 'swr'
 import { insightFetcher, YAHOO_FINANCE_API_URL } from 'lib/fetch'
 import Tree from '../components/Tree'
+const result1 = {
+  glossary: {
+    title: 'example glossary',
+    GlossDiv: {
+      title: 'S',
+      GlossList: {
+        GlossEntry: {
+          ID: 'SGML',
+          SortAs: 'SGML',
+          GlossTerm: 'Standard Generalized Markup Language',
+          Acronym: 'SGML',
+          Abbrev: 'ISO 8879:1986',
+          GlossDef: {
+            para:
+              'A meta-markup language, used to create markup languages such as DocBook.',
+            GlossSeeAlso: ['GML', 'XML'],
+          },
+          GlossSee: 'markup',
+        },
+      },
+    },
+  },
+}
 
 export default ({ attributes, children, selectedIndex }) => {
   const [selectedCompany, setSelectedCompany] = useState(undefined)
@@ -103,6 +126,8 @@ export default ({ attributes, children, selectedIndex }) => {
           )}
         </div>
       )}
+
+      {/* result1 && <Tree data={result1} main={selectedCompany} /> */}
       {selectedCompany &&
         (result ? (
           <Tree data={result} main={selectedCompany} />

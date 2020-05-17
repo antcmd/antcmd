@@ -53,4 +53,72 @@ const Tree = memo(
   },
 )
 
+export const TreePlainText = memo(
+  ({
+    children,
+    name,
+    style,
+    defaultOpen = false,
+    iconStyle = {},
+    contentStyle = {},
+    text,
+  }) => {
+    const [isOpen, setOpen] = useState(defaultOpen)
+    const Icon =
+      Icons[`${children ? (isOpen ? 'Minus' : 'Plus') : 'Close'}SquareO`]
+
+    return (
+      <Frame>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          <Icon
+            style={{
+              ...toggle,
+              opacity: children ? 1 : 0.3,
+              width: '12px',
+              minWidth: '12px',
+              display: 'inline-block',
+              ...iconStyle,
+            }}
+            onClick={() => setOpen(!isOpen)}
+            contentEditable={false}
+          />
+          <Title style={style} contentEditable={false}>
+            {`${name}: `}
+            <span
+              style={{
+                // verticalAlign: ' middle',
+                // marginLeft: 3,
+                opacity: 0.8,
+              }}
+            >
+              {text}
+            </span>
+          </Title>
+        </div>
+        <Content
+          style={{
+            display: isOpen ? 'block' : 'none',
+            opacity: 1,
+            height: 'min-content',
+            ...contentStyle,
+          }}
+        >
+          <div>{children}</div>
+          {/*
+        <a.div style={{ transform }} {...bind}>
+          {children}
+        </a.div>
+        */}
+        </Content>
+      </Frame>
+    )
+  },
+)
+
 export default Tree

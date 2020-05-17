@@ -189,6 +189,7 @@ const SlateEditor = () => {
         renderElement={renderElement}
         onKeyDown={onKeyDown}
         autoFocus
+        placeholder=""
         style={{
           height: '100%',
           width: '100%',
@@ -204,8 +205,8 @@ const SlateEditor = () => {
         You can't pass React element as the placeholder to the Slate (and we need complex
         placeholder with title and description). So we render Placeholder as component
         if content is empty
-      */}
       {isEmpty && <Placeholder />}
+      */}
 
       {/*
         https://docs.slatejs.org/walkthroughs/01-installing-slate
