@@ -34,7 +34,7 @@ export default () => {
             />
           ) : (
             <img
-              src="https://uploads-ssl.webflow.com/5eaf5cd658f15e7f0410a7cd/5eb7fb04ccd7e722bd596471_menu.svg"
+              src="https://uploads-ssl.webflow.com/5eaf5cd658f15e7f0410a7cd/5eb5e565ccd7e731c14c646c_layout-6.svg"
               width={36}
               alt=""
               className="image-288"
@@ -42,18 +42,6 @@ export default () => {
           )}
         </a>
       </Link>
-      <div
-        onClick={() => setShowSidebar(true)}
-        className="kerou"
-        data-ix="new-interaction-17"
-      >
-        <img
-          src="https://uploads-ssl.webflow.com/5eaf5cd658f15e7f0410a7cd/5eb5e565ccd7e731c14c646c_layout-6.svg"
-          width={36}
-          alt=""
-          className="image-288"
-        />
-      </div>
     </div>
   )
 }
