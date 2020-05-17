@@ -32,4 +32,10 @@ const toggle = {
   verticalAlign: 'middle',
 }
 
-export { Frame, Content, toggle, Title }
+const TextNode = styled('div')`
+  opacity: 0.7;
+  margin: 8px 0 4px;
+  height: fit-content;
+`
+
+export { Frame, Content, toggle, Title, TextNode }

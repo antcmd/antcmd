@@ -1,4 +1,5 @@
 import Tree from './Tree'
+import { TextNode } from './styles.js'
 
 export const camelCaseToNormal = (str) =>
   str.replace(/([A-Z])/g, ' $1').replace(/^./, (str2) => str2.toUpperCase())
@@ -17,13 +18,23 @@ const RecursiveProperty = ({
         typeof property === 'boolean' ? (
           <>
             <Tree
-              name={`${propertyNameProcessor(
-                propertyName,
-              )} : ${property.toString()}`}
-            />
+              name={`${propertyNameProcessor(propertyName)}`}
+              contentStyle={{
+                opacity: 0.7,
+                margin: '8px 0 4px',
+                height: 'fit-content',
+                lineHeight: '100%',
+              }}
+              iconStyle={{ display: 'none' }}
+            >
+              {property.toString()}
+            </Tree>
           </>
         ) : (
-          <Tree name={propertyNameProcessor(propertyName)}>
+          <Tree
+            name={propertyNameProcessor(propertyName)}
+            defaultOpen={propertyName === 'Insight'}
+          >
             {Object.values(property).map(
               (recursiveProperty, index, { length }) => (
                 <RecursiveProperty
@@ -31,14 +42,13 @@ const RecursiveProperty = ({
                   property={recursiveProperty}
                   propertyName={Object.getOwnPropertyNames(property)[index]}
                   propertyNameProcessor={propertyNameProcessor}
-                  excludeBottomBorder={index === length - 1}
                 />
               ),
             )}
           </Tree>
         )
       ) : (
-        emptyPropertyLabel
+        <div />
       )}
     </>
   )
@@ -46,20 +56,23 @@ const RecursiveProperty = ({
 
 RecursiveProperty.defaultProps = {
   emptyPropertyLabel: 'Property is empty',
-  excludeBottomBorder: false,
   propertyNameProcessor: camelCaseToNormal,
 }
 
 // export default RecursiveProperty
 
-export default ({ attributes, children, data, selectedCompany = 'Main' }) => {
+export default ({
+  attributes,
+  children,
+  data,
+  selectedCompany = 'Insight',
+}) => {
   return (
     <div {...attributes}>
       {children}
       <RecursiveProperty
         property={data}
         propertyName={selectedCompany}
-        excludeBottomBorder={false}
         rootProperty
       />
     </div>
