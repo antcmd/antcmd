@@ -20,12 +20,8 @@ const SlateEditor = () => {
   const ref = useRef()
   const [value, setValue] = useState([
     {
-      type: 'title',
-      children: [{ text: 'Title' }],
-    },
-    {
       type: 'paragraph',
-      children: [{ text: 'Description' }],
+      children: [{ text: '' }],
     },
   ])
   const [target, setTarget] = useState()
@@ -35,11 +31,7 @@ const SlateEditor = () => {
   const editor = useMemo(
     () =>
       withShortcuts(
-        withChecklists(
-          withReact(
-            withHistory(withMentions(withReact(withHistory(createEditor())))),
-          ),
-        ),
+        withChecklists(withReact(withHistory(withMentions(createEditor())))),
       ),
     [],
   )
@@ -193,7 +185,20 @@ const SlateEditor = () => {
       {/*
         Editable content
       */}
-      <Editable renderElement={renderElement} onKeyDown={onKeyDown} autoFocus />
+      <Editable
+        renderElement={renderElement}
+        onKeyDown={onKeyDown}
+        autoFocus
+        style={{
+          height: '100%',
+          width: '100%',
+          // color: 'blue',
+          // textShadow: '0px 0px 0px #000',
+          // '-webkit-text-fill-color': 'transparent',
+
+          minHeight: '50vh',
+        }}
+      />
 
       {/*
         You can't pass React element as the placeholder to the Slate (and we need complex
