@@ -129,6 +129,9 @@ const SlateEditor = () => {
               type = 'tree'
             }
 
+            // TODO
+            // on new line set type to paragraph
+
             insertNode(editor, type, antsFiltered[index].name)
             setTarget(null)
             break

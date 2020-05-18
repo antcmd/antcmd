@@ -1,4 +1,4 @@
-/* Generated on: Fri May 15 2020 17:02:45 GMT+0000 (Coordinated Universal Time) */
+/* Generated on: Mon May 18 2020 05:12:54 GMT+0000 (Coordinated Universal Time) */
 /* ==========================================================================
    normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css 
    ========================================================================== */
@@ -4833,10 +4833,10 @@ a {
   flex-direction: column;
   border-style: none;
   border-width: 1px;
-  border-color: hsla(0, 0%, 86.7%, 0.92);
+  border-color: rgba(4, 24, 48, 0.25);
   border-radius: 8px;
   background-color: #fff;
-  box-shadow: 0 1px 20px 0 rgba(0, 0, 0, 0.18);
+  box-shadow: 0 1px 20px 0 rgba(0, 0, 0, 0.2);
 }
 
 .div-block-827-copy {
@@ -5167,6 +5167,62 @@ a {
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
+}
+
+.div-block-899 {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: auto;
+  bottom: 0%;
+  width: 10px;
+  height: 100%;
+  background-color: #0c77f8;
+}
+
+.div-block-900 {
+  width: 12px;
+  height: 20px;
+  background-color: #0c77f8;
+}
+
+.div-block-838-copy-copy {
+  position: relative;
+  display: inline;
+  margin-bottom: 20px;
+  padding: 21px 14px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  border-radius: 4px;
+  background-color: #0f63ca;
+  color: #fff;
+}
+
+.bold-text-21 {
+  margin-right: 0px;
+  padding-right: 0px;
+  padding-left: 0px;
+  border-bottom: 3px solid rgba(15, 99, 202, 0.18);
+  font-weight: 400;
+}
+
+.bold-text-21.grey {
+  color: #333;
 }
 
 html.w-mod-js *[data-ix='new-interaction-14'] {

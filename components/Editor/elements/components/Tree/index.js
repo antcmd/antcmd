@@ -25,15 +25,10 @@ const RecursiveProperty = ({
               }}
               iconStyle={{ display: 'none' }}
               text={property.toString()}
-            >
-              {property.toString()}
-            </TreePlainText>
+            ></TreePlainText>
           </>
         ) : (
-          <TreePlainText
-            name={propertyNameProcessor(propertyName)}
-            defaultOpen={propertyName === 'Insight'}
-          >
+          <TreePlainText name={propertyNameProcessor(propertyName)} defaultOpen>
             {Object.values(property).map(
               (recursiveProperty, index, { length }) => (
                 <RecursiveProperty

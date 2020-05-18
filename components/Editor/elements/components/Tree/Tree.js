@@ -58,7 +58,7 @@ export const TreePlainText = memo(
     children,
     name,
     style,
-    defaultOpen = false,
+    defaultOpen = true,
     iconStyle = {},
     contentStyle = {},
     text,
@@ -96,7 +96,6 @@ export const TreePlainText = memo(
               lineHeight: '30px',
               ...style,
             }}
-            contentEditable={false}
           >
             {`${name}: `}
             <span
