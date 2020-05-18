@@ -13,6 +13,7 @@ const Frame = styled('div')`
 
 const Title = styled('span')`
   vertical-align: middle;
+  font-size: 18px;
 `
 
 const Content = styled('div')`

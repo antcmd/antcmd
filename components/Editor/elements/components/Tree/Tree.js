@@ -84,18 +84,29 @@ export const TreePlainText = memo(
               minWidth: '12px',
               display: 'inline-block',
               ...iconStyle,
+              height: '30px',
+              lineHeight: '30px',
             }}
             onClick={() => setOpen(!isOpen)}
             contentEditable={false}
           />
-          <Title style={style} contentEditable={false}>
+          <Title
+            style={{
+              fontSize: '18px',
+              lineHeight: '30px',
+              ...style,
+            }}
+            contentEditable={false}
+          >
             {`${name}: `}
             <span
-              style={{
-                // verticalAlign: ' middle',
-                // marginLeft: 3,
-                opacity: 0.8,
-              }}
+              style={
+                {
+                  // verticalAlign: ' middle',
+                  // marginLeft: 3,
+                  // opacity: 0.8,
+                }
+              }
             >
               {text}
             </span>
@@ -107,6 +118,8 @@ export const TreePlainText = memo(
             opacity: 1,
             height: 'min-content',
             ...contentStyle,
+            fontSize: '18px',
+            lineHeight: '30px',
           }}
         >
           <div>{children}</div>
