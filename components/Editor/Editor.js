@@ -4,48 +4,55 @@ import { Editor, Transforms, Range, createEditor } from 'slate'
 import { withHistory } from 'slate-history'
 
 import { withShortcuts } from './plugins/withShortcuts'
-import { withChecklists } from './plugins/withCheckbox'
-// import { withLayout } from './plugins/withLayout'
 import { withMentions } from './plugins/withMentions'
+import { withLinks } from './plugins/withLinks'
 
 import { insertNode } from './helpers/insertNode'
 
 import ants from './elements/ants'
-import Element from './elements/Element'
-import Dropdown from './elements/components/Dropdown'
-import Placeholder from './Editor.placeholder'
+import cmds from './elements/cmds'
 
-// { value, setValue, onSave }
+import Element from './elements/Element'
+
+import Dropdown from './elements/components/Dropdown' // ants dropdown
+import CmdDropdown from './elements/components/CmdDropdown'
+
+// interface SlateEditor
+//   value
+//   setValue
+//   onSave
+
 const SlateEditor = () => {
-  const ref = useRef()
+  // editor state
   const [value, setValue] = useState([
     {
       type: 'paragraph',
       children: [{ text: '' }],
     },
   ])
-  const [target, setTarget] = useState()
-  const [index, setIndex] = useState(0)
-  const [search, setSearch] = useState('')
   const renderElement = useCallback((props) => <Element {...props} />, [])
   const editor = useMemo(
     () =>
       withShortcuts(
-        withChecklists(withReact(withHistory(withMentions(createEditor())))),
+        withLinks(withReact(withHistory(withMentions(createEditor())))),
       ),
     [],
   )
 
-  const antsFiltered = ants
-    .filter((c) =>
-      search === ''
-        ? true
-        : c.name.toLowerCase().startsWith(search.toLowerCase()),
-    )
-    .slice(0, 10)
+  // state for ants dropdown. invoked by typing "/"
+  const ref = useRef()
+  const [target, setTarget] = useState()
+  const [index, setIndex] = useState(0)
+  const [search, setSearch] = useState('')
+
+  const antsOptions = ants.filter((a) =>
+    search === ''
+      ? true
+      : a.name.toLowerCase().startsWith(search.toLowerCase()),
+  )
 
   useEffect(() => {
-    if (target && antsFiltered.length > 0) {
+    if (target && antsOptions.length > 0) {
       const domRange = ReactEditor.toDOMRange(editor, target)
       const rect = domRange.getBoundingClientRect()
 
@@ -53,12 +60,30 @@ const SlateEditor = () => {
       el.style.top = `${rect.top + window.pageYOffset + 24}px`
       el.style.left = `${rect.left + window.pageXOffset}px`
     }
-  }, [antsFiltered.length, editor, index, search, target])
+  }, [antsOptions.length, editor, index, search, target])
 
-  const isEmpty =
-    value.length === 1 &&
-    value[0].children[0] &&
-    value[0].children[0].text === ''
+  // state for cmd. dropdown. invoked by typing "."
+  const cmdDropdownRef = useRef()
+  const [cmdTarget, setCmdTarget] = useState()
+  const [cmdIndex, setCmdIndex] = useState(0)
+  const [cmdSearch, setCmdSearch] = useState('')
+
+  const cmdOptions = cmds.filter((c) =>
+    cmdSearch === ''
+      ? true
+      : c.name.toLowerCase().startsWith(search.toLowerCase()),
+  )
+
+  useEffect(() => {
+    if (cmdTarget && cmdOptions.length > 0) {
+      const domRange = ReactEditor.toDOMRange(editor, cmdTarget)
+      const rect = domRange.getBoundingClientRect()
+
+      const el = cmdDropdownRef.current
+      el.style.top = `${rect.top + window.pageYOffset + 24}px`
+      el.style.left = `${rect.left + window.pageXOffset}px`
+    }
+  }, [cmdOptions.length, editor, cmdIndex, cmdSearch, cmdTarget])
 
   const toggleTextType = (textType) => {
     // Determine whether any of the currently selected blocks are bold
@@ -74,65 +99,92 @@ const SlateEditor = () => {
     )
   }
 
+  // editor keydown listener
   const onKeyDown = useCallback(
     (event) => {
+      // Toggle bold
       if (event.key === 'b' && event.metaKey) {
-        // Prevent default insert
         event.preventDefault()
         toggleTextType('bold')
         return
       }
 
+      // Toggle italic
       if (event.key === 'i' && event.metaKey) {
-        // Prevent default insert
         event.preventDefault()
         toggleTextType('italic')
         return
       }
 
+      // Set type to paragraph on new line
+      // if (event.key === 'Enter') {
+      //   Transforms.unsetNodes(editor)
+      //   // Transforms.setNodes(editor, { type: 'paragraph' })
+      // }
+
+      // if ants dropdown is opened
       if (target) {
+        const focusedAnt = antsOptions[index]
         let type = 'mention'
 
         switch (event.key) {
           case 'ArrowDown':
           case 'Tab':
             event.preventDefault()
-            const prevIndex = index >= antsFiltered.length - 1 ? 0 : index + 1
+            const prevIndex = index >= antsOptions.length - 1 ? 0 : index + 1
             setIndex(prevIndex)
             break
           case 'ArrowUp':
             event.preventDefault()
-            const nextIndex = index <= 0 ? antsFiltered.length - 1 : index - 1
+            const nextIndex = index <= 0 ? antsOptions.length - 1 : index - 1
             setIndex(nextIndex)
             break
           case 'Enter':
             event.preventDefault()
             Transforms.select(editor, target)
 
-            if (antsFiltered[index].id === 'PI') {
-              type = 'piano'
-            }
-
-            if (antsFiltered[index].id === 'IN') {
+            if (focusedAnt.id === 'IN') {
               type = 'insight'
-            }
-
-            if (antsFiltered[index].id === 'WE') {
-              type = 'weather'
-            }
-
-            if (antsFiltered[index].id === 'AT') {
-              type = 'airtable'
-            }
-
-            if (antsFiltered[index].id === 'TR') {
-              type = 'tree'
             }
 
             // TODO
             // on new line set type to paragraph
 
-            insertNode(editor, type, antsFiltered[index].name)
+            insertNode(editor, type, focusedAnt.name)
+            setTarget(null)
+            break
+          case 'Escape':
+            event.preventDefault()
+            setTarget(null)
+            break
+          default:
+            break
+        }
+      }
+
+      // if cmds dropdown is opened
+      if (cmdTarget) {
+        const focusedCmd = cmdOptions[cmdIndex]
+
+        switch (event.key) {
+          case 'ArrowDown':
+          case 'Tab':
+            event.preventDefault()
+            const prevIndex =
+              cmdIndex >= cmdOptions.length - 1 ? 0 : cmdIndex + 1
+            setIndex(prevIndex)
+            break
+          case 'ArrowUp':
+            event.preventDefault()
+            const nextIndex =
+              cmdIndex <= 0 ? cmdOptions.length - 1 : cmdIndex - 1
+            setIndex(nextIndex)
+            break
+          case 'Enter':
+            event.preventDefault()
+            Transforms.select(editor, target)
+
+            insertNode(editor, 'mention', focusedCmd.name)
             setTarget(null)
             break
           case 'Escape':
@@ -144,7 +196,7 @@ const SlateEditor = () => {
         }
       }
     },
-    [index, search, target],
+    [index, search, target, cmdIndex, cmdSearch, cmdTarget],
   )
 
   return (
@@ -154,6 +206,22 @@ const SlateEditor = () => {
       onChange={(newValue) => {
         setValue(newValue)
         const { selection } = editor
+
+        // .cmd
+        const [start] = Range.edges(selection)
+        const wordBefore = Editor.before(editor, start, { unit: 'word' })
+        const before = wordBefore && Editor.before(editor, wordBefore)
+        const beforeRange = before && Editor.range(editor, before, start)
+        const beforeText = beforeRange && Editor.string(editor, beforeRange)
+
+        // search for .t
+        if (beforeText && beforeText[beforeText.length - 2] === '.') {
+          setCmdTarget(beforeRange)
+          setCmdSearch('')
+          setCmdIndex(0)
+          return
+        }
+        // .cmd end
 
         if (selection && Range.isCollapsed(selection)) {
           const [start] = Range.edges(selection)
@@ -185,9 +253,6 @@ const SlateEditor = () => {
         setTarget(null)
       }}
     >
-      {/*
-        Editable content
-      */}
       <Editable
         renderElement={renderElement}
         onKeyDown={onKeyDown}
@@ -196,20 +261,9 @@ const SlateEditor = () => {
         style={{
           height: '100%',
           width: '100%',
-          // color: 'blue',
-          // textShadow: '0px 0px 0px #000',
-          // '-webkit-text-fill-color': 'transparent',
-
           minHeight: '50vh',
         }}
       />
-
-      {/*
-        You can't pass React element as the placeholder to the Slate (and we need complex
-        placeholder with title and description). So we render Placeholder as component
-        if content is empty
-      {isEmpty && <Placeholder />}
-      */}
 
       {/*
         https://docs.slatejs.org/walkthroughs/01-installing-slate
@@ -220,11 +274,18 @@ const SlateEditor = () => {
         <Ant />
 
         As well we might put inputs here (so after user has completed interaction
-        with the ant and got the content, inputs (which were there to help) disappear)
+        with the ant and got the content, inputs disappear)
         <Select />
       */}
-      {target && antsFiltered.length > 0 && (
-        <Dropdown ref={ref} options={antsFiltered} selectedIndex={index} />
+      {target && antsOptions.length > 0 && (
+        <Dropdown ref={ref} options={antsOptions} selectedIndex={index} />
+      )}
+      {cmdTarget && cmdOptions.length > 0 && (
+        <CmdDropdown
+          ref={cmdDropdownRef}
+          options={cmdOptions}
+          selectedIndex={cmdIndex}
+        />
       )}
     </Slate>
   )

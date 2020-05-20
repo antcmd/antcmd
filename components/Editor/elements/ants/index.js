@@ -1,3 +1,5 @@
+import InsightAnt from './InsightAnt'
+
 export default [
   {
     id: 'IN',
@@ -5,5 +7,6 @@ export default [
     name: 'Insight ant',
     description: 'Get brief reports of a company',
     color: '#ffaa84',
+    component: InsightAnt,
   },
 ]

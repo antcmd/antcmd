@@ -35,5 +35,6 @@ module.exports = {
     'jsx-a11y/click-events-have-key-events': 0,
     'react/jsx-props-no-spreading': 0,
     'no-nested-ternary': 0,
+    'no-case-declarations': 0,
   },
 }

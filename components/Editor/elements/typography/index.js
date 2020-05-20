@@ -9,6 +9,7 @@ export const Title = styled.h1.attrs({
 export const SubTitle = styled.h2.attrs({
   className: '',
 })`
+  margin-bottom: 36px;
   font-weight: 600;
   font-size: 28px;
   color: #32393b !important;
@@ -16,6 +17,7 @@ export const SubTitle = styled.h2.attrs({
 export const SectionTitle = styled.h3.attrs({
   className: '',
 })`
+  margin-bottom: 24px;
   font-weight: 500;
   font-size: 20px;
   color: #32393b !important;

@@ -53,6 +53,7 @@ export const Filled = styled(animated.div)`
 `
 
 export const Text = styled.span`
-  font-size: 16px;
-  color: #555;
+  color: rgb(51, 51, 51) !important;
+  font-size: 18px;
+  line-height: 30px;
 `

@@ -63,7 +63,7 @@ const App = ({ Component, pageProps }) => {
           }}
         />
         {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
-        <title>antcmd 🐜</title>
+        <title>antcmd.</title>
         <link
           rel="icon"
           href="/icons/web2.svg"

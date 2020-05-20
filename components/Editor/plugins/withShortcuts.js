@@ -44,14 +44,14 @@ export const withShortcuts = (editor) => {
         }
 
         if (type === 'checkbox') {
-          Transforms.setPoint(
-            editor,
-            {
-              path: anchor.path,
-              offset: 0,
-            },
-            { edge: 'anchor' },
-          )
+          // Transforms.setPoint(
+          //   editor,
+          //   {
+          //     path: anchor.path,
+          //     offset: 0,
+          //   },
+          //   { edge: 'anchor' },
+          // )
           // Transforms.move(editor, {
           //   distance: 1,
           //   unit: 'line',

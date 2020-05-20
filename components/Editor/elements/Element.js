@@ -48,6 +48,12 @@ const Element = (props) => {
       return <Checkbox {...props} />
     case 'tree':
       return <Tree {...props} />
+    case 'link':
+      return (
+        <a {...attributes} style={{ color: 'red' }} href={element.url}>
+          {children}
+        </a>
+      )
     default:
       return <Paragraph {...attributes}>{children}</Paragraph>
   }

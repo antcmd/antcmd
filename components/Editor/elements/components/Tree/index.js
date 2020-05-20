@@ -25,7 +25,7 @@ const RecursiveProperty = ({
               }}
               iconStyle={{ display: 'none' }}
               text={property.toString()}
-            ></TreePlainText>
+            />
           </>
         ) : (
           <TreePlainText name={propertyNameProcessor(propertyName)} defaultOpen>
