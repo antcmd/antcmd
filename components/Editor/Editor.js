@@ -67,6 +67,7 @@ const SlateEditor = () => {
   const [cmdTarget, setCmdTarget] = useState()
   const [cmdIndex, setCmdIndex] = useState(0)
   const [cmdSearch, setCmdSearch] = useState('')
+  const [cmdMode, setCmdMode] = useState('init')
 
   const cmdOptions = cmds.filter((c) =>
     cmdSearch === ''
@@ -172,20 +173,24 @@ const SlateEditor = () => {
             event.preventDefault()
             const prevIndex =
               cmdIndex >= cmdOptions.length - 1 ? 0 : cmdIndex + 1
-            setIndex(prevIndex)
+            setCmdIndex(prevIndex)
             break
           case 'ArrowUp':
             event.preventDefault()
             const nextIndex =
               cmdIndex <= 0 ? cmdOptions.length - 1 : cmdIndex - 1
-            setIndex(nextIndex)
+            setCmdIndex(nextIndex)
             break
           case 'Enter':
             event.preventDefault()
             Transforms.select(editor, target)
 
-            insertNode(editor, 'mention', focusedCmd.name)
-            setTarget(null)
+            setCmdMode(focusedCmd.name.toLowerCase())
+
+            setCmdSearch('')
+            setCmdIndex(0)
+            // insertNode(editor, 'mention', focusedCmd.name)
+            // setTarget(null)
             break
           case 'Escape':
             event.preventDefault()
@@ -206,22 +211,6 @@ const SlateEditor = () => {
       onChange={(newValue) => {
         setValue(newValue)
         const { selection } = editor
-
-        // .cmd
-        const [start] = Range.edges(selection)
-        const wordBefore = Editor.before(editor, start, { unit: 'word' })
-        const before = wordBefore && Editor.before(editor, wordBefore)
-        const beforeRange = before && Editor.range(editor, before, start)
-        const beforeText = beforeRange && Editor.string(editor, beforeRange)
-
-        // search for .t
-        if (beforeText && beforeText[beforeText.length - 2] === '.') {
-          setCmdTarget(beforeRange)
-          setCmdSearch('')
-          setCmdIndex(0)
-          return
-        }
-        // .cmd end
 
         if (selection && Range.isCollapsed(selection)) {
           const [start] = Range.edges(selection)
@@ -248,8 +237,17 @@ const SlateEditor = () => {
             setIndex(0)
             return
           }
-        }
 
+          if (beforeText && beforeText[beforeText.length - 2] === '.') {
+            setCmdTarget(beforeRange)
+            setCmdSearch('')
+            if (afterMatch) {
+              setSearch(afterMatch[1])
+            }
+            setCmdIndex(0)
+            return
+          }
+        }
         setTarget(null)
       }}
     >
@@ -283,7 +281,8 @@ const SlateEditor = () => {
       {cmdTarget && cmdOptions.length > 0 && (
         <CmdDropdown
           ref={cmdDropdownRef}
-          options={cmdOptions}
+          cmds={cmdOptions}
+          cmdMode={cmdMode}
           selectedIndex={cmdIndex}
         />
       )}
