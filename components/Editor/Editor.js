@@ -2,8 +2,38 @@ import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { Slate, Editable, ReactEditor, withReact } from 'slate-react'
 import { Editor, Transforms, Range, createEditor } from 'slate'
 import { withHistory } from 'slate-history'
+import MarkdownPlugin from '@canner/slate-md-plugin'
+import SuggestionsPlugin from 'slate-suggestions'
 
-import { withShortcuts } from './plugins/withShortcuts'
+const suggestions = [
+  {
+    key: 'jon-snow',
+    value: '#Jon Snow',
+    suggestion: '#Jon Snow', // Can be string or react component
+  },
+  // Some other suggestions
+]
+
+const suggestionsPlugin = SuggestionsPlugin({
+  trigger: '#',
+  capture: /#([\w]*)/,
+  suggestions,
+  onEnter: (suggestion) => {
+    console.log('suggestion')
+    console.log(suggestion)
+    return
+    // Modify your state up to your use-cases
+    // return modifiedState
+  },
+})
+
+// Extract portal component from the plugin
+const { SuggestionPortal } = suggestionsPlugin
+
+// Add the plugin to your set of plugins...
+const plugins = [suggestionsPlugin]
+
+// import { withShortcuts } from './plugins/withShortcuts'
 import { withMentions } from './plugins/withMentions'
 import { withLinks } from './plugins/withLinks'
 
@@ -31,11 +61,9 @@ const SlateEditor = () => {
     },
   ])
   const renderElement = useCallback((props) => <Element {...props} />, [])
+  // withShortcuts(),
   const editor = useMemo(
-    () =>
-      withShortcuts(
-        withLinks(withReact(withHistory(withMentions(createEditor())))),
-      ),
+    () => withLinks(withReact(withHistory(withMentions(createEditor())))),
     [],
   )
 
@@ -256,12 +284,14 @@ const SlateEditor = () => {
         onKeyDown={onKeyDown}
         autoFocus
         placeholder=""
+        plugins={[suggestionsPlugin]}
         style={{
           height: '100%',
           width: '100%',
           minHeight: '50vh',
         }}
       />
+      <SuggestionPortal state={value} />
 
       {/*
         https://docs.slatejs.org/walkthroughs/01-installing-slate

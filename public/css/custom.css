@@ -11,3 +11,7 @@
 .hdaf {
   z-index: 1;
 }
+
+.avablock.fla:hover {
+  color: #333;
+}
