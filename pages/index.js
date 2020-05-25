@@ -1,15 +1,28 @@
 import { useState, useEffect, useRef } from 'react'
+import { useEscapeToClose } from 'hooks'
 
 import QuillDropdown from 'components/QuillDropdown'
 import SynonymDropdown from 'components/SynonymDropdown'
 
+import Pages from 'components/Layout/Pages'
+
 const Editor = () => {
   const [value, setValue] = useState('')
+  const textareaRef = useRef()
+
   const [lastWord, setLastWord] = useState('')
   const [lastSentence, setLastSentence] = useState('')
+
+  const [showPages, setShowPages] = useState(false)
+  const [darkMode, setDarkMode] = useState(false)
+
   const [showQuillDropdown, setShowQuillDropdown] = useState(false)
   const [showSynonymDropdown, setShowSynonymDropdown] = useState(false)
-  const textareaRef = useRef()
+
+  useEscapeToClose(() => {
+    setShowPages(false)
+    textareaRef.current.focus()
+  })
 
   useEffect(() => {
     if (process.browser) {
@@ -43,19 +56,43 @@ const Editor = () => {
     return chunk
   }
 
-  const onChange = ({ target: { value: newValue } }) => {
+  const onChange = ({ target: { value: nextValue } }) => {
+    let newValue = nextValue
+
+    // Paraphrize sentence
     if (newValue.endsWith(`./s`)) {
       setLastSentence(getLastSentence(newValue))
       setShowQuillDropdown(true)
-    } else {
+      newValue = nextValue.slice(0, -2)
+    } else if (showQuillDropdown) {
       setShowQuillDropdown(false)
     }
 
+    // Synonym
     if (!newValue.endsWith(`./s`) && newValue.endsWith('/s')) {
       setShowSynonymDropdown(true)
       setLastWord(getLastWord(newValue))
-    } else {
+      newValue = nextValue.slice(0, -2)
+    } else if (showSynonymDropdown) {
       setShowSynonymDropdown(false)
+    }
+
+    // Dark
+    if (newValue.endsWith(`/dark`)) {
+      setDarkMode(true)
+      newValue = nextValue.slice(0, -5)
+    }
+
+    // Light
+    if (newValue.endsWith(`/light`)) {
+      setDarkMode(false)
+      newValue = nextValue.slice(0, -6)
+    }
+
+    // Pages
+    if (newValue.endsWith(`/pages`)) {
+      setShowPages(true)
+      newValue = nextValue.slice(0, -6)
     }
 
     setValue(newValue)
@@ -65,43 +102,55 @@ const Editor = () => {
   }
 
   return (
-    <div>
-      <div className="div-block-861-copy">
-        <div className="form-block w-form" style={{ position: 'relative' }}>
-          <textarea
-            value={value}
-            onChange={onChange}
-            className="text-field-2 w-input"
-            placeholder="1. Ordinary World"
-            style={{ height: '80vh' }}
-            autoFocus
-            ref={textareaRef}
-          />
-          {showQuillDropdown && (
-            <QuillDropdown
-              lastSentence={lastSentence}
-              onPickSentence={(newSentence) => {
-                setValue((oldValue) =>
-                  oldValue.replace(lastSentence, newSentence).slice(0, -2),
-                )
-                setShowQuillDropdown(false)
+    <>
+      <div>
+        <div
+          className={`div-block-861-copy ${darkMode ? 'darkmode' : 'light'}`}
+          style={{ background: darkMode ? '#0e0d0e' : '#fff' }}
+        >
+          <div className="form-block w-form" style={{ position: 'relative' }}>
+            <textarea
+              value={value}
+              onChange={onChange}
+              className="text-field-2 w-input"
+              placeholder="1. Ordinary World"
+              style={{
+                height: '80vh',
+                resize: 'none',
+                color: darkMode ? '#c0ffab' : '#191a22',
               }}
+              autoFocus
+              ref={textareaRef}
             />
-          )}
-          {showSynonymDropdown && (
-            <SynonymDropdown
-              lastWord={lastWord}
-              onPickWord={(newWord) => {
-                setValue((oldValue) =>
-                  oldValue.replace(lastWord, newWord).slice(0, -2),
-                )
-                setShowSynonymDropdown(false)
-              }}
-            />
-          )}
+            {showQuillDropdown && (
+              <QuillDropdown
+                lastSentence={lastSentence}
+                onPickSentence={(newSentence) => {
+                  setValue((prevValue) =>
+                    prevValue.replace(lastSentence, newSentence),
+                  )
+                  setShowQuillDropdown(false)
+                  textareaRef.current.focus()
+                }}
+                onClose={() => setShowQuillDropdown(false)}
+              />
+            )}
+            {showSynonymDropdown && (
+              <SynonymDropdown
+                lastWord={lastWord}
+                onPickWord={(newWord) => {
+                  setValue((prevValue) => prevValue.replace(lastWord, newWord))
+                  setShowSynonymDropdown(false)
+                  textareaRef.current.focus()
+                }}
+                onClose={() => setShowSynonymDropdown(false)}
+              />
+            )}
+          </div>
         </div>
       </div>
-    </div>
+      {showPages && <Pages close={() => setShowPages(false)} />}
+    </>
   )
 }
 

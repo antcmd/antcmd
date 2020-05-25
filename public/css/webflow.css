@@ -1,4 +1,4 @@
-/* Generated on: Sun May 24 2020 02:42:30 GMT+0000 (Coordinated Universal Time) */
+/* Generated on: Mon May 25 2020 18:09:32 GMT+0000 (Coordinated Universal Time) */
 /* ==========================================================================
    normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css 
    ========================================================================== */
@@ -2884,8 +2884,9 @@ a {
 
 .text-block-118 {
   margin-bottom: 40px;
-  font-size: 18px;
-  line-height: 30px;
+  color: #191a22;
+  font-size: 21px;
+  line-height: 35px;
   text-align: left;
 }
 
@@ -3974,6 +3975,7 @@ a {
 
 .div-block-827.nou.gac {
   margin-bottom: 0px;
+  padding-right: 20px;
   padding-left: 20px;
 }
 
@@ -3987,8 +3989,8 @@ a {
 
 .text-block-199.allcaps {
   color: #797979;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 600;
   text-transform: uppercase;
 }
 
@@ -4193,7 +4195,7 @@ a {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-top: 86px;
+  padding-top: 140px;
   padding-bottom: 22px;
   padding-left: 0px;
   -webkit-box-orient: vertical;
@@ -4252,25 +4254,25 @@ a {
   border: 1px none #000;
   background-color: transparent;
   color: #000;
-  font-size: 40px;
-  line-height: 43px;
+  font-size: 42px;
+  line-height: 46px;
   font-weight: 700;
 }
 
 .text-field::-webkit-input-placeholder {
-  color: rgba(51, 51, 51, 0.21);
+  color: rgba(1, 23, 49, 0.36);
 }
 
 .text-field:-ms-input-placeholder {
-  color: rgba(51, 51, 51, 0.21);
+  color: rgba(1, 23, 49, 0.36);
 }
 
 .text-field::-ms-input-placeholder {
-  color: rgba(51, 51, 51, 0.21);
+  color: rgba(1, 23, 49, 0.36);
 }
 
 .text-field::placeholder {
-  color: rgba(51, 51, 51, 0.21);
+  color: rgba(1, 23, 49, 0.36);
 }
 
 .text-field-2 {
@@ -4282,24 +4284,24 @@ a {
   flex: 1;
   border: 1px none #000;
   background-color: transparent;
-  font-size: 18px;
+  font-size: 21px;
   line-height: 30px;
 }
 
 .text-field-2::-webkit-input-placeholder {
-  color: rgba(51, 51, 51, 0.21);
+  color: rgba(1, 23, 49, 0.36);
 }
 
 .text-field-2:-ms-input-placeholder {
-  color: rgba(51, 51, 51, 0.21);
+  color: rgba(1, 23, 49, 0.36);
 }
 
 .text-field-2::-ms-input-placeholder {
-  color: rgba(51, 51, 51, 0.21);
+  color: rgba(1, 23, 49, 0.36);
 }
 
 .text-field-2::placeholder {
-  color: rgba(51, 51, 51, 0.21);
+  color: rgba(1, 23, 49, 0.36);
 }
 
 .text-field-2.ncod {
@@ -4397,13 +4399,18 @@ a {
   margin-top: 0px;
   margin-bottom: 0px;
   margin-left: 0px;
-  padding: 12px 20px;
+  padding: 13px 20px;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   border-radius: 4px;
 }
 
 .avablock.fla:hover {
   background-color: #fff;
   box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, 0.11);
+  color: #000;
 }
 
 .avablock.fla.sck {
@@ -4413,8 +4420,8 @@ a {
 
 .text-block-209 {
   margin-left: 0px;
-  font-size: 16px;
-  line-height: 16px;
+  font-size: 18px;
+  line-height: 21px;
   font-weight: 600;
 }
 
@@ -4449,9 +4456,10 @@ a {
 }
 
 .text-block-211 {
+  margin-top: 5px;
   color: rgba(0, 0, 0, 0.38);
-  font-size: 14px;
-  line-height: 17px;
+  font-size: 16px;
+  line-height: 19px;
 }
 
 .text-block-211.morep {
@@ -4462,7 +4470,7 @@ a {
 }
 
 .text-block-211.resv {
-  color: hsla(0, 0%, 100%, 0.68);
+  color: hsla(0, 0%, 100%, 0.81);
 }
 
 .link-block-copy {
@@ -4502,7 +4510,13 @@ a {
 }
 
 .div-block-887.ms-copy {
+  display: block;
   margin-left: 0px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
 }
 
 .image-286 {
@@ -4579,6 +4593,29 @@ a {
 
 .kerou.lefa {
   margin-left: 54px;
+}
+
+.kerou.grn {
+  width: auto;
+  height: auto;
+  padding: 3px;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  border-radius: 20px;
+  background-color: #0c77f8;
+  box-shadow: none;
+}
+
+.kerou.rg {
+  width: auto;
+  padding: 0px;
+  background-color: #fff;
 }
 
 .div-block-889 {
@@ -4869,16 +4906,17 @@ a {
 .div-block-895 {
   position: absolute;
   left: 0%;
-  top: 0%;
-  right: 0%;
+  top: 91%;
+  right: auto;
   bottom: auto;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  overflow: hidden;
   min-width: 350px;
-  margin-top: 43px;
-  padding: 13px 10px;
+  margin-top: 0px;
+  padding: 22px 13px;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
@@ -4887,7 +4925,7 @@ a {
   border-style: solid none none;
   border-width: 5px 1px 1px;
   border-color: rgba(4, 24, 48, 0.25);
-  border-radius: 5px;
+  border-radius: 4px;
   background-color: #f1f1f1;
   box-shadow: none;
   -webkit-transform: scale3d(1none, 1none, 1none);
@@ -5365,6 +5403,78 @@ a {
   font-weight: 700;
 }
 
+.div-block-904 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: hidden;
+  width: 20px;
+  height: 20px;
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.41);
+}
+
+.div-block-905 {
+  width: 34%;
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  border-right: 1px solid rgba(0, 0, 0, 0.23);
+  background-color: #fff;
+}
+
+.div-block-906 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 35px;
+  height: 35px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: stretch;
+  -ms-flex-item-align: stretch;
+  align-self: stretch;
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  border-radius: 20px;
+}
+
+.body-8 {
+  padding-bottom: 55px;
+}
+
+.image-290 {
+  margin-right: 12px;
+}
+
+.image-291 {
+  box-shadow: none;
+}
+
+.image-291.r3 {
+  border-radius: 4px;
+  box-shadow: none;
+  opacity: 0.73;
+}
+
 html.w-mod-js *[data-ix='new-interaction-14'] {
   display: none;
 }
@@ -5560,6 +5670,13 @@ html.w-mod-js *[data-ix='new-interaction-27'] {
 @font-face {
   font-family: 'Sanfranciscotext regular';
   src: url('https://uploads-ssl.webflow.com/5eaf5cd658f15e7f0410a7cd/5eaf5cd658f15e083810a86e_SanFranciscoText-Regular.otf')
+    format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('https://uploads-ssl.webflow.com/5eaf5cd658f15e7f0410a7cd/5ecb220e79999010e23811d9_Inter.otf')
     format('opentype');
   font-weight: 400;
   font-style: normal;

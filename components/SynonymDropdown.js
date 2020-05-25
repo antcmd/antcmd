@@ -1,7 +1,30 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import { useArrowNavigation } from 'hooks'
 
-export default ({ lastWord, onPickWord }) => {
-  const [synonyms, setSynonyms] = useState([])
+export default ({ lastWord, onPickWord, onClose }) => {
+  const [synonyms, setSynonyms] = useState(undefined)
+  const [focusedIndex, setFocusedIndex] = useState(0)
+
+  console.log(`Last world 👉🏾${lastWord}`)
+
+  useArrowNavigation({
+    next: useCallback(
+      () =>
+        setFocusedIndex((prevIndex) =>
+          prevIndex >= synonyms.length - 1 ? 0 : prevIndex + 1,
+        ),
+      [synonyms],
+    ),
+    prev: useCallback(
+      () =>
+        setFocusedIndex((prevIndex) =>
+          prevIndex <= 0 ? synonyms.length - 1 : prevIndex - 1,
+        ),
+      [synonyms],
+    ),
+    enter: () => onPickWord(synonyms[focusedIndex]),
+    close: onClose,
+  })
 
   useEffect(() => {
     fetch(`https://wordsapiv1.p.rapidapi.com/words/${lastWord}/synonyms`, {
@@ -25,24 +48,32 @@ export default ({ lastWord, onPickWord }) => {
   return (
     <div
       className="div-block-895"
-      style={{ width: 330, maxHeight: 500, overflow: 'auto' }}
+      style={{
+        width: 330,
+        overflow: 'auto',
+        maxHeight: '350px',
+        top: '6%',
+      }}
     >
       <div className="div-block-827 nou gac">
         <div className="text-block-199 allcaps">Synonyms</div>
       </div>
       <div className="open2-copy-copy">
-        {synonyms.length === 0 ? (
+        {!synonyms ? (
           <div className="avablock fla" data-ix="new-interaction-21">
             <div className="div-block-886">
               <div className="text-block-209">Loading...</div>
             </div>
           </div>
         ) : (
-          synonyms.map((synonym) => (
+          synonyms.map((synonym, index) => (
             <div
-              className="avablock fla"
+              className={`avablock fla ${
+                focusedIndex === index ? 'hover' : ''
+              }`}
               data-ix="new-interaction-21"
               onClick={() => onPickWord(synonym)}
+              key={synonym}
             >
               <div className="div-block-886">
                 <div className="text-block-209">{synonym}</div>

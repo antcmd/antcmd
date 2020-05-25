@@ -15,3 +15,36 @@
 .avablock.fla:hover {
   color: #333;
 }
+
+.darkmode .div-block-895 {
+  background-color: #201d21 !important;
+  border-color: rgb(184, 155, 204) !important;
+}
+
+.darkmode .text-block-209 {
+  color: #dcdcdc !important;
+}
+
+.darkmode .text-block-211 {
+  color: rgba(255, 255, 255, 0.24) !important;
+}
+
+.darkmode .text-block-199 {
+  color: rgba(255, 255, 255, 0.34) !important;
+}
+
+.darkmode .avablock.fla:hover {
+  background: rgba(37, 42, 45, 0.34) !important;
+}
+
+.darkmode .avablock.fla.hover {
+  background: rgba(37, 42, 45, 0.34) !important;
+  color: #333;
+  box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, 0.11);
+}
+
+.avablock.fla.hover {
+  background-color: #fff;
+  box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, 0.11);
+  color: #333;
+}

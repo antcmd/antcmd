@@ -1,7 +1,28 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import { useArrowNavigation } from 'hooks'
 
-export default ({ lastSentence, onPickSentence }) => {
-  const [paraphrases, setParaphrases] = useState([])
+export default ({ lastSentence, onPickSentence, onClose }) => {
+  const [paraphrases, setParaphrases] = useState(undefined)
+  const [focusedIndex, setFocusedIndex] = useState(0)
+
+  useArrowNavigation({
+    next: useCallback(
+      () =>
+        setFocusedIndex((prevIndex) =>
+          prevIndex >= paraphrases.length - 1 ? 0 : prevIndex + 1,
+        ),
+      [paraphrases],
+    ),
+    prev: useCallback(
+      () =>
+        setFocusedIndex((prevIndex) =>
+          prevIndex <= 0 ? paraphrases.length - 1 : prevIndex - 1,
+        ),
+      [paraphrases],
+    ),
+    enter: () => onPickSentence(paraphrases[focusedIndex].alt),
+    close: onClose,
+  })
 
   useEffect(() => {
     fetch('https://quillbot.p.rapidapi.com/paraphrase', {
@@ -33,22 +54,25 @@ export default ({ lastSentence, onPickSentence }) => {
   }, [])
 
   return (
-    <div className="div-block-895" style={{ width: 330 }}>
+    <div className="div-block-895" style={{ width: 330, top: '6%' }}>
       <div className="div-block-827 nou gac">
         <div className="text-block-199 allcaps">Quillbot</div>
       </div>
       <div className="open2-copy-copy">
-        {paraphrases.length === 0 ? (
+        {!paraphrases ? (
           <div className="avablock fla" data-ix="new-interaction-21">
             <div className="div-block-886">
               <div className="text-block-209">Loading...</div>
             </div>
           </div>
         ) : (
-          paraphrases.map((paraphrase) => (
+          paraphrases.map((paraphrase, index) => (
             <div
-              className="avablock fla"
+              className={`avablock fla ${
+                focusedIndex === index ? 'hover' : ''
+              }`}
               data-ix="new-interaction-21"
+              key={paraphrase.score}
               onClick={() => onPickSentence(paraphrase.alt)}
             >
               <div className="div-block-886">

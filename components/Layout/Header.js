@@ -25,6 +25,7 @@ export default () => {
       <a
         className="kerou w-inline-block"
         onClick={() => setShowPages(!showPages)}
+        style={{ display: 'none' }}
       >
         {route === '/pages' ? (
           <img

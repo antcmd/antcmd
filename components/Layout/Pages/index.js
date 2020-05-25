@@ -1,12 +1,12 @@
 export default ({ close }) => (
   <div
-    className="men"
+    className="div-block-861-copy"
     style={{
-      display: 'flex',
-      marginRight: '-60px',
-      marginLeft: '-60px',
-      marginTop: '-20px',
-      height: '100vh',
+      position: 'absolute',
+      width: '100%',
+      top: 0,
+      background: 'white',
+      zIndex: 1,
     }}
   >
     <div className="div-block-876-copy _40">
@@ -17,10 +17,10 @@ export default ({ close }) => (
             className="text-field w-input"
             autoFocus
             maxLength={256}
-            name="name-2"
-            data-name="Name 2"
+            name="name"
+            data-name="Name"
             placeholder="Search"
-            id="name-2"
+            id="name"
           />
         </form>
         <div className="w-form-done">
@@ -122,6 +122,173 @@ export default ({ close }) => (
           </div>
         </div>
       </div>
+      <div className="div-block-828">
+        <div className="tab raf show">
+          <div className="div-block-784 kcalm">
+            <div className="_141">
+              <div className="bluh">
+                Sleep deprivation
+                <br />
+              </div>
+            </div>
+          </div>
+          <div className="div-block-784 kcalm">
+            <img
+              src="https://uploads-ssl.webflow.com/5eaf5cd658f15e7f0410a7cd/5eaf5cd658f15eb99010a952_arrow-right.svg"
+              width={19}
+              alt=""
+              className="image-269"
+            />
+            <div className="_141">
+              <div className="bluh">
+                Diarrhea
+                <br />
+              </div>
+            </div>
+          </div>
+          <div className="div-block-784 kcalm">
+            <img
+              src="https://uploads-ssl.webflow.com/5eaf5cd658f15e7f0410a7cd/5eaf5cd658f15eb99010a952_arrow-right.svg"
+              width={19}
+              alt=""
+              className="image-269"
+            />
+            <div className="_141">
+              <div className="bluh">
+                Diarrhea
+                <br />
+              </div>
+            </div>
+          </div>
+          <div className="div-block-784 kcalm">
+            <img
+              src="https://uploads-ssl.webflow.com/5eaf5cd658f15e7f0410a7cd/5eaf5cd658f15eb99010a952_arrow-right.svg"
+              width={19}
+              alt=""
+              className="image-269"
+            />
+            <div className="_141">
+              <div className="bluh">
+                Diarrhea
+                <br />
+              </div>
+            </div>
+          </div>
+          <div className="div-block-827">
+            <div className="text-block-199">D</div>
+          </div>
+        </div>
+        <div className="tab raf show">
+          <div className="div-block-784 kcalm">
+            <div className="_141">
+              <div className="bluh">
+                Sleep deprivation
+                <br />
+              </div>
+            </div>
+          </div>
+          <div className="div-block-784 kcalm">
+            <img
+              src="https://uploads-ssl.webflow.com/5eaf5cd658f15e7f0410a7cd/5eaf5cd658f15eb99010a952_arrow-right.svg"
+              width={19}
+              alt=""
+              className="image-269"
+            />
+            <div className="_141">
+              <div className="bluh">
+                Diarrhea
+                <br />
+              </div>
+            </div>
+          </div>
+          <div className="div-block-784 kcalm">
+            <img
+              src="https://uploads-ssl.webflow.com/5eaf5cd658f15e7f0410a7cd/5eaf5cd658f15eb99010a952_arrow-right.svg"
+              width={19}
+              alt=""
+              className="image-269"
+            />
+            <div className="_141">
+              <div className="bluh">
+                Diarrhea
+                <br />
+              </div>
+            </div>
+          </div>
+          <div className="div-block-784 kcalm">
+            <img
+              src="https://uploads-ssl.webflow.com/5eaf5cd658f15e7f0410a7cd/5eaf5cd658f15eb99010a952_arrow-right.svg"
+              width={19}
+              alt=""
+              className="image-269"
+            />
+            <div className="_141">
+              <div className="bluh">
+                Diarrhea
+                <br />
+              </div>
+            </div>
+          </div>
+          <div className="div-block-827">
+            <div className="text-block-199">E</div>
+          </div>
+        </div>
+        <div className="tab raf show">
+          <div className="div-block-784 kcalm">
+            <div className="_141">
+              <div className="bluh">
+                Sleep deprivation
+                <br />
+              </div>
+            </div>
+          </div>
+          <div className="div-block-784 kcalm">
+            <img
+              src="https://uploads-ssl.webflow.com/5eaf5cd658f15e7f0410a7cd/5eaf5cd658f15eb99010a952_arrow-right.svg"
+              width={19}
+              alt=""
+              className="image-269"
+            />
+            <div className="_141">
+              <div className="bluh">
+                Diarrhea
+                <br />
+              </div>
+            </div>
+          </div>
+          <div className="div-block-784 kcalm">
+            <img
+              src="https://uploads-ssl.webflow.com/5eaf5cd658f15e7f0410a7cd/5eaf5cd658f15eb99010a952_arrow-right.svg"
+              width={19}
+              alt=""
+              className="image-269"
+            />
+            <div className="_141">
+              <div className="bluh">
+                Diarrhea
+                <br />
+              </div>
+            </div>
+          </div>
+          <div className="div-block-784 kcalm">
+            <img
+              src="https://uploads-ssl.webflow.com/5eaf5cd658f15e7f0410a7cd/5eaf5cd658f15eb99010a952_arrow-right.svg"
+              width={19}
+              alt=""
+              className="image-269"
+            />
+            <div className="_141">
+              <div className="bluh">
+                Diarrhea
+                <br />
+              </div>
+            </div>
+          </div>
+          <div className="div-block-827">
+            <div className="text-block-199">F</div>
+          </div>
+        </div>
+      </div>
     </div>
     <div className="div-block-780 ewgew-copy">
       <a href="#" className="lohd w-inline-block">
@@ -132,18 +299,19 @@ export default ({ close }) => (
         />
       </a>
       <div className="avtars">
-        <a
-          className="kerou w-inline-block"
-          data-ix="new-interaction-29"
-          onClick={close}
-        >
-          <img
-            src="https://uploads-ssl.webflow.com/5eaf5cd658f15e7f0410a7cd/5eb5dafba119284da2fa167d_x%20(2).svg"
-            width={36}
-            alt=""
-            className="image-288"
-          />
+        <a className="link-block w-inline-block" onClick={close}>
+          <div className="text-block-207 _6hu">twrite</div>
+          <div className="text-block-207 yfg">
+            <img
+              src="https://uploads-ssl.webflow.com/5eaf5cd658f15e7f0410a7cd/5eb42e3c726ea04428c2ca2d_x%20(1).svg"
+              width={32}
+              alt=""
+              className="image-284"
+            />
+            <div className="text-block-208">Sleep deprivation</div>
+          </div>
         </a>
+        <div className="div-block-872" />
       </div>
       <div className="div-block-892">
         <div className="kerou lefa">
