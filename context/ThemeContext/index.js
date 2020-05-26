@@ -1,7 +1,7 @@
-import { ThemeProvider } from 'styled-components'
 import { useState, useEffect } from 'react'
-import { themeDark, themeWhite } from 'styles/themes'
+import { ThemeProvider } from 'styled-components'
 import useDarkMode from 'use-dark-mode'
+import { themeDark, themeWhite } from './themes'
 
 export default ({ children }) => {
   const { value: isDarkMode } = useDarkMode(false)

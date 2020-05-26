@@ -4,12 +4,11 @@ import { useEscapeToClose } from 'hooks'
 import QuillDropdown from 'components/QuillDropdown'
 import SynonymDropdown from 'components/SynonymDropdown'
 
-import Pages from 'components/Layout/Pages'
-import getCaretCoordinates from 'textarea-caret'
+import Pages from 'components/Pages'
+import { HUNTER_API_KEY } from 'constants/api'
+// import getCaretCoordinates from 'textarea-caret'
 
-const HUNTER_API_KEY = 'ca417c3ddfa802e32c8d718d0844f4a14bc23310'
-
-const Editor = () => {
+export default () => {
   const [value, setValue] = useState('')
   const textareaRef = useRef()
 
@@ -203,5 +202,3 @@ const Editor = () => {
     </>
   )
 }
-
-export default Editor
