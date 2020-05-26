@@ -5,6 +5,9 @@ import QuillDropdown from 'components/QuillDropdown'
 import SynonymDropdown from 'components/SynonymDropdown'
 
 import Pages from 'components/Layout/Pages'
+import getCaretCoordinates from 'textarea-caret'
+
+const HUNTER_API_KEY = 'ca417c3ddfa802e32c8d718d0844f4a14bc23310'
 
 const Editor = () => {
   const [value, setValue] = useState('')
@@ -19,6 +22,8 @@ const Editor = () => {
   const [showQuillDropdown, setShowQuillDropdown] = useState(false)
   const [showSynonymDropdown, setShowSynonymDropdown] = useState(false)
 
+  const [emails, setEmails] = useState([])
+
   useEscapeToClose(() => {
     setShowPages(false)
     textareaRef.current.focus()
@@ -29,6 +34,15 @@ const Editor = () => {
       const savedValue = window.localStorage.getItem('content')
       if (savedValue) {
         setValue(savedValue)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (process.browser) {
+      const darkmode = window.localStorage.getItem('darkmode')
+      if (darkmode === 'true') {
+        setDarkMode(true)
       }
     }
   }, [])
@@ -56,6 +70,20 @@ const Editor = () => {
     return chunk
   }
 
+  const getEmails = async (domain) => {
+    await fetch(
+      `https://api.hunter.io/v2/domain-search?domain=${domain}&api_key=${HUNTER_API_KEY}`,
+      { method: 'GET' },
+    )
+      .then((r) => r.json())
+      .then(({ data: { emails: fetchedEmails = [] } = {} }) =>
+        setEmails(fetchedEmails),
+      )
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
   const onChange = ({ target: { value: nextValue } }) => {
     let newValue = nextValue
 
@@ -80,12 +108,14 @@ const Editor = () => {
     // Dark
     if (newValue.endsWith(`/dark`)) {
       setDarkMode(true)
+      window.localStorage.setItem('darkmode', true)
       newValue = nextValue.slice(0, -5)
     }
 
     // Light
     if (newValue.endsWith(`/light`)) {
       setDarkMode(false)
+      window.localStorage.setItem('darkmode', false)
       newValue = nextValue.slice(0, -6)
     }
 
@@ -95,11 +125,27 @@ const Editor = () => {
       newValue = nextValue.slice(0, -6)
     }
 
+    // Hunter
+    if (newValue.endsWith(`/hunt`)) {
+      getEmails(getLastWord(newValue))
+      newValue = nextValue.slice(0, -5)
+    }
+
+    // Gmail
+
     setValue(newValue)
     if (process.browser) {
       window.localStorage.setItem('content', newValue)
     }
   }
+
+  useEffect(() => {
+    if (emails.length > 0) {
+      setValue((oldValue) =>
+        oldValue.concat(`: ${emails.map((email) => email.value).join(', ')}`),
+      )
+    }
+  }, [emails.length])
 
   return (
     <>
@@ -114,6 +160,10 @@ const Editor = () => {
               onChange={onChange}
               className="text-field-2 w-input"
               placeholder="1. Ordinary World"
+              onInput={(e) => {
+                // var caret = getCaretCoordinates(textareaRef, textareaRef.current.selectionEnd);
+                // console.log('(top, left, height) = (%s, %s, %s)', caret.top, caret.left, caret.height);
+              }}
               style={{
                 height: '80vh',
                 resize: 'none',
