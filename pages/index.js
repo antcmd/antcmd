@@ -9,14 +9,12 @@ import TextareaAutosize from 'react-textarea-autosize'
 import CommandsDropdown from 'components/CommandsDropdown'
 import QuillDropdown from 'components/QuillDropdown'
 import SynonymDropdown from 'components/SynonymDropdown'
-import Pages from 'components/Pages'
 
 const insertAt = (str, sub, pos) =>
   `${str.slice(0, pos)}${sub}${str.slice(pos)}`
 
 export default () => {
   // App
-  const { showPages, setShowPages } = useContext(AppContext)
   const { value: darkMode, toggle: toggleDarkMode } = useDarkMode(false)
 
   // Editor
@@ -102,12 +100,6 @@ export default () => {
       toggleDarkMode()
       newValue = nextValue.slice(0, -6)
     }
-
-    // Pages
-    // if (newValue.endsWith(`/pages`)) {
-    //   setShowPages(true)
-    //   newValue = nextValue.slice(0, -6)
-    // }
 
     // Hunter
     if (newValue.endsWith(`/hunt`)) {
@@ -214,7 +206,6 @@ export default () => {
           </div>
         </div>
       </div>
-      {showPages && <Pages close={() => setShowPages(false)} />}
     </>
   )
 }
