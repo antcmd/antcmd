@@ -1,34 +1,65 @@
-import { useState, createContext } from 'react'
+import { useState, useEffect, createContext } from 'react'
 
 const EditorContext = createContext()
 
-const initialValue = [
-  {
-    type: 'title',
-    children: [
-      {
-        text: '',
-      },
-    ],
-  },
-  {
-    type: 'paragraph',
-    children: [
-      {
-        text: '',
-      },
-    ],
-  },
-]
-
 const EditorProvider = ({ children }) => {
-  const [content, setContent] = useState(initialValue)
+  const [content, setContent] = useState('')
+
+  useEffect(() => {
+    if (process.browser) {
+      const savedContent = window.localStorage.getItem('content')
+      if (savedContent) {
+        setContent(savedContent)
+      }
+    }
+  }, [])
+
+  const getLastSentence = (text) => {
+    const thisDotIndex = text.lastIndexOf('.')
+    const lastDotIndex = text.lastIndexOf('.', thisDotIndex - 1)
+
+    const chunk = text.substring(
+      lastDotIndex !== -1 ? lastDotIndex + 2 : 0,
+      thisDotIndex,
+    )
+
+    return chunk
+  }
+
+  const getLastWord = (text) => {
+    const lastSpaceIndex = text.lastIndexOf(' ')
+
+    const chunk = text.substring(
+      lastSpaceIndex !== -1 ? lastSpaceIndex + 1 : 0,
+      text.length - 2,
+    )
+
+    return chunk
+  }
+
+  const getEmail = (text) => {
+    const lastAtSymbol = text.lastIndexOf('@')
+    const beforeEmailPos = text.lastIndexOf('\n', lastAtSymbol)
+    const afterEmailPos = text.indexOf(' ', lastAtSymbol)
+    const email = text.substring(beforeEmailPos, afterEmailPos)
+    const body = text.substring(afterEmailPos + 1, text.length - 5)
+
+    return {
+      email,
+      body,
+      emailStartPos: beforeEmailPos > -1 ? beforeEmailPos + 1 : 0,
+      emailEndPos: afterEmailPos,
+    }
+  }
 
   return (
     <EditorContext.Provider
       value={{
         content,
         setContent,
+        getLastWord,
+        getLastSentence,
+        getEmail,
       }}
     >
       {children}

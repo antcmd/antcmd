@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { ThemeProvider } from 'styled-components'
 import useDarkMode from 'use-dark-mode'
+import { ThemeProvider as StyledThemeProvider } from 'styled-components'
 import { themeDark, themeWhite } from './themes'
 
 export default ({ children }) => {
@@ -13,7 +13,9 @@ export default ({ children }) => {
     setMounted(true)
   }, [])
 
-  const body = <ThemeProvider theme={theme}>{children}</ThemeProvider>
+  const body = (
+    <StyledThemeProvider theme={theme}>{children}</StyledThemeProvider>
+  )
 
   // prevents ssr flash for mismatched dark mode
   // https://brianlovin.com/overthought/adding-dark-mode-with-next-js

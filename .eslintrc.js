@@ -36,5 +36,8 @@ module.exports = {
     'react/jsx-props-no-spreading': 0,
     'no-nested-ternary': 0,
     'no-case-declarations': 0,
+
+    // Temp:
+    'react/no-danger': 0, // Until I import TypeKit font different way
   },
 }

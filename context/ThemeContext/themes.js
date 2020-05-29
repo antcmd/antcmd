@@ -1,9 +1,9 @@
 export const themeWhite = {
-  navbarContainerBG: '#f4f7fa',
-  tabBG: '#f4f7fa',
+  bg: '#0e0d0e',
+  text: '#191a22',
 }
 
 export const themeDark = {
-  textDialogsColor: '#fff',
-  border: '#505050',
+  bg: '#fff',
+  text: '#c0ffab',
 }

@@ -48,3 +48,25 @@
   box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, 0.11);
   color: #333;
 }
+
+.email-link {
+  color: #0c77f8;
+  font-size: 21px;
+  line-height: 30px;
+  display: flex;
+  padding: 10px 0;
+}
+
+.email-link:hover {
+  text-decoration: underline;
+}
+
+.email-from {
+  margin-left: 4px;
+  color: #0c77f8;
+  font-weight: 500;
+}
+
+.email-from:hover {
+  text-decoration: underline;
+}
