@@ -70,3 +70,7 @@
 .email-from:hover {
   text-decoration: underline;
 }
+
+.darkmode textarea::placeholder {
+  color: #fff;
+}

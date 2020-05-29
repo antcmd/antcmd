@@ -38,7 +38,6 @@ export default ({ Component, pageProps }) => (
       <meta charSet="utf-8" />
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       <script src="https://use.typekit.net/ldj0mpd.js" type="text/javascript" />
-      <script async defer src="https://apis.google.com/js/api.js" />
       <style
         type="text/css"
         dangerouslySetInnerHTML={{

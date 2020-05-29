@@ -31,8 +31,10 @@ const EditorProvider = ({ children }) => {
 
     const chunk = text.substring(
       lastSpaceIndex !== -1 ? lastSpaceIndex + 1 : 0,
-      text.length - 2,
+      text.length,
     )
+
+    console.log(chunk)
 
     return chunk
   }

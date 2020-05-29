@@ -1,5 +1,6 @@
-import { useState, useEffect, createContext } from 'react'
+import Head from 'next/head'
 import base64url from 'base64url'
+import { useState, useEffect, createContext } from 'react'
 
 const gapi = process.browser ? window.gapi : {}
 
@@ -16,7 +17,6 @@ const GmailContext = createContext()
 
 const GmailProvider = ({ children }) => {
   const [messages, setMessages] = useState([])
-  const [isInitialised, setInitialised] = useState(false)
   const [isSignedIn, setSignedIn] = useState(null)
 
   const signIn = () => gapi.auth2.getAuthInstance().signIn()
@@ -36,17 +36,7 @@ Message-ID: <1234@local.machine.example>
 
 ${message}`,
           ),
-          // 'RnJvbTogSm9obiBEb2UgPGpkb2VAbWFjaGluZS5leGFtcGxlPiAKVG86IE1hcnkgU21pdGggPG1hcnlAZXhhbXBsZS5uZXQ+IApTdWJqZWN0OiBTYXlpbmcgSGVsbG8gCkRhdGU6IEZyaSwgMjEgTm92IDE5OTcgMDk6NTU6MDYgLTA2MDAgCk1lc3NhZ2UtSUQ6IDwxMjM0QGxvY2FsLm1hY2hpbmUuZXhhbXBsZT4KClRoaXMgaXMgYSBtZXNzYWdlIGp1c3QgdG8gc2F5IGhlbGxvLiBTbywgIkhlbGxvIi4=',
         },
-        // raw: btoa(`
-        //     From: John Doe <jdoe@machine.example>
-        //     To: Mary Smith <ignatif@gmail.com>
-        //     Subject: Saying Hello
-        //     Date: Fri, 21 Nov 1997 09:55:06 -0600
-        //     Message-ID: <1234@local.machine.example>
-
-        //     This is a message just to say hello. So, "Hello".
-        //   `),
       })
       .then((r) => console.log(r))
 
@@ -59,7 +49,6 @@ ${message}`,
   })
 
   const getMessage = async (id) => {
-    console.log(id)
     if (messages.length > 0) {
       return messages.find((m) => m.id === id)
     }
@@ -102,25 +91,13 @@ ${message}`,
   const watchSignin = (isSigned) => {
     if (isSigned) {
       setSignedIn(true)
+      getMessages()
     } else {
       setSignedIn(false)
     }
   }
 
-  const initClient = async (callback) => {
-    console.log('initClient')
-    console.log('initClient')
-    console.log('initClient')
-    console.log('initClient')
-    console.log('initClient')
-    console.log('initClient')
-    console.log('initClient')
-    console.log('initClient')
-    console.log('initClient')
-    console.log('initClient')
-    console.log('initClient')
-    console.log('initClient')
-    console.log('initClient')
+  const initClient = async () => {
     await gapi.client
       .init({
         apiKey: GMAIL_API_KEY,
@@ -132,8 +109,6 @@ ${message}`,
         () => {
           // Listen for sign-in state changes.
           gapi.auth2.getAuthInstance().isSignedIn.listen(watchSignin)
-          setInitialised(true)
-          if (callback) callback()
 
           // Handle the initial sign-in state.
           watchSignin(gapi.auth2.getAuthInstance().isSignedIn.get())
@@ -144,17 +119,20 @@ ${message}`,
       )
   }
 
-  useEffect(() => {
-    if (process.browser && window.gapi) {
-      window.gapi.load('client:auth2', initClient)
-    }
-  }, [process.browser])
+  const onClientLoad = () => {
+    console.log('load')
+    console.log('load')
+    console.log('load')
+    console.log('load')
+    // Load the API client and auth2 library
+    gapi.load('client:auth2', initClient)
+  }
 
   return (
     <GmailContext.Provider
       value={{
         isSignedIn,
-        isInitialised,
+        onClientLoad,
         signIn,
         signOut,
         watchSignin,
@@ -164,6 +142,17 @@ ${message}`,
         sendMessage,
       }}
     >
+      <Head>
+        <script
+          async
+          defer
+          src="https://apis.google.com/js/api.js"
+          onLoad={onClientLoad}
+          onReadyStateChange={function () {
+            console.log(this)
+          }}
+        />
+      </Head>
       {children}
     </GmailContext.Provider>
   )
