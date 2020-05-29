@@ -1,6 +1,4 @@
-const clearbit = require('clearbit')(
-  '{key: sk_a520f1fc2331b745b7ffe5cccb8116d9}',
-)
+const clearbit = require('clearbit')('sk_a520f1fc2331b745b7ffe5cccb8116d9')
 
 export default function handler(req, res) {
   clearbit.Enrichment.find({ email: 'alex@clearbit.com', stream: true })
