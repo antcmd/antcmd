@@ -1,22 +1,17 @@
-# vue-antcmd
+### antcmd.
 
-> My glorious Nuxt.js project
+> Blank space for you business.
 
-## Build Setup
+
+**Setup**
 
 ```bash
-# install dependencies
-$ yarn install
-
-# serve with hot reload at localhost:3000
+# develop
+$ yarn
 $ yarn dev
 
-# build for production and launch server
-$ yarn build
-$ yarn start
-
-# generate static project
-$ yarn generate
+# deploy
+$ vc
 ```
 
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+[Nuxt.js docs](https://nuxtjs.org)
