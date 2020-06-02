@@ -7,9 +7,10 @@ const api = {
   alias: 'clearbit'
 }
 
+const url = 'https://antcmd-clearbit-n9kjrpwe2.now.sh'
 const fetchClearbitCompany = (domain) =>
   fetch(
-    `https://cors-anywhere.herokuapp.com/https://antcmd.ignatif.now.sh/api/clearbit/company?domain=${domain}`,
+    `https://cors-anywhere.herokuapp.com/${url}/api/clearbit/company?domain=${domain}`,
     {
       method: 'GET'
     }
@@ -22,7 +23,7 @@ const fetchClearbitCompany = (domain) =>
 
 const fetchClearbitPerson = (email) =>
   fetch(
-    `https://cors-anywhere.herokuapp.com/https://antcmd.ignatif.now.sh/api/clearbit/person?email=${email}`,
+    `https://cors-anywhere.herokuapp.com/${url}/api/clearbit/person?email=${email}`,
     {
       method: 'GET'
     }
