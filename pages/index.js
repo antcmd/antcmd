@@ -1,14 +1,38 @@
 import { useState, useEffect, useContext, useRef } from 'react'
 import { useEscapeToClose } from 'hooks'
 import { EditorContext, HunterContext, GmailContext } from 'context'
+import { MentionsInput, Mention } from 'react-mentions'
 import useDarkMode from 'use-dark-mode'
 import Link from 'next/link'
-import TextareaAutosize from 'react-textarea-autosize'
+// import TextareaAutosize from 'react-textarea-autosize'
 // import getCaretCoordinates from 'textarea-caret'
 
 import HelpDropdown from 'components/CommandsDropdown'
 import QuillDropdown from 'components/QuillDropdown'
 import SynonymDropdown from 'components/SynonymDropdown'
+
+const users = [
+  {
+    id: 'walter',
+    display: 'Walter White',
+  },
+  {
+    id: 'jesse',
+    display: 'Jesse Pinkman',
+  },
+  {
+    id: 'gus',
+    display: 'Gustavo "Gus" Fring',
+  },
+  {
+    id: 'saul',
+    display: 'Saul Goodman',
+  },
+  {
+    id: 'hank',
+    display: 'Hank Schrader',
+  },
+]
 
 const insertAt = (str, sub, pos) =>
   `${str.slice(0, pos)}${sub}${str.slice(pos)}`
@@ -19,6 +43,7 @@ export default () => {
 
   // Editor
   const textareaRef = useRef()
+  const [title, setTitle] = useState('')
   const {
     content: value,
     setContent: setValue,
@@ -26,6 +51,15 @@ export default () => {
     getLastSentence,
     getEmail,
   } = useContext(EditorContext)
+
+  useEffect(() => {
+    if (process.browser) {
+      const savedTitle = window.localStorage.getItem('title')
+      if (savedTitle) {
+        setTitle(savedTitle)
+      }
+    }
+  }, [])
 
   const saveContent = (newContent) => {
     setValue(newContent)
@@ -102,15 +136,22 @@ export default () => {
             `: ${company.legalName}. (${company.category.industry}). Alexa global rank: ${company.metrics.alexaGlobalRank}, Alexa US rank: ${company.metrics.alexaUsRank}, Annual revenue: ${company.metrics.annualRevenue}, Estimated annual revenue: ${company.metrics.estimatedAnnualRevenue}. Employees: ${company.metrics.employees}, Market cap: ${company.metrics.marketCap}, Raised: ${company.metrics.raised} `,
           ),
         )
-        // legalName
-        // category.industry
-        // metrics.alexaGlobalRank
-        // metrics.alexaUsRank
-        // metrics.annualRevenue
-        // metrics.estimatedAnnualRevenue
-        // metrics.employees
-        // metrics.marketCap
-        // metrics.raised
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  const lookupClearbitPerson = (email) =>
+    fetch(`/api/clearbit/person?email=${email}`, {
+      method: 'GET',
+    })
+      .then((r) => r.json())
+      .then((person) => {
+        console.log(person)
+        setValue((oldValue) =>
+          oldValue.concat(
+            `: ${person.name.fullName}. Employment: ${person.employment.title} at ${person.employment.name}`,
+          ),
+        )
       })
       .catch((err) => {
         console.log(err)
@@ -194,7 +235,12 @@ export default () => {
     // Clearbit
     if (newValue.endsWith(`/clearbit`)) {
       newValue = nextValue.slice(0, -9)
-      lookupClearbitCompany(getLastWord(newValue))
+      const word = getLastWord(newValue)
+      if (/\S+@\S+\.\S+/.test(word)) {
+        lookupClearbitPerson(word)
+      } else {
+        lookupClearbitCompany(word)
+      }
     }
 
     saveContent(newValue)
@@ -209,7 +255,35 @@ export default () => {
       }}
     >
       <div className="form-block w-form" style={{ position: 'relative' }}>
-        <TextareaAutosize
+        <textarea
+          onChange={(e) => {
+            setTitle(e.target.value)
+            if (process.browser) {
+              window.localStorage.setItem('title', e.target.value)
+            }
+          }}
+          value={title}
+          placeholder="Title"
+          className="text-field w-input"
+          style={{
+            resize: 'none',
+            // lineHeight: '48px',
+            maxHeight: '34px',
+            overflow: 'hidden',
+            fontFamily: 'Inter',
+            fontSize: '32px',
+            lineHeight: '32px',
+            fontWeight: 700,
+            margin: '1.7rem 0 1.15rem',
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault()
+              textareaRef.current.focus()
+            }
+          }}
+        />
+        <MentionsInput
           value={value}
           onChange={onChange}
           className="text-field-2 w-input"
@@ -222,10 +296,31 @@ export default () => {
           style={{
             resize: 'none',
             color: darkMode ? '#c0ffab' : '#191a22',
+            minHeight: 2000,
+            fontFamily: 'Inter',
+            fontSize: '18px',
+            lineHeight: '32px',
+            fontWeight: 300,
           }}
           autoFocus
           ref={textareaRef}
-        />
+        >
+          <Mention
+            trigger="@"
+            data={users}
+            renderSuggestion={(
+              suggestion,
+              search,
+              highlightedDisplay,
+              index,
+              focused,
+            ) => (
+              <div className={`user ${focused ? 'focused' : ''}`}>
+                {highlightedDisplay}
+              </div>
+            )}
+          />
+        </MentionsInput>
         {messages &&
           messages.map((message) => (
             <Link

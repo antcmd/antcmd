@@ -28,11 +28,16 @@ const EditorProvider = ({ children }) => {
 
   const getLastWord = (text) => {
     const lastSpaceIndex = text.lastIndexOf(' ')
+    const lastNewLine = text.lastIndexOf('\n')
 
-    const chunk = text.substring(
-      lastSpaceIndex !== -1 ? lastSpaceIndex + 1 : 0,
-      text.length,
-    )
+    let start
+    if (lastSpaceIndex > lastNewLine) {
+      start = lastSpaceIndex
+    } else {
+      start = lastNewLine
+    }
+
+    const chunk = text.substring(start !== -1 ? start + 1 : 0, text.length)
 
     console.log(chunk)
 

@@ -74,3 +74,11 @@
 .darkmode textarea::placeholder {
   color: #fff;
 }
+
+textarea::placeholder {
+  color: #97a0bf;
+}
+
+textarea {
+  resize: none !important;
+}

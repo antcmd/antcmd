@@ -8,6 +8,7 @@ import HunterProvider from 'context/api/HunterContext'
 
 import 'public/css/webflow.css'
 import 'public/css/custom.css'
+import 'public/css/editor.css'
 
 const Providers = ({ children }) => (
   <AppProvider>
@@ -44,6 +45,10 @@ export default ({ Component, pageProps }) => (
           __html:
             '#hero,.tk-proxima-nova,body{font-family:"proxima-nova",sans-serif;}',
         }}
+      />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
       />
       <style
         type="text/css"
