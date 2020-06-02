@@ -1,6 +1,6 @@
 ### antcmd.
 
-> Blank space for you business
+> Blank space for you business.
 
 
 **Setup**
@@ -14,4 +14,4 @@ $ yarn dev
 $ vc
 ```
 
-[Nuxt.js docs](https://nuxtjs.org).
+[Nuxt.js docs](https://nuxtjs.org)
