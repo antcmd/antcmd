@@ -1,8 +1,9 @@
-# antcmd.
+*antcmd.*
 
 > Blank space for you business
 
-## Setup
+
+*Setup*
 
 ```bash
 # install dependencies
