@@ -19,17 +19,77 @@
         No users found
       </div>
     </div>
+    <editor-menu-bubble
+      :editor="editor"
+      :keep-in-bounds="keepInBounds"
+      v-slot="{ commands, isActive, menu }"
+    >
+      <div
+        class="menububble"
+        :class="{ 'is-active': menu.isActive }"
+        :style="`left: ${menu.left}px; bottom: ${menu.bottom}px;`"
+      >
+        <button
+          class="menububble__button"
+          :class="{ 'is-active': isActive.bold() }"
+          @click="commands.bold"
+        >
+          <icon-base width="16" height="16"><icon-bold /></icon-base>
+        </button>
+
+        <button
+          class="menububble__button"
+          :class="{ 'is-active': isActive.italic() }"
+          @click="commands.italic"
+        >
+          <icon-base width="16" height="16"><icon-italic /></icon-base>
+        </button>
+
+        <button
+          class="menububble__button"
+          :class="{ 'is-active': isActive.underline() }"
+          @click="commands.underline"
+        >
+          <icon-base width="16" height="16"><icon-underline /></icon-base>
+        </button>
+
+        <button
+          class="menububble__button"
+          :class="{ 'is-active': isActive.strike() }"
+          @click="commands.strike"
+        >
+          <icon-base width="16" height="16"><icon-strike /></icon-base>
+        </button>
+      </div>
+    </editor-menu-bubble>
   </div>
 </template>
 
 <script>
-import { Editor, EditorContent } from 'tiptap'
-import { Placeholder } from 'tiptap-extensions'
-import Fuse from 'fuse.js'
+import { Editor, EditorContent, EditorMenuBubble } from 'tiptap'
+import {
+  Placeholder,
+  BulletList,
+  ListItem,
+  Underline,
+  HorizontalRule,
+  Strike,
+  History
+} from 'tiptap-extensions'
+import { Howl } from 'howler'
+/* import Fuse from 'fuse.js' */
 import tippy, { sticky } from 'tippy.js'
+
+import IconBase from '../icons/base'
+import IconBold from '../icons/bold'
+import IconItalic from '../icons/italic'
+import IconUnderline from '../icons/underline'
+import IconStrike from '../icons/strike'
 
 import Doc from './extensions/Doc'
 import Title from './extensions/Title'
+
+import Icon from './components/icon'
 
 // typo
 import Heading from './extensions/typography/Heading'
@@ -37,7 +97,7 @@ import Bold from './extensions/typography/Bold'
 import Italic from './extensions/typography/Italic'
 import Link from './extensions/typography/Link'
 import Mention from './extensions/Mention'
-import Bullets from './extensions/Bullets'
+/* import Bullets from './extensions/Bullets' */
 
 // cli
 import Home from './extensions/cli/home'
@@ -48,13 +108,71 @@ import Pages from './extensions/cli/pages'
 import Hunter from './extensions/api/Hunter'
 import Crunchbase from './extensions/api/Crunchbase'
 import Clearbit from './extensions/api/Clearbit'
+import Gmail from './extensions/api/Gmail'
+
+import Sounds from './extensions/sounds'
+
+/* eslint-disable */
+/* import BoldIcon from '~/icons/bold.svg' */
+import ItalicIcon from '../../static/icons/italic.svg'
+/* console.log(BoldIcon) */
+
+const sound1 = new Howl({
+  src: '/sounds/dland__hint.wav',
+  volume: 0.5
+})
+const sound2 = new Howl({
+  src: '/sounds/digital_life.wav',
+  sprite: {
+    digital: [0, 300]
+  },
+  volume: 0.5
+})
+const sound3 = new Howl({
+  src: '/sounds/confirmation-upward.wav',
+  volume: 0.5
+})
+const sound4 = new Howl({
+  src: '/sounds/power08.wav',
+  volume: 0.5
+})
+const sound5 = new Howl({
+  src: '/sounds/casual/click.wav',
+  volume: 0.5
+})
+const sound6 = new Howl({
+  src: '/sounds/casual/click4.wav',
+  volume: 0.5
+})
+const sound7 = new Howl({
+  src: '/sounds/casual/click2.wav',
+  volume: 0.5
+})
+const sound8 = new Howl({
+  src: '/sounds/casual/switch.wav',
+  volume: 0.5
+})
+const sound9 = new Howl({
+  src: '/sounds/casual/click3.wav',
+  volume: 0.5
+})
 
 export default {
   components: {
-    EditorContent
+    EditorContent,
+    EditorMenuBubble,
+    Icon,
+    ItalicIcon,
+    IconBase,
+    IconBold,
+    IconItalic,
+    IconUnderline,
+    IconStrike
   },
   data() {
     return {
+      sound: sound5,
+      keepInBounds: true,
       editor: new Editor({
         autoFocus: true,
         extensions: [
@@ -62,20 +180,29 @@ export default {
           new Hunter(),
           new Crunchbase(),
           new Clearbit(),
+          new Gmail(),
 
           // cli
           new Home({ callback: () => this.$router.push({ path: '/' }) }),
           new Save(),
           new Pages(),
+          new Sounds(),
 
           // typo
           new Doc(),
           new Title(),
           new Heading({ levels: [1, 2, 3] }),
           new Bold(),
-          new Bullets(),
+          new Underline(),
+          new Strike(),
+          /* new Bullets(), */
           new Italic(),
           new Link(),
+          new BulletList(),
+          new ListItem(),
+          new HorizontalRule(),
+
+          new History(),
           new Placeholder({
             showOnlyCurrent: false,
             emptyNodeText: (node) => {
@@ -89,7 +216,7 @@ export default {
           new Mention({
             // a list of all suggested items
             items: () => this.getPages(),
-            matcher: { char: '/p/' },
+            matcher: { char: '//' },
             /* command: (range, attrs, schema) => alert('yo'), */
             // is called when a suggestion starts
             onEnter: ({ items, query, range, command, virtualNode }) => {
@@ -138,23 +265,23 @@ export default {
               }
 
               return false
-            },
+            }
             // is called when a suggestion has changed
             // this function is optional because there is basic filtering built-in
             // you can overwrite it if you prefer your own filtering
             // in this example we use fuse.js with support for fuzzy search
-            onFilter: (items, query) => {
-              if (!query) {
-                return items
-              }
+            /* onFilter: (items, query) => { */
+            /*   if (!query) { */
+            /*     return items */
+            /*   } */
 
-              const fuse = new Fuse(items, {
-                threshold: 0.2,
-                keys: ['name']
-              })
+            /*   const fuse = new Fuse(items, { */
+            /*     threshold: 0.2, */
+            /*     keys: ['name'] */
+            /*   }) */
 
-              return fuse.search(query)
-            }
+            /*   return fuse.search(query) */
+            /* } */
           }),
           new Mention({
             items: () => this.getItems(),
@@ -208,16 +335,68 @@ export default {
                 return items
               }
 
-              const fuse = new Fuse(items, {
-                threshold: 0.2,
-                keys: ['name']
-              })
+              return items.filter((i) => i.name.includes(query))
 
-              return fuse.search(query)
+              /* const fuse = new Fuse(items, { */
+              /*   threshold: 0.2, */
+              /*   keys: ['name'] */
+              /* }) */
+
+              /* return fuse.search(query) */
             }
           })
         ],
         onUpdate: (update) => {
+          const apiCall = update.transaction.getMeta('api-call')
+          if (apiCall) {
+            this.sound.play()
+          }
+
+          const soundCall = update.transaction.getMeta('sound-call')
+          if (soundCall) {
+            switch (soundCall.sound) {
+              case 'sound1':
+                sound1.play()
+                this.sound = sound1
+                break
+              case 'sound2':
+                sound2.play('digital')
+                sound2.fade(0.6, 0, 300)
+                this.sound = sound2
+                break
+              case 'sound3':
+                sound3.play()
+                this.sound = sound3
+                break
+              case 'sound4':
+                sound4.play()
+                this.sound = sound4
+                break
+              case 'sound5':
+                sound5.play()
+                this.sound = sound5
+                break
+              case 'sound6':
+                sound6.play()
+                this.sound = sound6
+                break
+              case 'sound7':
+                sound7.play()
+                this.sound = sound7
+                break
+              case 'sound8':
+                sound8.play()
+                this.sound = sound8
+                break
+              case 'sound9':
+                sound9.play()
+                this.sound = sound9
+                break
+              default:
+                sound1.play()
+            }
+          }
+
           const saveCall = update.transaction.getMeta('save-request')
           if (saveCall) {
             this.saveStart = saveCall.start
@@ -339,13 +518,17 @@ export default {
 
     getItems() {
       const domainRegexp = /\b((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}\b/g
-      const domains = this.editor.getHTML().match(domainRegexp) || []
+      // eslint-disable-next-line
+      const emailRegexp = /([\w+-.%]+@[\w-.]+\.[A-Za-z]{2,4},?)/g
+      const html = this.editor.getHTML()
+      const domains = html.match(domainRegexp) || []
+      const emails = html.match(emailRegexp) || []
 
       function removeDuplicates(array) {
         return array.filter((a, b) => array.indexOf(a) === b)
       }
 
-      const r = removeDuplicates(domains)
+      const r = removeDuplicates([...domains, ...emails])
 
       return r.map((i, index) => ({
         id: index,
@@ -368,7 +551,7 @@ export default {
       this.editor.view.dispatch(
         this.editor.view.state.tr.insertText(
           `${user.name}`,
-          this.editor.selection.from - 1,
+          this.editor.selection.from - (1 + this.query.length),
           this.editor.selection.from
         )
       )
@@ -382,7 +565,7 @@ export default {
       /* }) */
 
       this.destroyPopup()
-      this.editor.focus('end')
+      /* this.editor.focus('end') */
     },
 
     // renders a popup with suggestions
@@ -420,6 +603,64 @@ export default {
 </script>
 
 <style lang="scss">
+.page {
+  position: relative;
+}
+
+.menububble {
+  position: absolute;
+  display: flex;
+  z-index: 20;
+  background: #000;
+  border-radius: 5px;
+  padding: 0.3rem;
+  margin-bottom: 0.5rem;
+  transform: translateX(-50%);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s, visibility 0.2s;
+
+  &.is-active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &__button {
+    display: inline-flex;
+    background: transparent;
+    border: 0;
+    color: #fff;
+    padding: 0.2rem 0.5rem;
+    margin-right: 0.2rem;
+    border-radius: 3px;
+    cursor: pointer;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    &.is-active {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+
+  &__form {
+    display: flex;
+    align-items: center;
+  }
+
+  &__input {
+    font: inherit;
+    border: none;
+    background: transparent;
+    color: #fff;
+  }
+}
+
 .mention {
   background: rgba(#000000, 0.1);
   color: rgba(#000000, 0.6);

@@ -10,7 +10,7 @@ export default class Gmail extends Extension {
   inputRules({ type }) {
     return [
       new InputRule(
-        new RegExp(`w*/${api.alias}$`),
+        new RegExp(`/${api.alias}$`),
         (state, match, start, end) => {
           const domain = match.input.slice(0, -api.alias.length - 1)
 

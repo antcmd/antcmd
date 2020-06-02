@@ -66,8 +66,8 @@ export default {
      */
     extend(config, ctx) {}
   },
-  buildDir: '.dist',
-  generate: {
-    dir: '.dist'
-  }
+  buildDir: '.dist'
+  // generate: {
+  //   dir: '.dist'
+  // }
 }

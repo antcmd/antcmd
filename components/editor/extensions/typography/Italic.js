@@ -24,7 +24,7 @@ export default class Italic extends Mark {
   }
 
   inputRules({ type }) {
-    return [markInputRule(/(\w*)\/i/, type)]
+    return [markInputRule(/(\w*)\/italic/, type)]
   }
 
   pasteRules({ type }) {
