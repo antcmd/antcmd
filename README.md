@@ -3,21 +3,15 @@
 > Blank space for you business
 
 
-*Setup*
+**Setup**
 
 ```bash
-# install dependencies
-$ yarn
-
 # develop
+$ yarn
 $ yarn dev
 
-# build for production and launch server
-$ yarn build
-$ yarn start
-
-# generate static project
-$ yarn generate
+# deploy
+$ vc
 ```
 
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+[Nuxt.js docs](https://nuxtjs.org).
