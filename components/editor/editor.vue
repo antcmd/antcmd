@@ -19,54 +19,11 @@
         No users found
       </div>
     </div>
-    <editor-menu-bubble
-      :editor="editor"
-      :keep-in-bounds="keepInBounds"
-      v-slot="{ commands, isActive, menu }"
-    >
-      <div
-        class="menububble"
-        :class="{ 'is-active': menu.isActive }"
-        :style="`left: ${menu.left}px; bottom: ${menu.bottom}px;`"
-      >
-        <button
-          class="menububble__button"
-          :class="{ 'is-active': isActive.bold() }"
-          @click="commands.bold"
-        >
-          <icon-base width="16" height="16"><icon-bold /></icon-base>
-        </button>
-
-        <button
-          class="menububble__button"
-          :class="{ 'is-active': isActive.italic() }"
-          @click="commands.italic"
-        >
-          <icon-base width="16" height="16"><icon-italic /></icon-base>
-        </button>
-
-        <button
-          class="menububble__button"
-          :class="{ 'is-active': isActive.underline() }"
-          @click="commands.underline"
-        >
-          <icon-base width="16" height="16"><icon-underline /></icon-base>
-        </button>
-
-        <button
-          class="menububble__button"
-          :class="{ 'is-active': isActive.strike() }"
-          @click="commands.strike"
-        >
-          <icon-base width="16" height="16"><icon-strike /></icon-base>
-        </button>
-      </div>
-    </editor-menu-bubble>
   </div>
 </template>
 
 <script>
-import { Editor, EditorContent, EditorMenuBubble } from 'tiptap'
+import { Editor, EditorContent } from 'tiptap'
 import {
   Placeholder,
   BulletList,
@@ -115,50 +72,14 @@ import Gmail from './extensions/api/Gmail'
 import ItalicIcon from '../../static/icons/italic.svg'
 /* console.log(BoldIcon) */
 
-const sound1 = new Howl({
-  src: '/sounds/dland__hint.wav',
-  volume: 0.5
-})
-const sound2 = new Howl({
-  src: '/sounds/digital_life.wav',
-  sprite: {
-    digital: [0, 300]
-  },
-  volume: 0.5
-})
-const sound3 = new Howl({
-  src: '/sounds/confirmation-upward.wav',
-  volume: 0.5
-})
-const sound4 = new Howl({
-  src: '/sounds/power08.wav',
-  volume: 0.5
-})
-const sound5 = new Howl({
-  src: '/sounds/casual/click.wav',
-  volume: 0.5
-})
-const sound6 = new Howl({
-  src: '/sounds/casual/click4.wav',
-  volume: 0.5
-})
-const sound7 = new Howl({
-  src: '/sounds/casual/click2.wav',
-  volume: 0.5
-})
-const sound8 = new Howl({
+const sound = new Howl({
   src: '/sounds/casual/switch.wav',
-  volume: 0.5
-})
-const sound9 = new Howl({
-  src: '/sounds/casual/click3.wav',
   volume: 0.5
 })
 
 export default {
   components: {
     EditorContent,
-    EditorMenuBubble,
     Icon,
     ItalicIcon,
     IconBase,
@@ -169,8 +90,7 @@ export default {
   },
   data() {
     return {
-      sound: sound8,
-      keepInBounds: true,
+      sound,
       editor: new Editor({
         autoFocus: true,
         extensions: [
@@ -347,51 +267,6 @@ export default {
           const apiCall = update.transaction.getMeta('api-call')
           if (apiCall) {
             this.sound.play()
-          }
-
-          const soundCall = update.transaction.getMeta('sound-call')
-          if (soundCall) {
-            switch (soundCall.sound) {
-              case 'sound1':
-                sound1.play()
-                this.sound = sound1
-                break
-              case 'sound2':
-                sound2.play('digital')
-                sound2.fade(0.6, 0, 300)
-                this.sound = sound2
-                break
-              case 'sound3':
-                sound3.play()
-                this.sound = sound3
-                break
-              case 'sound4':
-                sound4.play()
-                this.sound = sound4
-                break
-              case 'sound5':
-                sound5.play()
-                this.sound = sound5
-                break
-              case 'sound6':
-                sound6.play()
-                this.sound = sound6
-                break
-              case 'sound7':
-                sound7.play()
-                this.sound = sound7
-                break
-              case 'sound8':
-                sound8.play()
-                this.sound = sound8
-                break
-              case 'sound9':
-                sound9.play()
-                this.sound = sound9
-                break
-              default:
-                sound1.play()
-            }
           }
 
           const saveCall = update.transaction.getMeta('save-request')
@@ -602,60 +477,6 @@ export default {
 <style lang="scss">
 .page {
   position: relative;
-}
-
-.menububble {
-  position: absolute;
-  display: flex;
-  z-index: 20;
-  background: #000;
-  border-radius: 5px;
-  padding: 0.3rem;
-  margin-bottom: 0.5rem;
-  transform: translateX(-50%);
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.2s, visibility 0.2s;
-
-  &.is-active {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  &__button {
-    display: inline-flex;
-    background: transparent;
-    border: 0;
-    color: #fff;
-    padding: 0.2rem 0.5rem;
-    margin-right: 0.2rem;
-    border-radius: 3px;
-    cursor: pointer;
-
-    &:last-child {
-      margin-right: 0;
-    }
-
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-
-    &.is-active {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-  }
-
-  &__form {
-    display: flex;
-    align-items: center;
-  }
-
-  &__input {
-    font: inherit;
-    border: none;
-    background: transparent;
-    color: #fff;
-  }
 }
 
 .mention {
