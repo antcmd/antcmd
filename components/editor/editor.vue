@@ -25,7 +25,6 @@
 <script>
 import { Editor, EditorContent } from 'tiptap'
 import {
-  Placeholder,
   BulletList,
   ListItem,
   Underline,
@@ -120,16 +119,6 @@ export default {
           new HorizontalRule(),
 
           new History(),
-          new Placeholder({
-            showOnlyCurrent: false,
-            emptyNodeText: (node) => {
-              if (node.type.name === 'title') {
-                return 'Title'
-              }
-
-              return 'Type something'
-            }
-          }),
           new Mention({
             // a list of all suggested items
             items: () => this.getPages(),
