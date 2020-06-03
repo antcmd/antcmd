@@ -110,8 +110,6 @@ import Crunchbase from './extensions/api/Crunchbase'
 import Clearbit from './extensions/api/Clearbit'
 import Gmail from './extensions/api/Gmail'
 
-import Sounds from './extensions/sounds'
-
 /* eslint-disable */
 /* import BoldIcon from '~/icons/bold.svg' */
 import ItalicIcon from '../../static/icons/italic.svg'
@@ -171,7 +169,7 @@ export default {
   },
   data() {
     return {
-      sound: sound5,
+      sound: sound8,
       keepInBounds: true,
       editor: new Editor({
         autoFocus: true,
@@ -186,7 +184,6 @@ export default {
           new Home({ callback: () => this.$router.push({ path: '/' }) }),
           new Save(),
           new Pages(),
-          new Sounds(),
 
           // typo
           new Doc(),
@@ -216,7 +213,7 @@ export default {
           new Mention({
             // a list of all suggested items
             items: () => this.getPages(),
-            matcher: { char: '//' },
+            matcher: { char: '>' },
             /* command: (range, attrs, schema) => alert('yo'), */
             // is called when a suggestion starts
             onEnter: ({ items, query, range, command, virtualNode }) => {
@@ -749,5 +746,8 @@ h1 {
 p {
   font-size: 19px;
   line-height: 32px;
+}
+body {
+  background: #f5f5f5;
 }
 </style>
