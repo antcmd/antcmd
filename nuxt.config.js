@@ -1,8 +1,5 @@
 export default {
   mode: 'universal',
-  /*
-   ** Headers of the page
-   */
   head: {
     title: process.env.npm_package_name || 'antcmd.',
     meta: [
@@ -15,7 +12,7 @@ export default {
       }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'icon', type: 'image/png', href: '/favicon.png' },
       {
         rel: 'stylesheet',
         href:
@@ -23,50 +20,19 @@ export default {
       }
     ]
   },
-  /*
-   ** Customize the progress-bar color
-   */
   loading: { color: '#fff' },
-  /*
-   ** Global CSS
-   */
   css: [],
-  /*
-   ** Plugins to load before mounting the App
-   */
   plugins: [{ src: '~/plugins/vuex-persist', ssr: false }],
-  /*
-   ** Nuxt.js dev-modules
-   */
-  buildModules: [
-    // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module'
-  ],
-  /*
-   ** Nuxt.js modules
-   */
-  modules: [
-    // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
-    '@nuxtjs/pwa',
-    '@nuxtjs/dotenv'
-  ],
-  /*
-   ** Axios module configuration
-   ** See https://axios.nuxtjs.org/options
-   */
+  buildModules: ['@nuxtjs/eslint-module'],
+  modules: ['@nuxtjs/axios', '@nuxtjs/pwa', '@nuxtjs/dotenv'],
   axios: {},
-  /*
-   ** Build configuration
-   */
   build: {
-    /*
-     ** You can extend webpack config here
-     */
     extend(config, ctx) {}
   },
-  buildDir: '.dist'
-  // generate: {
-  //   dir: '.dist'
-  // }
+  buildDir: '.dist',
+  serverMiddleware: [
+    // 'redirect-ssl',
+    { path: '/api/clearbit/company', handler: '~/api/clearbit/company.js' },
+    { path: '/api/clearbit/person', handler: '~/api/clearbit/person.js' }
+  ]
 }
