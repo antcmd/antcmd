@@ -203,7 +203,11 @@ body {
   /* background: #f5f5f5; */
 }
 a {
-  color: inherit;
+  color: #0645ad;
   cursor: pointer;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
 }
 </style>

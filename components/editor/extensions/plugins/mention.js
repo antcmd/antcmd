@@ -1,6 +1,6 @@
 import { Mark } from 'tiptap'
 import { replaceText } from 'tiptap-commands'
-import SuggestionsPlugin from './Suggestions'
+import SuggestionsPlugin from './suggestions'
 
 export default class Mention extends Mark {
   get name() {
