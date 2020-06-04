@@ -22,25 +22,21 @@ import { mapState } from 'vuex'
 
 import Suggestions from './suggestions'
 
-import Doc from './extensions/_old/Doc'
-import Title from './extensions/_old/Title'
+// elements
+import Doc from './extensions/elements/doc'
+import Title from './extensions/elements/title'
+import Heading from './extensions/elements/heading'
+import Bold from './extensions/elements/bold'
+import Italic from './extensions/elements/italic'
+import Link from './extensions/elements/link'
 
-// typography elements
-import Heading from './extensions/_old/typography/Heading'
-import Bold from './extensions/_old/typography/Bold'
-import Italic from './extensions/_old/typography/Italic'
-import Link from './extensions/_old/typography/Link'
-import Mention from './extensions/_old/Mention'
-
-// cmds
-import Home from './extensions/_old/cli/home'
-import Pages from './extensions/_old/cli/pages'
+import Mention from './extensions/plugins/mention'
 
 // api
-import Hunter from './extensions/_old/apis/Hunter'
-import Crunchbase from './extensions/_old/apis/Crunchbase'
-import Clearbit from './extensions/_old/apis/Clearbit'
-import Gmail from './extensions/_old/apis/Gmail'
+import Hunter from './extensions/api/hunter'
+import Crunchbase from './extensions/api/crunchbase'
+import Clearbit from './extensions/api/clearbit'
+import Gmail from './extensions/api/gmail'
 
 const sound = new Howl({
   src: '/sounds/casual/switch.wav',
@@ -95,10 +91,6 @@ export default {
         new Crunchbase(),
         new Clearbit(),
         new Gmail(),
-
-        // cli
-        new Home({ callback: () => this.$router.push({ path: '/' }) }),
-        new Pages(),
 
         // typo
         new Doc(),
