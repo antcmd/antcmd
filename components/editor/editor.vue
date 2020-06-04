@@ -38,6 +38,8 @@ import Crunchbase from './extensions/api/crunchbase'
 import Clearbit from './extensions/api/clearbit'
 import Gmail from './extensions/api/gmail'
 
+import Synonyms from './extensions/api/words/synonyms'
+
 const sound = new Howl({
   src: '/sounds/casual/switch.wav',
   volume: 0.5
@@ -91,6 +93,7 @@ export default {
         new Crunchbase(),
         new Clearbit(),
         new Gmail(),
+        new Synonyms(),
 
         // typo
         new Doc(),
