@@ -3,10 +3,11 @@ import { Mark, Plugin } from 'tiptap'
 import {
   updateMark,
   removeMark,
-  pasteRule
-  // markInputRule
+  pasteRule,
+  // wrappingInputRule
+  markInputRule
 } from 'tiptap-commands'
-import { InputRule } from 'prosemirror-inputrules'
+// import { InputRule } from 'prosemirror-inputrules'
 import { getMarkAttrs } from 'tiptap-utils'
 
 export default class Link extends Mark {
@@ -39,8 +40,8 @@ export default class Link extends Mark {
       toDOM: (node) => [
         'a',
         {
-          ...node.attrs,
-          rel: 'noopener noreferrer nofollow'
+          ...node.attrs
+          // rel: 'noopener noreferrer nofollow'
         },
         0
       ]
@@ -67,23 +68,27 @@ export default class Link extends Mark {
     ]
   }
 
+  // markInputRule(/>([^\s]{1,})[\n\r\s]/, type, (match) => {
   inputRules({ type }) {
     /* eslint-disable */
     return [
-      // markInputRule(/(\w*)\/link/, type),
-      new InputRule(new RegExp(`w*(w*)/link$`), (state, match, start, end) => {
+      markInputRule(/>([^\s]{1,})[\n\r\s]/, type, (match) => {
         console.log(match)
-        // return state.tr.setStoredMarks((marks) => console.log(marks))
-        return null
-        // const domain = match.input.slice(0, -api.alias.length - 1)
-
-        // return state.tr
-        //   .insertText('', end - api.alias.length, end)
-        //   .setMeta('api-call', {
-        //     api: api.name,
-        //     domain
-        //   })
+        return { href: match[1] }
       })
+      // new InputRule(new RegExp(`>hello`), (state, match, start, end) => {
+      //   console.log(this)
+      //   console.log(type)
+      //   console.log(
+      //     this.editor.schema.marks.link.create({ href: 'https://google.com' })
+      //   )
+      //   return null
+      //   // updateMark(type, { href: 'https//google.com' })
+      //   // console.log(match)
+      //   return state.tr.addStoredMark(
+      //     this.editor.schema.marks.link.create({ href: 'https://google.com' })
+      //   )
+      // })
     ]
   }
 
@@ -101,7 +106,13 @@ export default class Link extends Mark {
 
             if (attrs.href && event.target instanceof HTMLAnchorElement) {
               event.stopPropagation()
-              window.open(attrs.href)
+              // console.log(this)
+              console.log(
+                `Redirection to: ${window.location.origin}/${attrs.href}`
+              )
+              window.location.href = `${window.location.origin}/${attrs.href}`
+              // window.location.pathname = attrs.href
+              // window.open(attrs.href)
             }
           }
         }

@@ -22,25 +22,25 @@ import { mapState } from 'vuex'
 
 import Suggestions from './suggestions'
 
-import Doc from './extensions/Doc'
-import Title from './extensions/Title'
+import Doc from './extensions/_old/Doc'
+import Title from './extensions/_old/Title'
 
 // typography elements
-import Heading from './extensions/typography/Heading'
-import Bold from './extensions/typography/Bold'
-import Italic from './extensions/typography/Italic'
-import Link from './extensions/typography/Link'
-import Mention from './extensions/Mention'
+import Heading from './extensions/_old/typography/Heading'
+import Bold from './extensions/_old/typography/Bold'
+import Italic from './extensions/_old/typography/Italic'
+import Link from './extensions/_old/typography/Link'
+import Mention from './extensions/_old/Mention'
 
 // cmds
-import Home from './extensions/cli/home'
-import Pages from './extensions/cli/pages'
+import Home from './extensions/_old/cli/home'
+import Pages from './extensions/_old/cli/pages'
 
 // api
-import Hunter from './extensions/api/Hunter'
-import Crunchbase from './extensions/api/Crunchbase'
-import Clearbit from './extensions/api/Clearbit'
-import Gmail from './extensions/api/Gmail'
+import Hunter from './extensions/_old/apis/Hunter'
+import Crunchbase from './extensions/_old/apis/Crunchbase'
+import Clearbit from './extensions/_old/apis/Clearbit'
+import Gmail from './extensions/_old/apis/Gmail'
 
 const sound = new Howl({
   src: '/sounds/casual/switch.wav',

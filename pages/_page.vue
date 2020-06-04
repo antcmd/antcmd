@@ -38,9 +38,9 @@ export default {
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       // Only execute router.back if you don't come from other websites
-      if (from.path !== '/') {
-        vm.setOnEscapeListener()
-      }
+      /* if (from.path !== '/') { */
+      vm.setOnEscapeListener()
+      /* } */
     })
   },
 
