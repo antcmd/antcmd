@@ -1,3 +1,5 @@
+// import bodyParser from 'body-parser'
+
 export default {
   mode: 'universal',
   head: {
@@ -31,8 +33,9 @@ export default {
   },
   buildDir: '.dist',
   serverMiddleware: [
-    // 'redirect-ssl',
-    { path: '/api/clearbit/company', handler: '~/api/clearbit/company.js' },
-    { path: '/api/clearbit/person', handler: '~/api/clearbit/person.js' }
+    {
+      path: '/api',
+      handler: '~/api/index.js'
+    }
   ]
 }

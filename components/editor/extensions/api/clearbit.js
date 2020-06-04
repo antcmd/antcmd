@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { InputRule } from 'prosemirror-inputrules'
 import { Extension } from 'tiptap'
 
@@ -7,14 +6,10 @@ const api = {
   alias: 'clearbit'
 }
 
-const url = 'https://antcmd-clearbit-n9kjrpwe2.now.sh'
 const fetchClearbitCompany = (domain) =>
-  fetch(
-    `https://cors-anywhere.herokuapp.com/${url}/api/clearbit/company?domain=${domain}`,
-    {
-      method: 'GET'
-    }
-  )
+  fetch(`/api/clearbit/company/${domain}`, {
+    method: 'GET'
+  })
     .then((r) => r.json())
     .catch((err) => {
       // eslint-disable-next-line no-console
@@ -22,12 +17,9 @@ const fetchClearbitCompany = (domain) =>
     })
 
 const fetchClearbitPerson = (email) =>
-  fetch(
-    `https://cors-anywhere.herokuapp.com/${url}/api/clearbit/person?email=${email}`,
-    {
-      method: 'GET'
-    }
-  )
+  fetch(`/api/clearbit/person/${email}`, {
+    method: 'GET'
+  })
     .then((r) => r.json())
     .catch((err) => {
       // eslint-disable-next-line no-console
