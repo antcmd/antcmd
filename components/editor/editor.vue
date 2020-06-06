@@ -3,7 +3,7 @@
     <div class="editor">
       <editor-content class="editor__content" :editor="editor" />
     </div>
-    <suggestions ref="suggestions" :select="onSelectSuggestion" />
+    <suggestions ref="suggestions" :select="selectSuggestion" />
   </div>
 </template>
 
@@ -54,6 +54,7 @@ export default {
       default: ''
     }
   },
+
   data() {
     return {
       editor: null,
@@ -86,7 +87,7 @@ export default {
 
   mounted() {
     this.editor = new Editor({
-      autoFocus: true,
+      /* autoFocus: true, */
       extensions: [
         // api
         new Hunter(),
@@ -114,13 +115,32 @@ export default {
           onChange: this.$refs.suggestions.onChange,
           onExit: this.$refs.suggestions.onExit,
           onKeyDown: this.$refs.suggestions.onKeyDown,
+
+          // domain and emails suggestions
           items: () => {
-            this.getSuggestionItems()
+            this.getDomainsAndEmails()
             return this.suggestionItems
           }
+        }),
+        new Mention({
+          onEnter: this.$refs.suggestions.onSuggestionStart,
+          onChange: this.$refs.suggestions.onChange,
+          onExit: this.$refs.suggestions.onExit,
+          onKeyDown: this.$refs.suggestions.onKeyDown,
+
+          // pages suggestion
+          matcher: { char: '>' },
+          items: () => this.getPages()
+          /* command: () => { */
+          /*   if (event.key === 'Enter') { */
+          /*     this.goToPage() */
+          /*     return true */
+          /*   } */
+          /* } */
         })
       ],
 
+      autoFocus: true,
       content: this.value,
       onUpdate: ({ transaction, getHTML }) => {
         if (transaction.getMeta('api-call')) sound.play()
@@ -129,9 +149,6 @@ export default {
         this.$emit('input', getHTML())
       }
     })
-
-    this.editor.setContent(this.value)
-    this.editor.focus('end')
   },
 
   beforeDestroy() {
@@ -141,14 +158,19 @@ export default {
   },
 
   methods: {
-    getSuggestionItems() {
+    getDomainsAndEmails() {
       this.$store.commit(
-        'suggestions/getDomainsAndEmailsSuggestions',
+        'suggestions/getDomainsAndEmails',
         this.editor.getHTML()
       )
     },
 
-    onSelectSuggestion(suggestion) {
+    getPages() {
+      this.$store.commit('editor/getPages')
+    },
+
+    selectSuggestion(suggestion) {
+      // if pages - this.goTo()
       this.editor.view.dispatch(
         this.editor.view.state.tr.insertText(
           `${suggestion.name}`,
@@ -158,59 +180,24 @@ export default {
       )
 
       this.$refs.suggestions.destroyPopup()
+    },
+
+    goToPage() {
+      const user = this.filteredUsers[this.navigatedUserIndex]
+
+      if (user) {
+        this.editor.view.dispatch(
+          this.editor.view.state.tr.insertText(
+            ``,
+            this.editor.selection.from - 3,
+            this.editor.selection.from
+          )
+        )
+        this.$router.push({ path: `/${user.name}` })
+
+        this.destroyPopup()
+      }
     }
   }
 }
 </script>
-
-<style lang="scss">
-.page {
-  position: relative;
-}
-
-* {
-  font-family: Inter;
-}
-
-.editor {
-  display: flex;
-  justify-content: center;
-}
-
-.editor__content {
-  margin-top: 100px;
-  width: 665px;
-}
-
-.ProseMirror {
-  outline: none !important;
-}
-
-.editor *.is-empty:nth-child(1)::before,
-.editor *.is-empty:nth-child(2)::before {
-  content: attr(data-empty-text);
-  float: left;
-  color: #97a0bf;
-  pointer-events: none;
-  height: 0;
-}
-
-h1 {
-  margin-bottom: 19px;
-}
-p {
-  font-size: 19px;
-  line-height: 32px;
-}
-body {
-  /* background: #f5f5f5; */
-}
-a {
-  color: #0645ad;
-  cursor: pointer;
-  text-decoration: none;
-}
-a:hover {
-  text-decoration: underline;
-}
-</style>

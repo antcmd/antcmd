@@ -14,7 +14,7 @@ export default {
       }
     ],
     link: [
-      { rel: 'icon', type: 'image/png', href: '/favicon.png' },
+      { rel: 'icon', type: 'image/png', href: '/logo/z/z_96.png' },
       {
         rel: 'stylesheet',
         href:
@@ -23,7 +23,7 @@ export default {
     ]
   },
   loading: { color: '#fff' },
-  css: [],
+  css: ['@/css/editor.scss', '@/css/suggestions.scss'],
   plugins: [{ src: '~/plugins/vuex-persist', ssr: false }],
   buildModules: ['@nuxtjs/eslint-module'],
   modules: ['@nuxtjs/axios', '@nuxtjs/pwa', '@nuxtjs/dotenv'],
@@ -37,5 +37,10 @@ export default {
       path: '/api',
       handler: '~/api/index.js'
     }
-  ]
+  ],
+  pwa: {
+    icon: {
+      iconSrc: '/favicon.png'
+    }
+  }
 }
