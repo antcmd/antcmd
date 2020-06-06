@@ -1,8 +1,3 @@
-### antcmd.
-
-> Blank space for you business.
-
-
 **Setup**
 
 ```bash
