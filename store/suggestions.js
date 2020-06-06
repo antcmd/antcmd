@@ -44,7 +44,7 @@ export const mutations = {
       (state.selectedIndex + 1) % state.filteredSuggestions.length
   },
 
-  getDomainsAndEmailsSuggestions(state, content) {
+  getDomainsAndEmails(state, content) {
     const domainRegexp = /\b((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}\b/g
     const emailRegexp = /([\w+-.%]+@[\w-.]+\.[A-Za-z]{2,4},?)/g
     const domains = content.match(domainRegexp) || []

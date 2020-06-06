@@ -1,6 +1,6 @@
 <template>
   <client-only>
-    <editor :value.sync="content" @input="onInput" />
+    <editor :value.sync="content" @input="save" />
   </client-only>
 </template>
 
@@ -23,7 +23,7 @@ export default {
   },
 
   computed: {
-    // Get editor content from Vuex
+    // Get content for current page from Vuex store
     ...mapState({
       content: function(state) {
         return state.editor.content[this.page]
@@ -32,31 +32,30 @@ export default {
   },
 
   beforeDestroy: function() {
-    document.removeEventListener('keydown', this.onEscape)
+    document.removeEventListener('keydown', this.back)
   },
 
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       // Only execute router.back if you don't come from other websites
-      /* if (from.path !== '/') { */
+      /* if (from.path !== '/') { */ /* } */
       vm.setOnEscapeListener()
-      /* } */
     })
   },
 
   methods: {
-    onInput(value) {
+    save(value) {
       this.$store.commit('editor/save', { page: this.page, value })
     },
 
-    onEscape({ keyCode }) {
-      // On escape move between currently opened page and home
+    back({ keyCode }) {
+      // On escape
       if (keyCode === 27) this.$router.back()
     },
 
     setOnEscapeListener() {
       if (document) {
-        document.addEventListener('keydown', this.onEscape)
+        document.addEventListener('keydown', this.back)
       }
     }
   }
