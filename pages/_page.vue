@@ -1,6 +1,10 @@
 <template>
   <client-only>
-    <editor :value.sync="content" @input="save" />
+    <editor
+      :value.sync="page.content"
+      :disabled="page.disabled"
+      @input="save"
+    />
   </client-only>
 </template>
 
@@ -13,20 +17,25 @@ export default {
     Editor
   },
 
-  data() {
-    const page =
-      this.$router.currentRoute.path === '/'
-        ? 'home'
-        : this.$router.currentRoute.path.substr(1)
-
-    return { page }
-  },
-
   computed: {
-    // Get content for current page from Vuex store
     ...mapState({
-      content: function(state) {
-        return state.editor.content[this.page]
+      pages: function(state) {
+        return state.pages
+      },
+      page() {
+        const page = this.$store.getters['pages/pageByUrl'](
+          this.$router.currentRoute.path
+        )
+        if (page) {
+          console.log('if page')
+          return page
+        } else {
+          console.log('if not')
+          this.addPage()
+
+          const pages = this.$store.getters['pages/pages']
+          return pages[pages.length - 1]
+        }
       }
     })
   },
@@ -44,8 +53,12 @@ export default {
   },
 
   methods: {
+    addPage() {
+      this.$store.commit('pages/addPage', { title: '', value: '' })
+    },
+
     save(value) {
-      this.$store.commit('editor/save', { page: this.page, value })
+      this.$store.commit('pages/saveContent', { url: this.page.url, value })
     },
 
     back({ keyCode }) {

@@ -72,6 +72,9 @@ export default {
       },
       suggestionQuery: function(state) {
         return state.suggestions.suggestionQuery
+      },
+      pages: function(state) {
+        return state.pages
       }
     })
   },
@@ -130,7 +133,14 @@ export default {
 
           // pages suggestion
           matcher: { char: '>' },
-          items: () => this.getPages()
+          items: () => {
+            return this.pages.map((p) => ({
+              name: p.title,
+              id: p.url,
+              url: p.url,
+              type: 'page'
+            }))
+          }
           /* command: () => { */
           /*   if (event.key === 'Enter') { */
           /*     this.goToPage() */
@@ -165,19 +175,26 @@ export default {
       )
     },
 
-    getPages() {
-      this.$store.commit('editor/getPages')
-    },
-
     selectSuggestion(suggestion) {
-      // if pages - this.goTo()
-      this.editor.view.dispatch(
-        this.editor.view.state.tr.insertText(
-          `${suggestion.name}`,
-          this.editor.selection.from - (1 + this.suggestionQuery.length),
-          this.editor.selection.from
+      if (suggestion.type === 'page') {
+        const { view, selection } = this.editor
+        view.dispatch(
+          view.state.tr.insertText(
+            '',
+            selection.from - (1 + this.suggestionQuery.length),
+            selection.from
+          )
         )
-      )
+        this.$router.push(suggestion.url)
+      } else {
+        this.editor.view.dispatch(
+          this.editor.view.state.tr.insertText(
+            `${suggestion.name}`,
+            this.editor.selection.from - (1 + this.suggestionQuery.length),
+            this.editor.selection.from
+          )
+        )
+      }
 
       this.$refs.suggestions.destroyPopup()
     },

@@ -6,7 +6,7 @@
         :key="suggestion.id"
         class="suggestion-list__item"
         :class="{ 'is-selected': selectedIndex === index }"
-        @click="onSelectSuggestion(suggestion)"
+        @click="onEnter(suggestion)"
       >
         {{ suggestion.name }}
       </div>
@@ -83,6 +83,7 @@ export default {
 
       return false
     },
+
     onChange({ items, query, range, virtualNode }) {
       this.$store.commit('suggestions/onChange', {
         items,
@@ -91,6 +92,7 @@ export default {
       })
       this.renderPopup(virtualNode)
     },
+
     onEnter() {
       const suggestion = this.filteredSuggestions[this.selectedIndex]
 
@@ -98,6 +100,7 @@ export default {
         this.$attrs.select(suggestion)
       }
     },
+
     onExit() {
       this.$store.commit('suggestions/onExit')
 
