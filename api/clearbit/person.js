@@ -1,4 +1,6 @@
-const clearbit = require('clearbit')('sk_a520f1fc2331b745b7ffe5cccb8116d9')
+const { CLEARBIT_TOKEN } = require('../tokens')
+// eslint-disable-next-line import/order
+const clearbit = require('clearbit')(CLEARBIT_TOKEN)
 
 export default function handler(req, res) {
   console.log('> req')
