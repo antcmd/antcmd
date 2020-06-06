@@ -1,8 +1,9 @@
-// https://github.com/nuxt/nuxt.js/blob/dev/examples/auth-routes/api/index.js
 import express from 'express'
 
-import clearbitPersonHandler from './clearbit/person'
-import clearbitCompanyHandler from './clearbit/company'
+import clearbitPerson from './clearbit/person'
+import clearbitCompany from './clearbit/company'
+import clubhouseProjects from './clubhouse/projects'
+import clubhouseStories from './clubhouse/stories'
 
 const router = express.Router()
 
@@ -16,11 +17,19 @@ router.use((req, res, next) => {
 })
 
 router.get('/clearbit/person/:email', (req, res) => {
-  clearbitPersonHandler(req, res)
+  clearbitPerson(req, res)
 })
 
 router.get('/clearbit/company/:domain', (req, res) => {
-  clearbitCompanyHandler(req, res)
+  clearbitCompany(req, res)
+})
+
+router.get('/clubhouse/projects', (req, res) => {
+  clubhouseProjects(req, res)
+})
+
+router.get('/clubhouse/stories', (req, res) => {
+  clubhouseStories(req, res)
 })
 
 router.get('/hi', (req, res) => {

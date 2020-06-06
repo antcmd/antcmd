@@ -37,7 +37,7 @@ import Hunter from './extensions/api/hunter'
 import Crunchbase from './extensions/api/crunchbase'
 import Clearbit from './extensions/api/clearbit'
 import Gmail from './extensions/api/gmail'
-
+import Clubhouse from './extensions/api/clubhouse'
 import Synonyms from './extensions/api/words/synonyms'
 
 const sound = new Howl({
@@ -97,6 +97,7 @@ export default {
         new Crunchbase(),
         new Clearbit(),
         new Gmail(),
+        new Clubhouse(),
         new Synonyms(),
 
         // typo
