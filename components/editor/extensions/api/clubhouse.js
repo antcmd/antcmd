@@ -21,26 +21,22 @@ export default class Clubhouse extends Extension {
             const todo = stories.filter((s) => !s.started)
             const started = stories.filter((s) => s.started && !s.completed)
             const completed = stories.filter((s) => s.completed)
-            console.log('todo')
-            console.log(todo)
-            console.log('started')
-            console.log(started)
-            console.log('completed')
-            console.log(completed)
 
             this.editor.view.dispatch(
               this.editor.view.state.tr.insertText(
-                `: ${todo.map((s) => s.name).join(', ')}`
+                `todo:\n\n• ${todo.map((s) => s.name).join('\n• ')}\n\n`
               )
             )
             this.editor.view.dispatch(
               this.editor.view.state.tr.insertText(
-                `: ${started.map((s) => s.name).join(', ')}`
+                `started:\n\n• ${started.map((s) => s.name).join('\n• ')}\n\n`
               )
             )
             this.editor.view.dispatch(
               this.editor.view.state.tr.insertText(
-                `: ${completed.map((s) => s.name).join(', ')}`
+                `completed:\n\n• ${completed
+                  .map((s) => s.name)
+                  .join('\n• ')}\n\n`
               )
             )
           })
