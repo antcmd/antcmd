@@ -219,6 +219,11 @@ export default {
           this.$router.push('/')
         }
 
+        if (transaction.getMeta('pages')) {
+          sound.play()
+          this.$router.push('/pages')
+        }
+
         if (transaction.getMeta('help')) {
           sound.play()
           this.$router.push('/help')
@@ -226,6 +231,8 @@ export default {
 
         this.editorChange = true
         this.$emit('input', getHTML())
+
+        console.log(getHTML())
       },
       autoFocus: true
     })

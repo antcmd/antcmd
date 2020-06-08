@@ -38,10 +38,7 @@ export default {
     })
   },
 
-  beforeDestroy: function() {
-    console.log(this.page.content)
-    console.log(this.page.id)
-
+  beforeDestroy: function(a, b, c) {
     // delete page if it's empty
     if (
       (this.page.content === '' || this.page.content === '<h1></h1><p></p>') &&
@@ -51,10 +48,13 @@ export default {
     }
   },
 
+  beforeRouteLeave(to, from, next) {
+    document.removeEventListener('keydown', this.onKeyDown)
+    next()
+  },
+
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      // Only execute router.back if you don't come from other websites
-      /* if (from.path !== '/') { */ /* } */
       vm.setOnEscapeListener()
     })
   },
@@ -85,16 +85,30 @@ export default {
     },
 
     // On escape
-    onKeyDown({ key, shiftKey }) {
-      if (key === 'Escape') {
-        this.$router.back()
-      }
-      if (shiftKey) {
-        if (key === 'ArrowDown') {
-          this.toNextPage()
+    onKeyDown(e) {
+      if (this.$router.currentRoute.path !== '/pages') {
+        const { key, metaKey } = e
+        if (key === 'Escape') {
+          this.$router.push('/pages')
         }
-        if (key === 'ArrowUp') {
-          this.toPreviousPage()
+        if (metaKey) {
+          if (key === 'ArrowDown') {
+            this.toNextPage()
+          }
+          if (key === 'ArrowUp') {
+            this.toPreviousPage()
+          }
+
+          if (key === 'ArrowLeft') {
+            e.preventDefault()
+            this.$router.push('/pages')
+          }
+
+          if (key === 'ArrowRight') {
+            e.preventDefault()
+            /* soundNewPage.play() */
+            this.$store.commit('pages/addPage', { redirect: true })
+          }
         }
       }
     },
