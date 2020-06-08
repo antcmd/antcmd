@@ -1,7 +1,7 @@
 import { InputRule } from 'prosemirror-inputrules'
 import { Extension } from 'tiptap'
 
-export default class NewPage extends Extension {
+export default class Home extends Extension {
   inputRules({ type }) {
     return [
       new InputRule(new RegExp(`/home`), (state, match, start, end) => {

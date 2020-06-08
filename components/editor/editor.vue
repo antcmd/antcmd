@@ -25,6 +25,8 @@ import Suggestions from './suggestions'
 import NewPage from './extensions/commands/new_page'
 import Home from './extensions/commands/home'
 import Help from './extensions/commands/help'
+import Theme from './extensions/commands/themes'
+import Pages from './extensions/commands/pages'
 
 // elements
 import Doc from './extensions/elements/doc'
@@ -76,6 +78,9 @@ export default {
 
   computed: {
     ...mapState({
+      theme: function(state) {
+        return state.app.theme
+      },
       suggestionItems: function(state) {
         return state.suggestions.items
       },
@@ -94,6 +99,14 @@ export default {
         this.editor.setContent(val, true)
       }
       this.editorChange = false
+    },
+    theme(theme) {
+      const htmlElement = document.documentElement
+
+      if (theme) {
+        localStorage.setItem('theme', theme)
+        htmlElement.setAttribute('theme', theme)
+      }
     }
   },
 
@@ -104,6 +117,12 @@ export default {
         new NewPage(),
         new Home(),
         new Help(),
+        new Theme({
+          theme: this.theme,
+          setTheme: this.setTheme,
+          toggleTheme: this.toggleTheme
+        }),
+        new Pages(),
 
         // api
         new Hunter(),
@@ -223,6 +242,22 @@ export default {
   },
 
   methods: {
+    setTheme(theme) {
+      this.$store.commit('app/setTheme', theme)
+    },
+
+    toggleTheme(theme) {
+      const htmlElement = document.documentElement
+
+      if (this.theme === 'dark') {
+        htmlElement.setAttribute('theme', 'light')
+        this.setTheme('light')
+      } else {
+        htmlElement.setAttribute('theme', 'dark')
+        this.setTheme('dark')
+      }
+    },
+
     getDomainsAndEmails() {
       this.$store.commit(
         'suggestions/getDomainsAndEmails',

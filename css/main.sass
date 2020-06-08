@@ -1,5 +1,10 @@
+@import 'themes.scss';
+
 *
   font-family: Inter
+
+body
+  background-color: var(--bg-color)
 
 .page
   position: relative
@@ -11,11 +16,15 @@
 .editor__content
   margin-top: 64px
   width: 665px
+  color: var(--text-color)
 
 .ProseMirror
   outline: none !important
-  min-height: 50vh
 
+
+
+
+// placeholder
 .editor *.is-empty
   &:nth-child(1)::before, &:nth-child(2)::before
     content: attr(data-empty-text)
