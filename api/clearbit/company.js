@@ -10,6 +10,7 @@ export default function handler(req, res) {
       res.status(200).json(response)
     })
     .catch(function(err) {
+      // eslint-disable-next-line no-console
       console.error(err)
     })
 }

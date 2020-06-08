@@ -73,7 +73,6 @@ export default class Link extends Mark {
     /* eslint-disable */
     return [
       markInputRule(/>([^\s]{1,})[\n\r\s]/, type, (match) => {
-        console.log(match)
         return { href: match[1] }
       })
       // new InputRule(new RegExp(`>hello`), (state, match, start, end) => {

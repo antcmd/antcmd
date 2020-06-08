@@ -23,7 +23,6 @@ export default class Clubhouse extends Extension {
             )
             const started = stories.filter((s) => s.started && !s.completed)
             const completed = stories.filter((s) => s.completed)
-            console.log(todo)
 
             this.editor.view.dispatch(
               this.editor.view.state.tr.insertText(

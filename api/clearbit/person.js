@@ -3,10 +3,6 @@ const { CLEARBIT_TOKEN } = require('../tokens')
 const clearbit = require('clearbit')(CLEARBIT_TOKEN)
 
 export default function handler(req, res) {
-  console.log('> req')
-  console.log(req)
-  console.log('> res')
-  console.log(res)
   const { email } = req.params
 
   clearbit.Person.find({ email, stream: true })
@@ -15,15 +11,18 @@ export default function handler(req, res) {
     })
     .catch(clearbit.Person.QueuedError, function(err) {
       // Lookup is queued - try again later
+      // eslint-disable-next-line no-console
       console.log(err)
       res.status(202).json({ error: 'queueing' })
     })
     .catch(clearbit.Person.NotFoundError, function(err) {
       // Person could not be found
-      console.log(err)
+      // eslint-disable-next-line no-console
+      console.error(err)
       res.status(400).json({ error: 'not foun' })
     })
     .catch(function(err) {
+      // eslint-disable-next-line no-console
       console.error(err)
     })
 }
