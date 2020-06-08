@@ -51,12 +51,9 @@ const sound = new Howl({
   volume: 0.5
 })
 
-const sound1 = new Howl({
-  src: '/sounds/error_wooden.wav',
-  volume: 0.5,
-  sprite: {
-    wood: [180, 2000]
-  }
+const soundNewPage = new Howl({
+  src: '/sounds/casual/click4.wav',
+  volume: 0.5
 })
 
 export default {
@@ -66,6 +63,10 @@ export default {
     value: {
       type: String,
       default: ''
+    },
+    editable: {
+      type: Boolean,
+      default: true
     }
   },
 
@@ -112,7 +113,8 @@ export default {
 
   mounted() {
     this.editor = new Editor({
-      /* autoFocus: true, */
+      content: this.value,
+      editable: this.editable,
       extensions: [
         new NewPage(),
         new Home(),
@@ -202,17 +204,13 @@ export default {
           }
         })
       ],
-
-      autoFocus: true,
-      content: this.value,
       onUpdate: ({ transaction, getHTML }) => {
         if (transaction.getMeta('api-call')) {
           sound.play()
         }
 
         if (transaction.getMeta('new-page')) {
-          const id = sound1.play('wood')
-          sound1.rate(1.585, id)
+          soundNewPage.play()
           this.newPage()
         }
 
@@ -228,8 +226,10 @@ export default {
 
         this.editorChange = true
         this.$emit('input', getHTML())
-      }
+      },
+      autoFocus: true
     })
+
     if (this.value !== '') {
       this.editor.focus('end')
     }

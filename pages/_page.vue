@@ -1,6 +1,10 @@
 <template>
   <client-only>
-    <editor :value.sync="page.content" @input="save" />
+    <editor
+      :value.sync="page.content"
+      :editable="page.editable"
+      @input="save"
+    />
   </client-only>
 </template>
 
@@ -35,7 +39,16 @@ export default {
   },
 
   beforeDestroy: function() {
-    /* document.removeEventListener('keydown', this.onKeyDown) */
+    console.log(this.page.content)
+    console.log(this.page.id)
+
+    // delete page if it's empty
+    if (
+      (this.page.content === '' || this.page.content === '<h1></h1><p></p>') &&
+      this.page.id
+    ) {
+      this.removePage(this.page.id)
+    }
   },
 
   beforeRouteEnter(to, from, next) {
@@ -65,6 +78,10 @@ export default {
         url: this.page.url,
         value
       })
+    },
+
+    removePage(id) {
+      this.$store.commit('pages/removePage', id)
     },
 
     // On escape

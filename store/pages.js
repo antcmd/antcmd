@@ -1,3 +1,4 @@
+import { Howl } from 'howler'
 import vuexLocal from '../plugins/vuex-persist'
 
 export const state = () => ({
@@ -28,6 +29,11 @@ const getTitle = (value) => {
   return title
 }
 
+const soundMove = new Howl({
+  src: '/sounds/casual/click2.wav',
+  volume: 0.5
+})
+
 export const mutations = {
   addPage(state, { redirect, url, title = '', content = '' }) {
     const id = state.count + 1
@@ -47,7 +53,16 @@ export const mutations = {
     }
   },
 
+  removePage(state, id) {
+    state.pages = state.pages.filter((p) => p.id !== id)
+  },
+
+  goToPage(state) {
+    soundMove.play()
+  },
+
   toNextPage(state) {
+    soundMove.play()
     const currentIndex = state.pages.findIndex(
       (p) => p.url === this.$router.currentRoute.path
     )
@@ -59,19 +74,16 @@ export const mutations = {
     } else {
       pageUrl = state.pages[0].url
     }
-    console.log(currentIndex)
-    console.log(state.pages)
 
     this.$router.push(pageUrl)
   },
 
   toPreviousPage(state) {
+    soundMove.play()
     const currentIndex = state.pages.findIndex(
       (p) => p.url === this.$router.currentRoute.path
     )
     let pageUrl
-    console.log(currentIndex)
-    console.log(state.pages)
 
     if (currentIndex || currentIndex === 0) {
       const nextIndex =
