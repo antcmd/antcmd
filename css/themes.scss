@@ -1,7 +1,13 @@
 :root {
   --bg-color: #fff;
   --text-color: #000;
-  --link-color: #72ff9f;
+  --link-color: #0645ad;
+}
+
+[theme='light'] {
+  --bg-color: #fff;
+  --text-color: #000;
+  --link-color: #0645ad;
 }
 
 [theme='dark'] {
