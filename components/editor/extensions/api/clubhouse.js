@@ -18,25 +18,26 @@ export default class Clubhouse extends Extension {
           const domain = match.input.slice(0, -api.alias.length - 1)
 
           getStories(domain).then(({ data: stories }) => {
-            const todo = stories.filter((s) => !s.started)
+            const todo = stories.filter(
+              (s) => !s.started && s.workflow_state_id !== 500000008
+            )
             const started = stories.filter((s) => s.started && !s.completed)
             const completed = stories.filter((s) => s.completed)
+            console.log(todo)
 
             this.editor.view.dispatch(
               this.editor.view.state.tr.insertText(
-                `todo:\n\n• ${todo.map((s) => s.name).join('\n• ')}\n\n`
+                `todo:\n• ${todo.map((s) => s.name).join('\n• ')}\n\n`
               )
             )
             this.editor.view.dispatch(
               this.editor.view.state.tr.insertText(
-                `started:\n\n• ${started.map((s) => s.name).join('\n• ')}\n\n`
+                `started:\n• ${started.map((s) => s.name).join('\n• ')}\n\n`
               )
             )
             this.editor.view.dispatch(
               this.editor.view.state.tr.insertText(
-                `completed:\n\n• ${completed
-                  .map((s) => s.name)
-                  .join('\n• ')}\n\n`
+                `completed:\n• ${completed.map((s) => s.name).join('\n• ')}\n\n`
               )
             )
           })

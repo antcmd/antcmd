@@ -58,7 +58,8 @@ export const mutations = {
 
     const items = withoutDuplicates.map((i, index) => ({
       id: index,
-      name: i
+      name: i,
+      type: 'mention'
     }))
 
     state.items = items

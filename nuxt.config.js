@@ -23,7 +23,7 @@ export default {
     ]
   },
   loading: { color: '#fff' },
-  css: ['@/css/editor.scss', '@/css/suggestions.scss'],
+  css: ['@/css/main.sass', '@css/typography', '@/css/suggestions.sass'],
   plugins: [{ src: '~/plugins/vuex-persist', ssr: false }],
   buildModules: ['@nuxtjs/eslint-module'],
   modules: ['@nuxtjs/axios', '@nuxtjs/pwa', '@nuxtjs/dotenv'],

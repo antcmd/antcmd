@@ -1,10 +1,6 @@
 <template>
   <client-only>
-    <editor
-      :value.sync="page.content"
-      :disabled="page.disabled"
-      @input="save"
-    />
+    <editor :value.sync="page.content" @input="save" />
   </client-only>
 </template>
 
@@ -26,22 +22,20 @@ export default {
         const page = this.$store.getters['pages/pageByUrl'](
           this.$router.currentRoute.path
         )
-        if (page) {
-          console.log('if page')
-          return page
-        } else {
-          console.log('if not')
-          this.addPage()
 
-          const pages = this.$store.getters['pages/pages']
-          return pages[pages.length - 1]
+        if (page) {
+          return page
+        }
+
+        return {
+          content: ''
         }
       }
     })
   },
 
   beforeDestroy: function() {
-    document.removeEventListener('keydown', this.back)
+    /* document.removeEventListener('keydown', this.onKeyDown) */
   },
 
   beforeRouteEnter(to, from, next) {
@@ -54,21 +48,43 @@ export default {
 
   methods: {
     addPage() {
-      this.$store.commit('pages/addPage', { title: '', value: '' })
+      this.$store.commit('pages/addPage')
+    },
+
+    toNextPage() {
+      this.$store.commit('pages/toNextPage')
+    },
+
+    toPreviousPage() {
+      this.$store.commit('pages/toPreviousPage')
     },
 
     save(value) {
-      this.$store.commit('pages/saveContent', { url: this.page.url, value })
+      this.$store.commit('pages/saveContent', {
+        id: this.page.id,
+        url: this.page.url,
+        value
+      })
     },
 
-    back({ keyCode }) {
-      // On escape
-      if (keyCode === 27) this.$router.back()
+    // On escape
+    onKeyDown({ key, shiftKey }) {
+      if (key === 'Escape') {
+        this.$router.back()
+      }
+      if (shiftKey) {
+        if (key === 'ArrowDown') {
+          this.toNextPage()
+        }
+        if (key === 'ArrowUp') {
+          this.toPreviousPage()
+        }
+      }
     },
 
     setOnEscapeListener() {
       if (document) {
-        document.addEventListener('keydown', this.back)
+        document.addEventListener('keydown', this.onKeyDown)
       }
     }
   }

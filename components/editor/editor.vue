@@ -22,6 +22,10 @@ import { mapState } from 'vuex'
 
 import Suggestions from './suggestions'
 
+import NewPage from './extensions/commands/new_page'
+import Home from './extensions/commands/home'
+import Help from './extensions/commands/help'
+
 // elements
 import Doc from './extensions/elements/doc'
 import Title from './extensions/elements/title'
@@ -38,11 +42,19 @@ import Crunchbase from './extensions/api/crunchbase'
 import Clearbit from './extensions/api/clearbit'
 import Gmail from './extensions/api/gmail'
 import Clubhouse from './extensions/api/clubhouse'
-import Synonyms from './extensions/api/words/synonyms'
+/* import Synonyms from './extensions/api/words/synonyms' */
 
 const sound = new Howl({
   src: '/sounds/casual/switch.wav',
   volume: 0.5
+})
+
+const sound1 = new Howl({
+  src: '/sounds/error_wooden.wav',
+  volume: 0.5,
+  sprite: {
+    wood: [180, 2000]
+  }
 })
 
 export default {
@@ -64,9 +76,6 @@ export default {
 
   computed: {
     ...mapState({
-      content: function(state) {
-        return state.editor.content[this.page]
-      },
       suggestionItems: function(state) {
         return state.suggestions.items
       },
@@ -74,7 +83,7 @@ export default {
         return state.suggestions.suggestionQuery
       },
       pages: function(state) {
-        return state.pages
+        return state.pages.pages
       }
     })
   },
@@ -92,13 +101,17 @@ export default {
     this.editor = new Editor({
       /* autoFocus: true, */
       extensions: [
+        new NewPage(),
+        new Home(),
+        new Help(),
+
         // api
         new Hunter(),
         new Crunchbase(),
         new Clearbit(),
         new Gmail(),
         new Clubhouse(),
-        new Synonyms(),
+        /* new Synonyms(), */
 
         // typo
         new Doc(),
@@ -112,54 +125,95 @@ export default {
         new BulletList(),
         new ListItem(),
         new HorizontalRule(),
-
         new History(),
+
+        // Domain and Email suggestions on @
         new Mention({
           onEnter: this.$refs.suggestions.onSuggestionStart,
           onChange: this.$refs.suggestions.onChange,
           onExit: this.$refs.suggestions.onExit,
           onKeyDown: this.$refs.suggestions.onKeyDown,
 
-          // domain and emails suggestions
           items: () => {
             this.getDomainsAndEmails()
             return this.suggestionItems
           }
         }),
+
+        // Link or create page
+        /* new Mention({ */
+        /*   onEnter: this.$refs.suggestions.onSuggestionStart, */
+        /*   onChange: this.$refs.suggestions.onChange, */
+        /*   onExit: this.$refs.suggestions.onExit, */
+        /*   onKeyDown: this.$refs.suggestions.onKeyDown, */
+
+        /*   matcher: { char: '>', allowSpaces: true }, */
+        /*   items: () => { */
+        /*     return [ */
+        /*       ...this.pages.map((p) => ({ */
+        /*         name: p.title, */
+        /*         id: p.url, */
+        /*         url: p.url, */
+        /*         type: 'page-link' */
+        /*       })), */
+        /*       { */
+        /*         name: 'New page', */
+        /*         id: 666, */
+        /*         type: 'page-link' */
+        /*       } */
+        /*     ] */
+        /*   } */
+        /* }), */
+
+        // Navigate to a page
         new Mention({
           onEnter: this.$refs.suggestions.onSuggestionStart,
           onChange: this.$refs.suggestions.onChange,
           onExit: this.$refs.suggestions.onExit,
           onKeyDown: this.$refs.suggestions.onKeyDown,
 
-          // pages suggestion
-          matcher: { char: '>' },
+          matcher: { char: '//' },
           items: () => {
             return this.pages.map((p) => ({
               name: p.title,
               id: p.url,
               url: p.url,
-              type: 'page'
+              type: 'page-navigation'
             }))
           }
-          /* command: () => { */
-          /*   if (event.key === 'Enter') { */
-          /*     this.goToPage() */
-          /*     return true */
-          /*   } */
-          /* } */
         })
       ],
 
       autoFocus: true,
       content: this.value,
       onUpdate: ({ transaction, getHTML }) => {
-        if (transaction.getMeta('api-call')) sound.play()
+        if (transaction.getMeta('api-call')) {
+          sound.play()
+        }
+
+        if (transaction.getMeta('new-page')) {
+          const id = sound1.play('wood')
+          sound1.rate(1.585, id)
+          this.newPage()
+        }
+
+        if (transaction.getMeta('home')) {
+          sound.play()
+          this.$router.push('/')
+        }
+
+        if (transaction.getMeta('help')) {
+          sound.play()
+          this.$router.push('/help')
+        }
 
         this.editorChange = true
         this.$emit('input', getHTML())
       }
     })
+    if (this.value !== '') {
+      this.editor.focus('end')
+    }
   },
 
   beforeDestroy() {
@@ -177,42 +231,66 @@ export default {
     },
 
     selectSuggestion(suggestion) {
-      if (suggestion.type === 'page') {
-        const { view, selection } = this.editor
-        view.dispatch(
-          view.state.tr.insertText(
-            '',
-            selection.from - (1 + this.suggestionQuery.length),
-            selection.from
+      switch (suggestion.type) {
+        case 'mention': {
+          const { view, selection } = this.editor
+          view.dispatch(
+            view.state.tr.insertText(
+              '',
+              selection.from - (1 + this.suggestionQuery.length),
+              selection.from
+            )
           )
-        )
-        this.$router.push(suggestion.url)
-      } else {
-        this.editor.view.dispatch(
-          this.editor.view.state.tr.insertText(
-            `${suggestion.name}`,
-            this.editor.selection.from - (1 + this.suggestionQuery.length),
-            this.editor.selection.from
+          this.$router.push(suggestion.url)
+          break
+        }
+
+        case 'page-navigation': {
+          const { view, selection } = this.editor
+          view.dispatch(
+            view.state.tr.insertText(
+              '',
+              selection.from - (2 + this.suggestionQuery.length),
+              selection.from
+            )
           )
-        )
+          this.$router.push(suggestion.url)
+          break
+        }
+
+        case 'page-link': {
+          const { view, selection } = this.editor
+          view.dispatch(
+            view.state.tr.insertText(
+              'link',
+              selection.from - (1 + this.suggestionQuery.length),
+              selection.from
+            )
+          )
+          break
+        }
+
+        default:
+          break
       }
 
       this.$refs.suggestions.destroyPopup()
+    },
+
+    newPage() {
+      this.$store.commit('pages/addPage', { redirect: true })
     },
 
     goToPage() {
       const user = this.filteredUsers[this.navigatedUserIndex]
 
       if (user) {
-        this.editor.view.dispatch(
-          this.editor.view.state.tr.insertText(
-            ``,
-            this.editor.selection.from - 3,
-            this.editor.selection.from
-          )
+        const { view, selection } = this.editor
+        view.dispatch(
+          view.state.tr.insertText(``, selection.from - 3, selection.from)
         )
-        this.$router.push({ path: `/${user.name}` })
 
+        this.$router.push({ path: `/${user.name}` })
         this.destroyPopup()
       }
     }
