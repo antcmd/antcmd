@@ -1,5 +1,6 @@
 <template>
   <div v-show="showSuggestions" ref="suggestions" class="suggestion-list">
+    <div class="category">Pages</div>
     <template v-if="hasResults">
       <div
         v-for="(suggestion, index) in filteredSuggestions"
@@ -77,6 +78,7 @@ export default {
       }
 
       if (event.key === 'Enter') {
+        event.preventDefault()
         this.onEnter()
         return true
       }
@@ -122,7 +124,7 @@ export default {
         trigger: 'mouseenter',
         showOnCreate: true,
         theme: 'dark',
-        placement: 'top-start',
+        placement: 'bottom-start',
         inertia: true,
         duration: [400, 200]
       })

@@ -275,9 +275,10 @@ export default {
       switch (suggestion.type) {
         case 'mention': {
           const { view, selection } = this.editor
+
           view.dispatch(
             view.state.tr.insertText(
-              '',
+              `${suggestion.name}`,
               selection.from - (1 + this.suggestionQuery.length),
               selection.from
             )
