@@ -39,12 +39,19 @@ export default {
   },
 
   beforeDestroy: function(a, b, c) {
-    // delete page if it's empty
-    if (
-      (this.page.content === '' || this.page.content === '<h1></h1><p></p>') &&
-      this.page.id
-    ) {
-      this.removePage(this.page.id)
+    const page = this.$store.getters['pages/pageByUrl'](
+      this.$router.currentRoute.path
+    )
+
+    if (page) {
+      if (
+        (page.content === '' ||
+          page.content === '<h1></h1><p></p>' ||
+          page.title === '') &&
+        page.id
+      ) {
+        this.removePage(page.id)
+      }
     }
   },
 
@@ -88,27 +95,27 @@ export default {
     onKeyDown(e) {
       if (this.$router.currentRoute.path !== '/pages') {
         const { key, metaKey } = e
+
         if (key === 'Escape') {
           this.$router.push('/pages')
         }
-        if (metaKey) {
-          if (key === 'ArrowDown') {
-            this.toNextPage()
-          }
-          if (key === 'ArrowUp') {
-            this.toPreviousPage()
-          }
 
-          if (key === 'ArrowLeft') {
-            e.preventDefault()
-            this.$router.push('/pages')
-          }
+        if (metaKey && key === 'o') {
+          e.preventDefault()
+          this.$router.push('/pages')
+        }
 
-          if (key === 'ArrowRight') {
-            e.preventDefault()
-            /* soundNewPage.play() */
-            this.$store.commit('pages/addPage', { redirect: true })
-          }
+        if (metaKey && key === 'ArrowDown') {
+          this.toNextPage()
+        }
+
+        if (metaKey && key === 'ArrowUp') {
+          this.toPreviousPage()
+        }
+
+        if (metaKey && key === 'p') {
+          e.preventDefault()
+          this.$store.commit('pages/addPage', { redirect: true })
         }
       }
     },

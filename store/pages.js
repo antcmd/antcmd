@@ -9,15 +9,15 @@ export const state = () => ({
       url: '/',
       title: '',
       content: ''
-    },
-    {
-      id: 0,
-      url: '/help',
-      title: 'Help',
-      content:
-        '<h1>Help</h1><h2></h2><p><strong>API</strong></p><ul><li><p>/hunt<strong> </strong><em>(domain)</em></p></li><li><p>/crunch<strong> </strong><em>(domain)</em></p></li><li><p>/clearbit<strong> </strong><em>(domain / email)</em></p></li></ul><p></p><p><strong>Navigation</strong></p><ul><li><p><strong>// </strong><em>- Navigate to a page</em></p></li><li><p><strong>⌘ ↑</strong> <em>- Previous page</em></p></li><li><p><strong>⌘ ↓</strong> <em>- Next page</em></p></li><li><p><strong>⌘ ←</strong> <em>- All pages</em></p></li><li><p><strong>⌘ →</strong><em> - New page</em></p></li></ul>',
-      editable: false
     }
+    // {
+    //   id: 0,
+    //   url: '/help',
+    //   title: 'Help',
+    //   content:
+    //     '<h1>Help</h1><h2></h2><p><strong>API</strong></p><ul><li><p>/hunt<strong> </strong><em>(domain)</em></p></li><li><p>/crunch<strong> </strong><em>(domain)</em></p></li><li><p>/clearbit<strong> </strong><em>(domain / email)</em></p></li></ul><p></p><p><strong>Navigation</strong></p><ul><li><p><strong>// </strong><em>- Navigate to a page</em></p></li><li><p><strong>⌘ ↑</strong> <em>- Previous page</em></p></li><li><p><strong>⌘ ↓</strong> <em>- Next page</em></p></li><li><p><strong>⌘ ←</strong> <em>- All pages</em></p></li><li><p><strong>⌘ →</strong><em> - New page</em></p></li></ul>',
+    //   editable: false
+    // }
   ]
 })
 

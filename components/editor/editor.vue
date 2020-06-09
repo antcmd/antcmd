@@ -114,7 +114,8 @@ export default {
   mounted() {
     this.editor = new Editor({
       content: this.value,
-      editable: this.editable,
+      /* editable: this.editable, */
+      editable: true,
       extensions: [
         new NewPage(),
         new Home(),
@@ -231,8 +232,6 @@ export default {
 
         this.editorChange = true
         this.$emit('input', getHTML())
-
-        console.log(getHTML())
       },
       autoFocus: true
     })
