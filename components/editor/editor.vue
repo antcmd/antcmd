@@ -20,9 +20,10 @@ import {
 import { Howl } from 'howler'
 import { mapState } from 'vuex'
 
-import New from './extensions/commands/new'
-import Home from './extensions/commands/home'
-import Pages from './extensions/commands/pages'
+import Pages from './extensions/commands/pages/pages'
+import Home from './extensions/commands/pages/home'
+import New from './extensions/commands/pages/new'
+import Delete from './extensions/commands/pages/delete'
 import Publish from './extensions/commands/publish'
 import Themes from './extensions/themes'
 
@@ -119,6 +120,7 @@ export default {
       extensions: [
         new Home(),
         new New(),
+        new Delete(),
         new Pages(),
         new Publish(),
 
@@ -190,6 +192,12 @@ export default {
 
         if (transaction.getMeta('new-page')) {
           soundNewPage.play()
+          this.newPage()
+        }
+
+        if (transaction.getMeta('delete')) {
+          soundNewPage.play()
+          this.removePage()
           this.newPage()
         }
 
@@ -312,6 +320,10 @@ export default {
       }
 
       this.$refs.suggestions.destroyPopup()
+    },
+
+    removePage() {
+      this.$store.commit('pages/removePage', this.$attrs.page.id)
     },
 
     newPage() {
