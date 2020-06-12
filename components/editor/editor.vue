@@ -37,6 +37,7 @@ import Link from './extensions/elements/link'
 
 import Suggestions from './suggestions'
 import Mention from './extensions/plugins/mention'
+import RegexMention from './extensions/plugins/regexMention'
 
 // api
 import Hunter from './extensions/api/hunter'
@@ -75,7 +76,8 @@ export default {
   data() {
     return {
       editor: null,
-      editorChange: false
+      editorChange: false,
+      synonyms: []
     }
   },
 
@@ -163,6 +165,50 @@ export default {
             this.getDomainsAndEmails()
             return this.suggestionItems
           }
+        }),
+
+        // Synonyms
+        new RegexMention({
+          matcher: /(\w*)\/s\b/,
+          onEnter: async ({ items, query, range, command, virtualNode }) => {
+            const synonyms = await this.getSynonyms(query)
+            this.$refs.suggestions.onSuggestionStart({
+              items: synonyms.map((s, index) => ({
+                id: index,
+                name: s,
+                type: 'synonym'
+              })),
+              query,
+              range,
+              command,
+              virtualNode
+            })
+          },
+          onChange: this.$refs.suggestions.onChange,
+          onExit: this.$refs.suggestions.onExit,
+          onKeyDown: this.$refs.suggestions.onKeyDown
+        }),
+
+        // Rhymes
+        new RegexMention({
+          matcher: /(\w*)\/rhy\b/,
+          onEnter: async ({ items, query, range, command, virtualNode }) => {
+            const rhymes = await this.getRhymes(query)
+            this.$refs.suggestions.onSuggestionStart({
+              items: rhymes.map((s, index) => ({
+                id: index,
+                name: s,
+                type: 'rhyme'
+              })),
+              query,
+              range,
+              command,
+              virtualNode
+            })
+          },
+          onChange: this.$refs.suggestions.onChange,
+          onExit: this.$refs.suggestions.onExit,
+          onKeyDown: this.$refs.suggestions.onKeyDown
         })
       ],
 
@@ -233,6 +279,36 @@ export default {
       })
     },
 
+    async getSynonyms(word) {
+      const res = await fetch(
+        `https://wordsapiv1.p.rapidapi.com/words/${word}/synonyms`,
+        {
+          method: 'GET',
+          headers: {
+            'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
+            'x-rapidapi-key':
+              '14b00a912dmshc29f3d5dd244910p17f6a9jsnecfe9e250ed2'
+          }
+        }
+      ).then((r) => r.json())
+      return res.synonyms
+    },
+
+    async getRhymes(word) {
+      const res = await fetch(
+        `https://wordsapiv1.p.rapidapi.com/words/${word}/rhymes`,
+        {
+          method: 'GET',
+          headers: {
+            'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
+            'x-rapidapi-key':
+              '14b00a912dmshc29f3d5dd244910p17f6a9jsnecfe9e250ed2'
+          }
+        }
+      ).then((r) => r.json())
+      return res.rhymes.all
+    },
+
     setTheme(theme) {
       this.$store.commit('app/setTheme', theme)
     },
@@ -272,16 +348,29 @@ export default {
           break
         }
 
-        case 'page-navigation': {
+        case 'synonym': {
           const { view, selection } = this.editor
+
           view.dispatch(
             view.state.tr.insertText(
-              '',
+              `${suggestion.name}`,
               selection.from - (2 + this.suggestionQuery.length),
               selection.from
             )
           )
-          this.$router.push(suggestion.url)
+          break
+        }
+
+        case 'rhyme': {
+          const { view, selection } = this.editor
+
+          view.dispatch(
+            view.state.tr.insertText(
+              `${suggestion.name}`,
+              selection.from - (4 + this.suggestionQuery.length),
+              selection.from
+            )
+          )
           break
         }
 

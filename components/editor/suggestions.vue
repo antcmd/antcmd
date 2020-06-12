@@ -60,12 +60,15 @@ export default {
       })
       this.renderPopup(virtualNode)
     },
+
     onUp() {
       this.$store.commit('suggestions/onUp')
     },
+
     onDown() {
       this.$store.commit('suggestions/onDown')
     },
+
     onKeyDown({ event }) {
       if (event.key === 'ArrowUp') {
         this.onUp()
@@ -96,6 +99,8 @@ export default {
     },
 
     onEnter() {
+      console.log('enter')
+      console.log(this.selectedIndex)
       const suggestion = this.filteredSuggestions[this.selectedIndex]
 
       if (suggestion) {
