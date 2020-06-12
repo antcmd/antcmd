@@ -333,6 +333,8 @@ export default {
     },
 
     selectSuggestion(suggestion) {
+      console.log('select')
+      console.log(suggestion)
       switch (suggestion.type) {
         case 'mention': {
           const { view, selection } = this.editor

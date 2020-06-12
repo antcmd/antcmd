@@ -9,6 +9,7 @@
         class="search"
         placeholder="Search"
         autofocus="true"
+        autocomplete="off"
         @input="onChange"
       />
       <div class="body">

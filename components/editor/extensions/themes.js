@@ -17,7 +17,9 @@ export default class Themes extends Extension {
       createThemeInputRule('red', this.options.setTheme),
       createThemeInputRule('green', this.options.setTheme),
       createThemeInputRule('grey', this.options.setTheme),
-      // purple, orange, blue
+      // createThemeInputRule('blue', this.options.setTheme),
+      // createThemeInputRule('orange', this.options.setTheme),
+      // createThemeInputRule('purple', this.options.setTheme),
 
       // Toggle
       new InputRule(new RegExp(`/theme`), (state, match, start, end) => {

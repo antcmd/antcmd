@@ -63,10 +63,19 @@ export default {
 
     onUp() {
       this.$store.commit('suggestions/onUp')
+      if (this.selectedIndex > 4) {
+        this.$refs.suggestions.scrollTop -= 50
+      }
     },
 
     onDown() {
       this.$store.commit('suggestions/onDown')
+      if (this.selectedIndex > 4) {
+        this.$refs.suggestions.scrollTop += 50
+      }
+      if (this.selectedIndex === this.filteredSuggestions.length - 1) {
+        this.$refs.suggestions.scrollTop = 0
+      }
     },
 
     onKeyDown({ event }) {
@@ -99,8 +108,6 @@ export default {
     },
 
     onEnter() {
-      console.log('enter')
-      console.log(this.selectedIndex)
       const suggestion = this.filteredSuggestions[this.selectedIndex]
 
       if (suggestion) {

@@ -36,7 +36,7 @@ export default class Bold extends Mark {
   }
 
   inputRules({ type }) {
-    return [markInputRule(/(\w*)\/b/, type)]
+    return [markInputRule(/(\w*)\/bold/, type)]
   }
 
   pasteRules({ type }) {

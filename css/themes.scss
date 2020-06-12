@@ -47,3 +47,24 @@
   --link-color: #f56a5d;
   --placeholder-color: #93b3ce;
 }
+
+[theme='blue'] {
+  --bg-color: #171616;
+  --text-color: #5050ff;
+  --link-color: #66738a;
+  --placeholder-color: #5050ff;
+}
+
+[theme='orange'] {
+  --bg-color: #ff8f17;
+  --text-color: #342a3c;
+  --link-color: #66738a;
+  --placeholder-color: #342a3c;
+}
+
+[theme='purple'] {
+  --bg-color: #673ab7;
+  --text-color: #ff00ea;
+  --link-color: #9cd5d8;
+  --placeholder-color: #ff00ea;
+}
