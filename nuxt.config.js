@@ -14,7 +14,7 @@ export default {
       }
     ],
     link: [
-      { rel: 'icon', type: 'image/png', href: '/logo/web/favicon.png' },
+      { rel: 'icon', type: 'image/png', href: '/logo/web/favicon-96x96.png' },
       {
         rel: 'stylesheet',
         href:
