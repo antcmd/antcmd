@@ -22,8 +22,10 @@ export default {
           src: 'https://apis.google.com/js/api.js',
           async: true,
           defer: true,
-          callback: () => {
-            console.log('loaded')
+          callback: (a) => {
+            window.gapi.load('client:auth2', () =>
+              this.$store.commit('gmail/initClient')
+            )
             /* this.isStripeLoaded = true */
           }
         }

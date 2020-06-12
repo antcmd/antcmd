@@ -49,14 +49,15 @@ export const mutations = {
 
   watchSignin(state, isSigned) {
     if (isSigned) {
-      this.getInbox()
+      // this.commit('gmail/getInbox')
       state.signed = true
     } else {
       state.signed = false
     }
   },
 
-  async initClient() {
+  async initClient(state, g) {
+    console.log('init')
     await gapi.client
       .init({
         apiKey: GMAIL_API_KEY,
@@ -67,10 +68,18 @@ export const mutations = {
       .then(
         () => {
           // Listen for sign-in state changes.
-          gapi.auth2.getAuthInstance().isSignedIn.listen(this.watchSignin)
+          gapi.auth2
+            .getAuthInstance()
+            .isSignedIn.listen((isSigned) =>
+              this.commit('gmail/watchSignin', isSigned)
+            )
+          console.log(this)
 
           // Handle the initial sign-in state.
-          this.watchSignin(gapi.auth2.getAuthInstance().isSignedIn.get())
+          this.commit(
+            'gmail/watchSignin',
+            gapi.auth2.getAuthInstance().isSignedIn.get()
+          )
         },
         function(error) {
           console.log(error)
