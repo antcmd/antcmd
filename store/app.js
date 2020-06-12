@@ -8,6 +8,10 @@ export const state = () => ({
 
 export const mutations = {
   setTheme(state, theme) {
+    console.log(theme)
+    const htmlElement = document.documentElement
+    htmlElement.setAttribute('theme', theme)
+
     state.theme = theme
   }
 }

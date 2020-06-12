@@ -7,8 +7,9 @@
 [theme='light'] {
   --bg-color: #fff;
   --text-color: #000;
-  --link-color: #0645ad;
+  --link-color: #0c77f8;
 }
+// --link-color: #0645ad;
 
 [theme='dark'] {
   --bg-color: #000;
@@ -19,13 +20,13 @@
 [theme='yellow'] {
   --bg-color: #3a4843;
   --text-color: #dde659;
-  --link-color: #72ff9f;
+  --link-color: #e0caa0;
 }
 
 [theme='red'] {
   --bg-color: #eadfd9;
   --text-color: #db4040;
-  --link-color: #72ff9f;
+  --link-color: #5f3f3f;
 }
 
 [theme='green'] {
@@ -37,5 +38,5 @@
 [theme='grey'] {
   --bg-color: #312e2e;
   --text-color: #93b3ce;
-  --link-color: #72ff9f;
+  --link-color: #f56a5d;
 }

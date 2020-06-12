@@ -24,10 +24,11 @@ export default {
   },
   loading: { color: '#fff' },
   css: [
-    '@/assets/css/main.sass',
-    '@assets/css/typography',
-    '@/assets/css/suggestions.sass',
-    '@/assets/css/themes.scss'
+    '@/css/main.sass',
+    '@/css/pages.scss',
+    '@/css/suggestions.sass',
+    '@/css/typography',
+    '@/css/themes.scss'
   ],
   plugins: [{ src: '~/plugins/vuex-persist', ssr: false }],
   buildModules: ['@nuxtjs/eslint-module'],
