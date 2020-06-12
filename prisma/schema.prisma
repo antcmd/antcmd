@@ -1,0 +1,16 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource postgresql {
+  provider = "postgresql"
+  url      = "postgres://rfbyiqcxczglor:4372a399eff5ffbda7a86bf62aee24667fed52c357390ce2e55df3ae4ed67e84@ec2-34-193-117-204.compute-1.amazonaws.com:5432/db3a1gn7esrm57"
+}
+
+model Page {
+  id        Int     @default(autoincrement()) @id
+  title     String?
+  content   String
+  url       String
+  theme     String?
+}

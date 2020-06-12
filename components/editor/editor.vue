@@ -20,13 +20,11 @@ import {
 import { Howl } from 'howler'
 import { mapState } from 'vuex'
 
-import Suggestions from './suggestions'
-
-import NewPage from './extensions/commands/new_page'
+import New from './extensions/commands/new'
 import Home from './extensions/commands/home'
-import Help from './extensions/commands/help'
-import Theme from './extensions/commands/themes'
 import Pages from './extensions/commands/pages'
+import Publish from './extensions/commands/publish'
+import Themes from './extensions/themes'
 
 // elements
 import Doc from './extensions/elements/doc'
@@ -36,15 +34,18 @@ import Bold from './extensions/elements/bold'
 import Italic from './extensions/elements/italic'
 import Link from './extensions/elements/link'
 
+import Suggestions from './suggestions'
 import Mention from './extensions/plugins/mention'
 
 // api
 import Hunter from './extensions/api/hunter'
 import Crunchbase from './extensions/api/crunchbase'
 import Clearbit from './extensions/api/clearbit'
-import Gmail from './extensions/api/gmail'
 import Clubhouse from './extensions/api/clubhouse'
-/* import Synonyms from './extensions/api/words/synonyms' */
+
+// gmail
+import Inbox from './extensions/api/gmail/inbox'
+import Send from './extensions/api/gmail/send'
 
 const sound = new Howl({
   src: '/sounds/casual/switch.wav',
@@ -114,40 +115,40 @@ export default {
   mounted() {
     this.editor = new Editor({
       content: this.value,
-      /* editable: this.editable, */
       editable: true,
       extensions: [
-        new NewPage(),
         new Home(),
-        new Help(),
-        new Theme({
+        new New(),
+        new Pages(),
+        new Publish(),
+
+        new Themes({
           theme: this.theme,
           setTheme: this.setTheme,
           toggleTheme: this.toggleTheme
         }),
-        new Pages(),
 
-        // api
         new Hunter(),
         new Crunchbase(),
         new Clearbit(),
-        new Gmail(),
         new Clubhouse(),
-        /* new Synonyms(), */
 
-        // typo
         new Doc(),
         new Title(),
         new Heading({ levels: [1, 2, 3] }),
         new Bold(),
-        new Underline(),
-        new Strike(),
         new Italic(),
-        new Link(),
+        new Strike(),
+        new Underline(),
         new BulletList(),
         new ListItem(),
         new HorizontalRule(),
+        new Link(),
+
         new History(),
+
+        new Inbox(),
+        new Send(),
 
         // Domain and Email suggestions on @
         new Mention({
@@ -161,31 +162,6 @@ export default {
             return this.suggestionItems
           }
         }),
-
-        // Link or create page
-        /* new Mention({ */
-        /*   onEnter: this.$refs.suggestions.onSuggestionStart, */
-        /*   onChange: this.$refs.suggestions.onChange, */
-        /*   onExit: this.$refs.suggestions.onExit, */
-        /*   onKeyDown: this.$refs.suggestions.onKeyDown, */
-
-        /*   matcher: { char: '>', allowSpaces: true }, */
-        /*   items: () => { */
-        /*     return [ */
-        /*       ...this.pages.map((p) => ({ */
-        /*         name: p.title, */
-        /*         id: p.url, */
-        /*         url: p.url, */
-        /*         type: 'page-link' */
-        /*       })), */
-        /*       { */
-        /*         name: 'New page', */
-        /*         id: 666, */
-        /*         type: 'page-link' */
-        /*       } */
-        /*     ] */
-        /*   } */
-        /* }), */
 
         // Navigate to a page
         new Mention({
@@ -205,9 +181,11 @@ export default {
           }
         })
       ],
+
       onUpdate: ({ transaction, getHTML }) => {
-        if (transaction.getMeta('api-call')) {
+        if (transaction.getMeta('home')) {
           sound.play()
+          this.$router.push('/')
         }
 
         if (transaction.getMeta('new-page')) {
@@ -215,19 +193,29 @@ export default {
           this.newPage()
         }
 
-        if (transaction.getMeta('home')) {
-          sound.play()
-          this.$router.push('/')
-        }
-
         if (transaction.getMeta('pages')) {
           sound.play()
           this.$router.push('/pages')
         }
 
-        if (transaction.getMeta('help')) {
+        if (transaction.getMeta('publish')) {
           sound.play()
-          this.$router.push('/help')
+          this.publishPage()
+        }
+
+        if (transaction.getMeta('inbox')) {
+          sound.play()
+
+          this.$store.commit('gmail/getInbox')
+        }
+
+        if (transaction.getMeta('send')) {
+          sound.play()
+          /* this.sendMessage() */
+        }
+
+        if (transaction.getMeta('api-call')) {
+          sound.play()
         }
 
         this.editorChange = true
@@ -248,6 +236,13 @@ export default {
   },
 
   methods: {
+    publishPage() {
+      this.$store.commit('pages/publish', {
+        id: this.$attrs.page.id,
+        theme: this.theme
+      })
+    },
+
     setTheme(theme) {
       this.$store.commit('app/setTheme', theme)
     },
@@ -255,13 +250,13 @@ export default {
     toggleTheme(theme) {
       const htmlElement = document.documentElement
 
-      if (this.theme === 'dark') {
-        htmlElement.setAttribute('theme', 'light')
-        this.setTheme('light')
-      } else {
-        htmlElement.setAttribute('theme', 'dark')
-        this.setTheme('dark')
-      }
+      const themes = ['light', 'dark', 'red', 'yellow', 'grey']
+      const currentThemeIndex = themes.indexOf(this.theme)
+      const nextThemeIndex = currentThemeIndex === 4 ? 0 : currentThemeIndex + 1
+      const nextTheme = themes[nextThemeIndex]
+
+      htmlElement.setAttribute('theme', nextTheme)
+      this.setTheme(nextTheme)
     },
 
     getDomainsAndEmails() {

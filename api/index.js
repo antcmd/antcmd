@@ -4,6 +4,8 @@ import clearbitPerson from './clearbit/person'
 import clearbitCompany from './clearbit/company'
 import clubhouseProjects from './clubhouse/projects'
 import clubhouseStories from './clubhouse/stories'
+import prismaCreatePage from './prisma/createPage'
+import prismaFeed from './prisma/feed'
 
 const router = express.Router()
 
@@ -16,25 +18,17 @@ router.use((req, res, next) => {
   next()
 })
 
-router.get('/clearbit/person/:email', (req, res) => {
-  clearbitPerson(req, res)
-})
+router.get('/hi', (req, res) => res.status(200).json({ ok: true }))
 
-router.get('/clearbit/company/:domain', (req, res) => {
-  clearbitCompany(req, res)
-})
+router.get('/clearbit/company/:domain', clearbitCompany)
+router.get('/clearbit/person/:email', clearbitPerson)
 
-router.get('/clubhouse/projects', (req, res) => {
-  clubhouseProjects(req, res)
-})
+router.get('/clubhouse/projects', clubhouseProjects)
+router.get('/clubhouse/stories', clubhouseStories)
 
-router.get('/clubhouse/stories', (req, res) => {
-  clubhouseStories(req, res)
-})
-
-router.get('/hi', (req, res) => {
-  res.status(200).json({ ok: true })
-})
+router.post('/prisma/pages', prismaCreatePage)
+router.get('/prisma/pages/create', prismaCreatePage)
+router.get('/prisma/feed', prismaFeed)
 
 export default {
   path: '/api',

@@ -1,10 +1,6 @@
 <template>
   <client-only>
-    <editor
-      :value.sync="page.content"
-      :editable="page.editable"
-      @input="save"
-    />
+    <editor :page="page" :value.sync="page.content" @input="save" />
   </client-only>
 </template>
 
@@ -15,6 +11,24 @@ import Editor from '../components/editor/editor'
 export default {
   components: {
     Editor
+  },
+
+  head() {
+    return {
+      title: this.page.title !== '' ? this.page.title : 'antcmd.',
+      script: [
+        {
+          hid: 'gapi',
+          src: 'https://apis.google.com/js/api.js',
+          async: true,
+          defer: true,
+          callback: () => {
+            console.log('loaded')
+            /* this.isStripeLoaded = true */
+          }
+        }
+      ]
+    }
   },
 
   computed: {

@@ -1,4 +1,4 @@
-// import bodyParser from 'body-parser'
+import bodyParser from 'body-parser'
 
 export default {
   mode: 'universal',
@@ -14,7 +14,7 @@ export default {
       }
     ],
     link: [
-      { rel: 'icon', type: 'image/png', href: '/logo/web/web_yellow.png' },
+      { rel: 'icon', type: 'image/png', href: '/logo/web/favicon.png' },
       {
         rel: 'stylesheet',
         href:
@@ -24,10 +24,10 @@ export default {
   },
   loading: { color: '#fff' },
   css: [
-    '@/css/main.sass',
-    '@css/typography',
-    '@/css/suggestions.sass',
-    '@/css/themes.scss'
+    '@/assets/css/main.sass',
+    '@assets/css/typography',
+    '@/assets/css/suggestions.sass',
+    '@/assets/css/themes.scss'
   ],
   plugins: [{ src: '~/plugins/vuex-persist', ssr: false }],
   buildModules: ['@nuxtjs/eslint-module'],
@@ -36,8 +36,9 @@ export default {
   build: {
     extend(config, ctx) {}
   },
-  buildDir: '.dist',
+  // buildDir: '.dist',
   serverMiddleware: [
+    bodyParser.json(),
     {
       path: '/api',
       handler: '~/api/index.js'

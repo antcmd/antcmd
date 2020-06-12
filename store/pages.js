@@ -10,28 +10,7 @@ export const state = () => ({
       title: '',
       content: ''
     }
-    // {
-    //   id: 0,
-    //   url: '/help',
-    //   title: 'Help',
-    //   content:
-    //     '<h1>Help</h1><h2></h2><p><strong>API</strong></p><ul><li><p>/hunt<strong> </strong><em>(domain)</em></p></li><li><p>/crunch<strong> </strong><em>(domain)</em></p></li><li><p>/clearbit<strong> </strong><em>(domain / email)</em></p></li></ul><p></p><p><strong>Navigation</strong></p><ul><li><p><strong>// </strong><em>- Navigate to a page</em></p></li><li><p><strong>⌘ ↑</strong> <em>- Previous page</em></p></li><li><p><strong>⌘ ↓</strong> <em>- Next page</em></p></li><li><p><strong>⌘ ←</strong> <em>- All pages</em></p></li><li><p><strong>⌘ →</strong><em> - New page</em></p></li></ul>',
-    //   editable: false
-    // }
   ]
-})
-
-const getTitle = (value) => {
-  const h1 = value.indexOf('<h1>') + 4
-  const h1Closing = value.indexOf('</h1>')
-  const title = value.slice(h1, h1Closing) || ''
-
-  return title
-}
-
-const soundMove = new Howl({
-  src: '/sounds/casual/click2.wav',
-  volume: 0.5
 })
 
 export const mutations = {
@@ -50,6 +29,47 @@ export const mutations = {
 
     if (redirect) {
       this.$router.push(pageUrl)
+    }
+  },
+
+  async publish(state, { id, theme }) {
+    const page = state.pages.find((p) => p.id === id)
+
+    let content = page.content
+
+    function replaceAll(string, search, replace) {
+      return string.split(search).join(replace)
+    }
+
+    // TODO: dirty hack. rework later
+    content = replaceAll(content, '/pu', '')
+
+    // const result = await fetch('/api/prisma/pages', {
+    //   method: 'POST',
+    //   headers: {
+    //     'content-type': 'application/json'
+    //     // Origin: 'https://antapi-ignatif.antcmdtm.now.sh'
+    //   },
+    //   body: JSON.stringify({ ...page, content, theme })
+    // }).then((r) => r.json())
+
+    const result = await fetch(
+      'https://cors-anywhere.herokuapp.com/http://ec2-54-87-171-242.compute-1.amazonaws.com:3000/page',
+      {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          origin: 'http://ec2-54-87-171-242.compute-1.amazonaws.com'
+        },
+        body: JSON.stringify({ ...page, content, theme })
+      }
+    ).then((r) => r.json())
+    console.log(result)
+
+    if (result && result.id) {
+      const url = `https://antglobe.now.sh/${result.id}`
+      const win = window.open(url, '_blank')
+      win.focus()
     }
   },
 
@@ -121,3 +141,16 @@ export const getters = {
 }
 
 export const plugins = [vuexLocal.plugin]
+
+const getTitle = (value) => {
+  const h1 = value.indexOf('<h1>') + 4
+  const h1Closing = value.indexOf('</h1>')
+  const title = value.slice(h1, h1Closing) || ''
+
+  return title
+}
+
+const soundMove = new Howl({
+  src: '/sounds/casual/click2.wav',
+  volume: 0.5
+})

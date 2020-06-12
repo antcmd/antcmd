@@ -1,0 +1,16 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource postgresql {
+  provider = "postgresql"
+  url = "***"
+}
+
+model Page {
+  id        Int     @default(autoincrement()) @id
+  title     String?
+  content   String
+  url       String
+  theme     String?
+}
