@@ -163,24 +163,6 @@ export default {
             this.getDomainsAndEmails()
             return this.suggestionItems
           }
-        }),
-
-        // Navigate to a page
-        new Mention({
-          onEnter: this.$refs.suggestions.onSuggestionStart,
-          onChange: this.$refs.suggestions.onChange,
-          onExit: this.$refs.suggestions.onExit,
-          onKeyDown: this.$refs.suggestions.onKeyDown,
-
-          matcher: { char: '//' },
-          items: () => {
-            return this.pages.map((p) => ({
-              name: p.title,
-              id: p.url,
-              url: p.url,
-              type: 'page-navigation'
-            }))
-          }
         })
       ],
 
