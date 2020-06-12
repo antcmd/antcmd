@@ -23,9 +23,9 @@ export default {
           async: true,
           defer: true,
           callback: (a) => {
-            window.gapi.load('client:auth2', () =>
-              this.$store.commit('gmail/initClient')
-            )
+            /* window.gapi.load('client:auth2', () => */
+            /*   this.$store.commit('gmail/initClient') */
+            /* ) */
             /* this.isStripeLoaded = true */
           }
         }
