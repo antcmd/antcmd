@@ -374,7 +374,7 @@ export default {
 
       view.dispatch(
         view.state.tr.insertText(
-          `Ingridients: ${res.extendedIngredients.map(
+          `Ingredients: ${res.extendedIngredients.map(
             (i) => i.name
           )}. \n\nInstructuions: ${res.instructions}`,
           selection.from - (7 + this.suggestionQuery.length),
