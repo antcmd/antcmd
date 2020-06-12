@@ -13,26 +13,6 @@ export default {
     Editor
   },
 
-  head() {
-    return {
-      title: this.page.title !== '' ? this.page.title : 'antcmd.',
-      script: [
-        {
-          hid: 'gapi',
-          src: 'https://apis.google.com/js/api.js',
-          async: true,
-          defer: true,
-          callback: (a) => {
-            /* window.gapi.load('client:auth2', () => */
-            /*   this.$store.commit('gmail/initClient') */
-            /* ) */
-            /* this.isStripeLoaded = true */
-          }
-        }
-      ]
-    }
-  },
-
   computed: {
     ...mapState({
       pages: function(state) {
@@ -140,6 +120,26 @@ export default {
       if (document) {
         document.addEventListener('keydown', this.onKeyDown)
       }
+    }
+  },
+
+  head() {
+    return {
+      title: this.page.title !== '' ? this.page.title : 'antcmd.',
+      script: [
+        {
+          hid: 'gapi',
+          src: 'https://apis.google.com/js/api.js',
+          async: true,
+          defer: true,
+          callback: (a) => {
+            /* window.gapi.load('client:auth2', () => */
+            /*   this.$store.commit('gmail/initClient') */
+            /* ) */
+            /* this.isStripeLoaded = true */
+          }
+        }
+      ]
     }
   }
 }
