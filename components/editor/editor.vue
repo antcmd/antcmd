@@ -173,9 +173,9 @@ export default {
           onEnter: async ({ items, query, range, command, virtualNode }) => {
             const synonyms = await this.getSynonyms(query)
             this.$refs.suggestions.onSuggestionStart({
-              items: synonyms.map((s, index) => ({
+              items: synonyms.map((i, index) => ({
                 id: index,
-                name: s,
+                name: i,
                 type: 'synonym'
               })),
               query,
@@ -195,10 +195,32 @@ export default {
           onEnter: async ({ items, query, range, command, virtualNode }) => {
             const rhymes = await this.getRhymes(query)
             this.$refs.suggestions.onSuggestionStart({
-              items: rhymes.map((s, index) => ({
+              items: rhymes.map((i, index) => ({
                 id: index,
-                name: s,
+                name: i,
                 type: 'rhyme'
+              })),
+              query,
+              range,
+              command,
+              virtualNode
+            })
+          },
+          onChange: this.$refs.suggestions.onChange,
+          onExit: this.$refs.suggestions.onExit,
+          onKeyDown: this.$refs.suggestions.onKeyDown
+        }),
+
+        new RegexMention({
+          matcher: /(\w*)\/recipe\b/,
+          onEnter: async ({ items, query, range, command, virtualNode }) => {
+            const recipes = await this.getRecipes(query)
+            this.$refs.suggestions.onSuggestionStart({
+              items: recipes.map((i, index) => ({
+                id: index,
+                name: i.title,
+                recipeId: i.id,
+                type: 'recipe'
               })),
               query,
               range,
@@ -309,6 +331,59 @@ export default {
       return res.rhymes.all
     },
 
+    async getRecipes(word) {
+      const res = await fetch(
+        `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?offset=0&type=main%20course&query=${word}`,
+        {
+          method: 'GET',
+          headers: {
+            'x-rapidapi-host':
+              'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
+            'x-rapidapi-key':
+              '14b00a912dmshc29f3d5dd244910p17f6a9jsnecfe9e250ed2'
+          }
+        }
+      )
+        .then((r) => r.json())
+        .catch((err) => {
+          console.log(err)
+        })
+      console.log(res)
+      return res.results
+    },
+
+    async getRecipe(recipeId) {
+      const res = await fetch(
+        `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeId}/information`,
+        {
+          method: 'GET',
+          headers: {
+            'x-rapidapi-host':
+              'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
+            'x-rapidapi-key':
+              '14b00a912dmshc29f3d5dd244910p17f6a9jsnecfe9e250ed2'
+          }
+        }
+      )
+        .then((r) => r.json())
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const { view, selection } = this.editor
+
+      view.dispatch(
+        view.state.tr.insertText(
+          `Ingridients: ${res.extendedIngredients.map(
+            (i) => i.name
+          )}. \n\nInstructuions: ${res.instructions}`,
+          selection.from - (7 + this.suggestionQuery.length),
+          selection.from
+        )
+      )
+      return res
+    },
+
     setTheme(theme) {
       this.$store.commit('app/setTheme', theme)
     },
@@ -333,8 +408,6 @@ export default {
     },
 
     selectSuggestion(suggestion) {
-      console.log('select')
-      console.log(suggestion)
       switch (suggestion.type) {
         case 'mention': {
           const { view, selection } = this.editor
@@ -373,6 +446,11 @@ export default {
               selection.from
             )
           )
+          break
+        }
+
+        case 'recipe': {
+          this.getRecipe(suggestion.recipeId)
           break
         }
 
