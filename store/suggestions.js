@@ -5,6 +5,7 @@ export const state = () => ({
   //   pages: []
   // },
   items: [],
+  type: null,
   suggestionQuery: null,
   suggestionRange: null,
   filteredSuggestions: [],
@@ -12,10 +13,11 @@ export const state = () => ({
 })
 
 export const mutations = {
-  onSuggestionStart(state, { items, query, range, command }) {
+  onSuggestionStart(state, { items, query, range, command, type }) {
     state.suggestionQuery = query
     state.filteredSuggestions = items
     state.suggestionRange = range
+    state.type = type
   },
 
   onChange(state, { items, query, range }) {
@@ -30,6 +32,7 @@ export const mutations = {
     state.filteredSuggestions = []
     state.suggestionRange = null
     state.selectedIndex = 0
+    state.type = null
     state.items = []
   },
 
@@ -40,8 +43,11 @@ export const mutations = {
   },
 
   onDown(state) {
-    state.selectedIndex =
-      (state.selectedIndex + 1) % state.filteredSuggestions.length
+    if (state.selectedIndex === state.filteredSuggestions.length) {
+      state.selectedIndex = 0
+    } else {
+      state.selectedIndex += 1
+    }
   },
 
   getDomainsAndEmails(state, content) {

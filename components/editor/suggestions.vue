@@ -13,7 +13,7 @@
       </div>
     </template>
     <div v-else class="suggestion-list__item is-empty">
-      No users found
+      Press Enter to create a page
     </div>
   </div>
 </template>
@@ -32,10 +32,19 @@ export default {
         return state.suggestions.suggestionRange
       },
       filteredSuggestions: function(state) {
+        if (state.suggestions.items.length !== 0) {
+          return [
+            ...state.suggestions.filteredSuggestions,
+            { id: 'new-page', type: 'new-page', name: 'Create a new page' }
+          ]
+        }
         return state.suggestions.filteredSuggestions
       },
       selectedIndex: function(state) {
         return state.suggestions.selectedIndex
+      },
+      type: function(state) {
+        return state.suggestions.type
       }
     }),
     hasResults() {
@@ -51,12 +60,13 @@ export default {
   },
 
   methods: {
-    onSuggestionStart({ items, query, range, command, virtualNode }) {
+    onSuggestionStart({ items, query, range, command, virtualNode, type }) {
       this.$store.commit('suggestions/onSuggestionStart', {
         items,
         query,
         range,
-        command
+        command,
+        type
       })
       this.renderPopup(virtualNode)
     },
@@ -66,14 +76,20 @@ export default {
       if (this.selectedIndex > 4) {
         this.$refs.suggestions.scrollTop -= 50
       }
+
+      if (this.selectedIndex === this.filteredSuggestions.length - 2) {
+        this.$refs.suggestions.scrollTop = this.$refs.suggestions.clientHeight
+      }
     },
 
     onDown() {
       this.$store.commit('suggestions/onDown')
+
       if (this.selectedIndex > 4) {
         this.$refs.suggestions.scrollTop += 50
       }
-      if (this.selectedIndex === this.filteredSuggestions.length - 1) {
+
+      if (this.selectedIndex === 0) {
         this.$refs.suggestions.scrollTop = 0
       }
     },
@@ -112,6 +128,14 @@ export default {
 
       if (suggestion) {
         this.$attrs.select(suggestion)
+      }
+
+      if (
+        (this.type === 'page-link' && !suggestion) ||
+        suggestion.type === 'new-page'
+      ) {
+        console.log(this.suggestionRange)
+        this.$attrs.select({ type: 'new-page', range: this.suggestionRange })
       }
     },
 

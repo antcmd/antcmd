@@ -8,28 +8,42 @@ export const state = () => ({
       id: 1,
       url: '/',
       title: '',
-      content: ''
+      content: '',
+      children: [],
+      parentId: null
     }
   ]
 })
 
+export const getters = {
+  pages: (state) => state.pages,
+  pageByUrl: (state) => (url) => {
+    const r = state.pages.find((p) => p.url === url)
+    return r
+  }
+}
+
 export const mutations = {
-  addPage(state, { redirect, url, title = '', content = '' }) {
-    const id = state.count + 1
-    const pageUrl = url || `/${id}`
-
-    state.pages.push({
-      id,
-      title,
-      content,
-      url: pageUrl
-    })
-
-    state.count += 1
+  addPage(state, { page, options: { redirect } }) {
+    state.pages.push(page)
 
     if (redirect) {
-      this.$router.push(pageUrl)
+      this.$router.push(page.url)
     }
+  },
+
+  incrementCount(state) {
+    state.count += 1
+  },
+
+  addSubPage(state, { parentId, page }) {
+    const parentPageIndex = state.pages.findIndex((p) => p.id === parentId)
+    const parentPage = {
+      ...state.pages[parentPageIndex],
+      children: [...state.pages[parentPageIndex].children, page]
+    }
+
+    state.pages[parentPageIndex] = parentPage
   },
 
   async publish(state, { id, theme }) {
@@ -41,17 +55,8 @@ export const mutations = {
       return string.split(search).join(replace)
     }
 
-    // TODO: dirty hack. rework later
+    // TODO: dirty hack when using /pub. rework later
     content = replaceAll(content, '/pu', '')
-
-    // const result = await fetch('/api/prisma/pages', {
-    //   method: 'POST',
-    //   headers: {
-    //     'content-type': 'application/json'
-    //     // Origin: 'https://antapi-ignatif.antcmdtm.now.sh'
-    //   },
-    //   body: JSON.stringify({ ...page, content, theme })
-    // }).then((r) => r.json())
 
     const result = await fetch(
       'https://cors-anywhere.herokuapp.com/http://ec2-54-87-171-242.compute-1.amazonaws.com:3000/page',
@@ -64,7 +69,6 @@ export const mutations = {
         body: JSON.stringify({ ...page, content, theme })
       }
     ).then((r) => r.json())
-    console.log(result)
 
     if (result && result.id) {
       const url = `https://antglobe.now.sh/${result.id}`
@@ -123,8 +127,11 @@ export const mutations = {
 
     if (!page) {
       this.commit('pages/addPage', {
-        url: this.$router.currentRoute.path,
-        content: value
+        page: {
+          url: this.$router.currentRoute.path,
+          content: value
+        },
+        options: { redirect: true }
       })
     }
 
@@ -132,11 +139,39 @@ export const mutations = {
   }
 }
 
-export const getters = {
-  pages: (state) => state.pages,
-  pageByUrl: (state) => (url) => {
-    const r = state.pages.find((p) => p.url === url)
-    return r
+export const actions = {
+  addPage(
+    { state, commit },
+    {
+      page: { url, title, content, theme, parentId },
+      options: { redirect = false }
+    }
+  ) {
+    const id = state.count + 1
+    const page = {
+      id,
+      url: url || `/${id}`,
+      title: title,
+      content: title === '' ? content : `<h1>${title}</h1><p></p>`,
+      theme: theme,
+      parentId,
+      children: []
+    }
+
+    commit('incrementCount')
+    commit('addPage', { page, options: { redirect } })
+
+    if (parentId) {
+      commit('addSubPage', { parentId, page })
+    }
+
+    // if (!parentId) {
+    //   commit('addPage', { page, options: { redirect } })
+    // } else {
+    //   commit('addSubPage', { parentId, page })
+    // }
+
+    return page
   }
 }
 

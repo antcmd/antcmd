@@ -24,7 +24,7 @@ import Pages from './extensions/commands/pages/pages'
 import Home from './extensions/commands/pages/home'
 import New from './extensions/commands/pages/new'
 import Remove from './extensions/commands/pages/remove'
-import Publish from './extensions/commands/publish'
+import Publish from './extensions/commands/pages/publish'
 import Themes from './extensions/themes'
 
 // elements
@@ -83,18 +83,10 @@ export default {
 
   computed: {
     ...mapState({
-      theme: function(state) {
-        return state.app.theme
-      },
-      suggestionItems: function(state) {
-        return state.suggestions.items
-      },
-      suggestionQuery: function(state) {
-        return state.suggestions.suggestionQuery
-      },
-      pages: function(state) {
-        return state.pages.pages
-      }
+      pages: (state) => state.pages.pages,
+      suggestionItems: (state) => state.suggestions.items,
+      suggestionQuery: (state) => state.suggestions.suggestionQuery,
+      theme: (state) => state.app.theme
     })
   },
 
@@ -167,6 +159,32 @@ export default {
           }
         }),
 
+        // Link or new page
+        new Mention({
+          matcher: { char: '>', allowSpaces: true },
+          onEnter: ({ items, query, range, command, virtualNode }) =>
+            this.$refs.suggestions.onSuggestionStart({
+              items: this.pages.map((p) => ({
+                name: p.title,
+                id: p.url,
+                url: p.url,
+                type: 'page-link'
+              })),
+              query,
+              range,
+              command,
+              virtualNode,
+              type: 'page-link'
+            }),
+          onChange: this.$refs.suggestions.onChange,
+          onExit: this.$refs.suggestions.onExit,
+          onKeyDown: this.$refs.suggestions.onKeyDown
+
+          /* items: () => { */
+          /*   return */
+          /* } */
+        }),
+
         // Synonyms
         new RegexMention({
           matcher: /(\w*)\/s\b/,
@@ -211,6 +229,7 @@ export default {
           onKeyDown: this.$refs.suggestions.onKeyDown
         }),
 
+        // Recipe
         new RegexMention({
           matcher: /(\w*)\/recipe\b/,
           onEnter: async ({ items, query, range, command, virtualNode }) => {
@@ -242,13 +261,13 @@ export default {
 
         if (transaction.getMeta('new-page')) {
           soundNewPage.play()
-          this.newPage()
+          this.addPage({ redirect: true })
         }
 
         if (transaction.getMeta('remove')) {
           soundNewPage.play()
           this.removePage()
-          this.newPage()
+          this.addPage({ redirect: true })
         }
 
         if (transaction.getMeta('pages')) {
@@ -346,9 +365,9 @@ export default {
       )
         .then((r) => r.json())
         .catch((err) => {
+          // eslint-disable-next-line no-console
           console.log(err)
         })
-      console.log(res)
       return res.results
     },
 
@@ -456,13 +475,52 @@ export default {
 
         case 'page-link': {
           const { view, selection } = this.editor
+
           view.dispatch(
-            view.state.tr.insertText(
-              'link',
-              selection.from - (1 + this.suggestionQuery.length),
-              selection.from
-            )
+            view.state.tr
+              .insertText(
+                `${suggestion.name} `,
+                selection.from - (1 + this.suggestionQuery.length),
+                selection.from
+              )
+              .addMark(
+                selection.from - 1,
+                selection.from + suggestion.name.length,
+                this.editor.schema.marks.link.create({
+                  href: suggestion.url.slice(1)
+                })
+              )
           )
+          break
+        }
+
+        case 'new-page': {
+          const { view } = this.editor
+          const { range } = suggestion
+
+          const pageTitle = this.suggestionQuery
+
+          this.addPage({
+            title: pageTitle,
+            redirect: false,
+            parentId: this.$attrs.page.id
+          }).then((page) => {
+            view.dispatch(
+              view.state.tr
+                .insertText(
+                  `${this.suggestionQuery} `,
+                  range.from - 1,
+                  range.to
+                )
+                .addMark(
+                  range.from,
+                  range.to,
+                  this.editor.schema.marks.link.create({
+                    href: page.url.slice(1)
+                  })
+                )
+            )
+          })
           break
         }
 
@@ -477,8 +535,13 @@ export default {
       this.$store.commit('pages/removePage', this.$attrs.page.id)
     },
 
-    newPage() {
-      this.$store.commit('pages/addPage', { redirect: true })
+    addPage({ redirect = false, title = '', parentId }) {
+      return this.$store
+        .dispatch('pages/addPage', {
+          page: { title, parentId },
+          options: { redirect }
+        })
+        .then((r) => r)
     },
 
     goToPage() {

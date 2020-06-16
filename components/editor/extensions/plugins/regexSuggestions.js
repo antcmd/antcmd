@@ -34,7 +34,6 @@ function triggerCharacter(matcher) {
         const to = from + match[0].length
 
         const matchWord = match[1]
-        // console.log(match)
 
         // If the $position is located within the matched substring, return that range
         if (from < $position.pos && to >= $position.pos) {
@@ -88,7 +87,6 @@ export default function SuggestionsPlugin({
     view() {
       return {
         update: (view, prevState) => {
-          console.log('update')
           const prev = this.key.getState(prevState)
           const next = this.key.getState(view.state)
 

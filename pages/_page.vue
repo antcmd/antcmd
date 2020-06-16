@@ -15,9 +15,8 @@ export default {
 
   computed: {
     ...mapState({
-      pages: function(state) {
-        return state.pages
-      },
+      // https://vuex.vuejs.org/guide/forms.html#two-way-computed-property
+      // Might merge page get and set methods into Two-way Computed Property later
       page() {
         const page = this.$store.getters['pages/pageByUrl'](
           this.$router.currentRoute.path
@@ -63,10 +62,6 @@ export default {
   },
 
   methods: {
-    addPage() {
-      this.$store.commit('pages/addPage')
-    },
-
     toNextPage() {
       this.$store.commit('pages/toNextPage')
     },
@@ -107,11 +102,6 @@ export default {
 
         if (metaKey && key === 'ArrowUp') {
           this.toPreviousPage()
-        }
-
-        if (metaKey && key === 'p') {
-          e.preventDefault()
-          this.$store.commit('pages/addPage', { redirect: true })
         }
       }
     },

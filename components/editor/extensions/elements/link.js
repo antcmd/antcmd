@@ -3,9 +3,9 @@ import { Mark, Plugin } from 'tiptap'
 import {
   updateMark,
   removeMark,
-  pasteRule,
+  pasteRule
   // wrappingInputRule
-  markInputRule
+  // markInputRule
 } from 'tiptap-commands'
 // import { InputRule } from 'prosemirror-inputrules'
 import { getMarkAttrs } from 'tiptap-utils'
@@ -72,9 +72,9 @@ export default class Link extends Mark {
   inputRules({ type }) {
     /* eslint-disable */
     return [
-      markInputRule(/>([^\s]{1,})[\n\r\s]/, type, (match) => {
-        return { href: match[1] }
-      })
+      // markInputRule(/>([^\s]{1,})[\n\r\s]/, type, (match) => {
+      //   return { href: match[1] }
+      // })
       // new InputRule(new RegExp(`>hello`), (state, match, start, end) => {
       //   console.log(this)
       //   console.log(type)

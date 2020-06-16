@@ -13,14 +13,7 @@
         @input="onChange"
       />
       <div class="body">
-        <nuxt-link
-          v-for="page in pages"
-          :key="page.url"
-          :to="page.url"
-          class="page-link"
-        >
-          {{ page.title }}
-        </nuxt-link>
+        <tree-menu :children="pages" :depth="-1"></tree-menu>
       </div>
     </div>
   </client-only>
@@ -28,8 +21,25 @@
 
 <script>
 import { mapState } from 'vuex'
+/* import { cloneDeep } from 'lodash' */
+import TreeMenu from '../components/tree.vue'
+
+/* function flatten(xs) { */
+/*   return xs.reduce((acc, x) => { */
+/*     acc = acc.concat(x) */
+/*     if (x.children) { */
+/*       acc = acc.concat(flatten(x.children)) */
+/*       x.children = [] */
+/*     } */
+/*     return acc */
+/*   }, []) */
+/* } */
 
 export default {
+  components: {
+    TreeMenu
+  },
+
   data() {
     return {
       searchQuery: ''
@@ -39,9 +49,14 @@ export default {
   computed: {
     ...mapState({
       pages: function(state) {
-        return state.pages.pages.filter((i) =>
+        const pages = state.pages.pages.filter((i) =>
           i.title.toLowerCase().includes(this.searchQuery.toLowerCase())
         )
+        /* const clonePages = cloneDeep(pages) */
+        /* const flattenPages = flatten(clonePages) */
+
+        const rootPages = pages.filter((p) => !p.parentId)
+        return rootPages
       },
       theme: function(state) {
         return state.app.theme
