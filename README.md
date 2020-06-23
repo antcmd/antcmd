@@ -1,6 +1,7 @@
 # antcmd
 
 Plain-text interface for things
+[Help](https://antglobe.now.sh/21)
 
 ### Setup
 
