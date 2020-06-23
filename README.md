@@ -4,6 +4,8 @@ Plain-text interface for things
 
 [Help](https://antglobe.now.sh/21)
 
+[Reddit](https://www.reddit.com/r/AntCMD/)
+
 ### Setup
 
 ```bash
