@@ -1,6 +1,6 @@
 # antcmd
 
-Plain-text interface for things
+Plain-text interface to interact with various apis
 
 [Help](https://antglobe.now.sh/21)
 
