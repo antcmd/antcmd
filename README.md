@@ -21,3 +21,11 @@ $ yarn && yarn dev
 ### Deploy
 
 Master branch automatically gets deployed to production via [Vercel](https://vercel.com/)
+
+### Features
+
+- get synonyms, acronyms, rhymes
+- food receipts
+- send tweets
+- receive and reply to emails
+- get insights on companies and their employees
