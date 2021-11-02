@@ -35,7 +35,7 @@ Command-based text interface
 ### Run locally
 
 ```bash
-$ yarn && yarn dev
+yarn && yarn dev
 ```
 
 ### Built with
