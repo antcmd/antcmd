@@ -18,22 +18,33 @@ Use commands to interact with api
 
 
 /s - synonym
+
 /a - acronym
+
 /r - rhyme
 
 
 /clearbit
+
 /crunchbase
+
 /hunt
 
+
 /recipe
+
 ~/tweet~
 
 
+
 /inbox - gmail inbox
+
 /e - send
+
 /n
+
 /rm
+
 
 /pub
 
@@ -50,10 +61,15 @@ Use commands to interact with api
 
 
 /h1
+
 /h2
+
 /h3
+
 /b
+
 /i
+
 /u
 
 
