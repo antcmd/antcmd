@@ -1,35 +1,65 @@
 # type
 
-Command-based text interface
+Plain-text interface
+
+
+
+Use commands to interact with api
+
+
+/
+
+/
+
+/
 
 
 ### Available commands
 
 
-/
-/
-/
+/s - synonym
+/a - acronym
+/r - rhyme
 
 
-/
-/
-/
+/clearbit
+/crunchbase
+/hunt
+
+/recipe
+~/tweet~
 
 
-/
-/
-/
+/inbox - gmail inbox
+/e - send
+/n
+/rm
+
+/pub
+
+
+
+
+/theme
 
 
 
 
 
 
-- get synonyms, acronyms, rhymes
-- food receipts
-- send tweets
-- receive and reply to emails
-- get insights on companies and their employees
+
+
+/h1
+/h2
+/h3
+/b
+/i
+/u
+
+
+
+
+
 
 
 ### Run locally
@@ -37,6 +67,9 @@ Command-based text interface
 ```bash
 yarn && yarn dev
 ```
+
+
+
 
 ### Built with
 - [Vue.js](https://vuejs.org/)
